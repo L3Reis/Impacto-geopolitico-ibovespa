@@ -1,0 +1,93 @@
+# Pacotes
+library(dplyr)
+library(readxl)
+library(urca)
+library(tsibble)
+library(ggplot2)
+library(forecast)
+
+
+# Dados -------------------------------------------------------------------
+dados_gpr_brutos <- read_xls('D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/dados/data_gpr_export.xls', 
+                             col_types = "text") |> 
+  select(month, GPRC_BRA) |> 
+  mutate(
+    # Converte a data (que veio como texto do Excel)
+    month = as.Date(as.numeric(month), origin = "1899-12-30"), # inicio do ano no excel
+    # Limpa a vírgula e converte para numérico real
+    GPRC_BRA = as.numeric(gsub(",", ".", GPRC_BRA))
+  ) |> 
+  na.omit() |> as_tsibble(index = 'month')
+
+
+# Amostra de estudo
+gpr_bra <- dados_gpr_brutos |> dplyr::filter(month >= '2000-01-01')
+ 
+# visualização do gráfico mostrou que há uma mudança no comportamento da série pós-2020
+
+
+# Criação de blocos (A = 2000-2019 e B = 2020-2026)
+bloco_A <- data_gpr_raw %>% filter(month >= "2000-01-01" & month <= "2019-12-01")
+bloco_B <- data_gpr_raw %>% filter(month >= "2020-01-01")
+
+
+# Visualizações Iniciais --------------------------------------------------
+
+
+#Toda a amostra
+dados_gpr_brutos |> ggplot() + aes(x = month, y = GPRC_BRA) + geom_line()
+
+# Período de interesse
+gpr_bra |> ggplot() + aes(x = month, y = GPRC_BRA) + geom_line()
+
+# Olhando a serie, parece haver uma tendencia ascendente a partir de 2020, sugerindo quebra estrutural (justifica o markov-switching?)
+
+
+# Testes de estacionariedade ----------------------------------------------
+
+
+# Amostra completa
+
+# ACF
+Acf(dados_gpr_brutos$GPRC_BRA)
+
+# ADF
+teste_adf_completa <- ur.df(dados_gpr_brutos$GPRC_BRA, type = "trend", selectlags = "AIC")
+summary(teste_adf_completa)
+
+# Olhando a amostra completa, aparentemente é uma estacionária com alta persistência
+
+# Amostra de estudo
+
+# ACF
+Acf(gpr_bra$GPRC_BRA)
+
+# ADF
+teste_adf_estudo <- ur.df(gpr_bra$GPRC_BRA, type = "trend", selectlags = "AIC")
+summary(teste_adf_estudo)
+
+# Comportamento similar da amostra completa
+
+# Análise nos blocos
+
+# Bloco A
+
+# ACF
+Acf(bloco_A$GPRC_BRA)
+
+# ADF
+teste_adf_bloco_A <- ur.df(bloco_A$GPRC_BRA, type = "trend", selectlags = "AIC")
+summary(teste_adf_bloco_A)
+
+# Bloco B
+
+# ACF
+Acf(bloco_B$GPRC_BRA)
+
+# ADF
+teste_adf_bloco_B <- ur.df(bloco_B$GPRC_BRA, type = "trend", selectlags = "AIC")
+summary(teste_adf_bloco_B)
+
+
+# Apresentam comportamentos diferentes, mas cabe entender melhor o que isso quer dizer
+# tendencia apareceu como significativa no bloco B
