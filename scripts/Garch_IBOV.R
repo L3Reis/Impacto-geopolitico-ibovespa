@@ -103,7 +103,8 @@ plot(garch_fit_2, which="all")
 plot(garch_fit_2, which= 2 )
 
 
-
+#nyblom
+nyblom(garch_fit_2)
 # Previsão ----------------------------------------------------------------
 
 previsao <- ugarchforecast(garch_fit_2, n.ahead = 5)
