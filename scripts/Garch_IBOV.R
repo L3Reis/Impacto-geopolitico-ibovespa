@@ -25,6 +25,9 @@ bvsp <- Ad(BVSP)
 r.bvsp <- dailyReturn(bvsp, type="log") * 100 # Multiplica por 100 para facilitar a modelagem
 r.ibov <- na.omit(r.bvsp)
 
+# Salvando dado tratado
+saveRDS()
+
 # Primeira visualização
 plot(r.ibov, main="Log-Retornos Ibovespa (%)", yaxis.right= FALSE)
 
