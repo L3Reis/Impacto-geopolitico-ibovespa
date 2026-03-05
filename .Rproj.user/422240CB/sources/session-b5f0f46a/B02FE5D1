@@ -1,0 +1,26 @@
+{
+    "id": "B02FE5D1",
+    "path": "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/scripts/Garch_midas.R",
+    "project_path": "scripts/Garch_midas.R",
+    "type": "r_source",
+    "hash": "88945308",
+    "contents": "",
+    "dirty": false,
+    "created": 1772657101328.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "41,0",
+        "scrollLine": "15"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1772670921,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1772670921881,
+    "read_only": false,
+    "read_only_alternatives": []
+}
