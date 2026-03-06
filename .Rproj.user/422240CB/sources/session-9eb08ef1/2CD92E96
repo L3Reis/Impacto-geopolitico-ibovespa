@@ -1,9 +1,9 @@
 {
     "id": "2CD92E96",
-    "path": "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/scripts/analise_serie_GPR_BRA.R",
-    "project_path": "scripts/analise_serie_GPR_BRA.R",
+    "path": "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/scripts/analise_serie_GPRH.R",
+    "project_path": "scripts/analise_serie_GPRH.R",
     "type": "r_source",
-    "hash": "2673975452",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1772657271386.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "32,17",
-        "scrollLine": "8"
+        "cursorPosition": "99,71",
+        "scrollLine": "72"
     },
     "folds": "",
-    "lastKnownWriteTime": 1772660615,
+    "lastKnownWriteTime": 1772756379,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1772660615756,
+    "last_content_update": 1772756379723,
     "read_only": false,
     "read_only_alternatives": []
 }

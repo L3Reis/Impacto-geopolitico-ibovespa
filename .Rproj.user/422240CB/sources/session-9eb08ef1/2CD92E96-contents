@@ -10,27 +10,27 @@ library(forecast)
 # Dados -------------------------------------------------------------------
 dados_gpr_brutos <- read_xls('D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/dados/data_gpr_export.xls', 
                              col_types = "text") |> 
-  select(month, GPRC_BRA) |> 
+  select(month, GPRH) |> 
   mutate(
     # Converte a data (que veio como texto do Excel)
     month = as.Date(as.numeric(month), origin = "1899-12-30"), # inicio do ano no excel
     # Limpa a vírgula e converte para numérico real
-    GPRC_BRA = as.numeric(gsub(",", ".", GPRC_BRA))
+    GPRH = as.numeric(gsub(",", ".", GPRH))
   ) |> 
   na.omit() |> as_tsibble(index = 'month')
 
 
 # Amostra de estudo
-gpr_bra <- dados_gpr_brutos |> dplyr::filter(month >= '2000-01-01')
+gprh <- dados_gpr_brutos |> dplyr::filter(month >= '2000-01-01')
  
 
 # Transformando para o left join e exportação
-gpr_bra <- gpr_bra |> mutate(mes_ano = yearmonth(month)) |> 
+gprh <- gprh |> mutate(mes_ano = yearmonth(month)) |> 
   as_tsibble(index = mes_ano) |> 
-  select(mes_ano, GPRC_BRA)
+  select(mes_ano, GPRH)
   
 
-saveRDS(gpr_bra, file = 'dados/indice_GPR_BRA.rds')
+saveRDS(gprh, file = 'dados/indice_GPRH.rds')
 # visualização do gráfico mostrou que há uma mudança no comportamento da série pós-2020
 
 
