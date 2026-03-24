@@ -1,0 +1,180 @@
+library(rbcb)
+library(dplyr)
+library(readr)
+library(tsibble)
+library(lubridate)
+library(sidrar)
+library(seasonal)
+library(purrr)
+library(tidyr)
+library(ipeadatar)
+
+
+# Carregando e tratando dados ---------------------------------------------
+
+
+dados_sgs <- get_series(
+  code = c("M1" = 27841,"pib_real" = 22109,
+           'investimento' = 22113, 'cambio' = 3696),
+  start_date = "2002-04-01", end_date = '2019-12-31')
+
+# devido a problema na api, vamos baixar o selic do excel
+selic <- read.csv2(file = 'D:/OneDrive/FGV/Bayesian Macroeconometrics/Listas/Lista 2 - Questão 2/selic.csv' )
+
+
+selic <- selic |> mutate(data = dmy(Data)) |> 
+    rename(valor = "X1178...Taxa.de.juros...Selic.anualizada.base.252.....a.a.") 
+  
+selic_trimestral <- selic |>
+  mutate(trimestre = tsibble::yearquarter(data)) |> 
+  group_by(trimestre) |>
+  filter(data == max(data)) |> 
+  ungroup() |>
+  select(trimestre, valor)
+
+# Puxando o indice IPCA do IBGE e fazendo as transformações necessárias
+
+ipca_raw <- get_sidra(api = "/t/1737/n1/all/v/2266/p/200201-201912")
+
+ipca_trimestral <- ipca_raw |>
+  select(data_texto = `Mês (Código)`, valor = Valor) |>
+  mutate(data = ym(data_texto)) |>
+  mutate(trimestre = yearquarter(data)) |>
+  group_by(trimestre) |>
+  filter(data == max(data)) |>
+  ungroup() |>
+  select(trimestre, ipca_indice = valor)
+
+# Ajuste Sazonal
+ipca_ts <- ts(ipca_trimestral$ipca_indice, start = c(2002, 1), frequency = 4)
+ipca_sa_modelo <- seas(ipca_ts)
+ipca_sa_ts <- final(ipca_sa_modelo)
+
+ipca_final <- ipca_trimestral |>
+  mutate(
+    ipca_sa = as.numeric(ipca_sa_ts), 
+    log_ipca = log(ipca_sa)           
+  ) |>
+  filter(trimestre >= yearquarter("2002 Q2") & trimestre <= yearquarter("2019 Q4")) |>
+  select(trimestre, log_ipca)
+
+# Tratamento para PIB, M1, Investimento e Câmbio
+
+df_largo <- purrr::reduce(dados_sgs, full_join, by = "date")
+
+# 2. Agregação Trimestral Rigorosa
+df_trimestral <- df_largo |>
+  mutate(trimestre = yearquarter(as.Date(date))) |>
+  group_by(trimestre) |>
+  summarise(
+    M1 = last(M1[!is.na(M1)]),
+    cambio = mean(cambio, na.rm = TRUE),
+    pib_real = mean(pib_real, na.rm = TRUE),
+    investimento = mean(investimento, na.rm = TRUE)
+  ) |>
+  ungroup()
+
+# 3. Transformações logatimicas
+df_item_a <- df_harmonizado |>
+  mutate(
+    log_m1 = log(M1),
+    log_pib = log(pib_real),
+    log_investimento = log(investimento),
+    cambio_nivel = cambio 
+  ) |>
+  filter(trimestre >= yearquarter("2002 Q2") & trimestre <= yearquarter("2019 Q4")) |>
+  select(trimestre, log_m1, log_pib, log_investimento, cambio_nivel)
+
+# Desemprego
+
+df_pnadc <- ipeadata("PNADC12_TDESOC12") |> 
+  select(date, pnadc = value)
+
+df_pme <- ipeadata("PAN12_TD12") |> 
+  select(date, pme = value)
+
+df_desemprego_bruto <- full_join(df_pme, df_pnadc, by = "date") |>
+  filter(date >= as.Date("2002-01-01") & date <= as.Date("2019-12-31"))
+
+# 2. Conversão trimestral
+df_desemp_trimestral <- df_desemprego_bruto |>
+  mutate(trimestre = yearquarter(date)) |>
+  group_by(trimestre) |>
+  summarise(
+    pnadc = mean(pnadc, na.rm = TRUE),
+    pme = mean(pme, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    pnadc = ifelse(is.nan(pnadc), NA, pnadc),
+    pme = ifelse(is.nan(pme), NA, pme)
+  ) |>
+  arrange(trimestre)
+
+# 3. Encadeamento Algébrico (Backcasting)
+# A iteração matemática percorre a série temporal de forma regressiva.
+for(i in (nrow(df_desemp_trimestral) - 1):1) {
+  
+  if(is.na(df_desemp_largo$pnadc[i]) && !is.na(df_desemp_largo$pnadc[i+1]) &&
+     !is.na(df_desemp_largo$pme[i]) && !is.na(df_desemp_largo$pme[i+1])) {
+    
+    # Aplicação do vetor de crescimento da metodologia antiga sobre a nova
+    df_desemp_largo$pnadc[i] <- df_desemp_largo$pnadc[i+1] * (df_desemp_largo$pme[i] / df_desemp_largo$pme[i+1])
+  }
+}
+
+# 4. Dessazonalização da Série  (X-13ARIMA-SEATS)
+ts_desemprego <- ts(df_desemp_largo$pnadc, start = c(2002, 1), frequency = 4)
+
+modelo_sa_desemp <- seas(ts_desemprego)
+desemprego_sa_ts <- final(modelo_sa_desemp)
+
+# 5. Formatação 
+df_desemprego_final <- df_desemp_largo |>
+  mutate(desemprego_sa = as.numeric(desemprego_sa_ts)) |>
+  filter(trimestre >= yearquarter("2002 Q2") & trimestre <= yearquarter("2019 Q4")) |>
+  select(trimestre, desemprego_sa)
+
+
+
+# Juntando os dados para exportação ---------------------------------------
+
+
+# 1. Padronizar a nomenclatura da tabela da Selic (caso a coluna ainda se chame 'valor')
+selic_trimestral <- selic_trimestral |> 
+  rename(selic = valor)
+
+# 2. Fusão de todas as matrizes (Merge)
+# Colocamos os 4 dataframes numa lista e aplicamos o left_join sucessivamente
+lista_dfs <- list(df_item_a, ipca_final, selic_trimestral, df_desemprego_final)
+df_bvar <- purrr::reduce(lista_dfs, left_join, by = "trimestre")
+
+# 3. O Plot exigido no item (a) do PDF
+# "Plot all series in one figure. Split the full sample into an in-sample from 2002Q2 until 2016Q1..."
+df_plot <- df_bvar |>
+  pivot_longer(cols = -trimestre, names_to = "variavel", values_to = "valor")
+
+plot_item_a <- ggplot(df_plot, aes(x = as.Date(trimestre), y = valor)) +
+  geom_line(color = "black") +
+  facet_wrap(~variavel, scales = "free_y", ncol = 2) +
+  # Linha vertical indicando o corte In-Sample / Out-of-Sample (Q1 de 2016)
+  geom_vline(xintercept = as.Date("2016-01-01"), color = "red", linetype = "dashed") +
+  theme_minimal() +
+  labs(title = "Séries Macroeconômicas do BVAR (2002 Q2 - 2019 Q4)",
+       x = "Tempo", y = "")
+
+# Exibe o gráfico no painel do RStudio
+print(plot_item_a)
+
+# 4. Formatação Temporal e Exportação para MATLAB
+df_matlab <- df_bvar |>
+  # Converte "2002 Q2" para "2002-04-01" (Data padrão ISO)
+  mutate(Time = as.Date(trimestre)) |>
+  # Move a coluna de data para a primeira posição
+  relocate(Time, .before = 1) |>
+  # Remove a string trimestral que causaria ruído na leitura do MATLAB
+  select(-trimestre) 
+
+# Exportação do CSV limpo
+write.csv(df_matlab, file = "dados_bvar_brasil.csv", row.names = FALSE)
+

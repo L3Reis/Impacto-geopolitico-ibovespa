@@ -1,4 +1,5 @@
 # Pacotes
+# só para testar
 library(dplyr)
 library(readxl)
 library(urca)
@@ -6,6 +7,7 @@ library(tsibble)
 library(ggplot2)
 library(forecast)
 
+# teste git
 
 # Dados -------------------------------------------------------------------
 dados_gpr_brutos <- read_xls('D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/dados/data_gpr_export.xls', 
@@ -21,7 +23,7 @@ dados_gpr_brutos <- read_xls('D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-
 
 
 # Amostra de estudo
-gprh <- dados_gpr_brutos |> dplyr::filter(month >= '2000-01-01')
+gprh <- dados_gpr_brutos |> dplyr::filter(month >= '1995-01-01')
  
 
 # Transformando para o left join e exportação
