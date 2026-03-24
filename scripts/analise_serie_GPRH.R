@@ -7,7 +7,7 @@ library(tsibble)
 library(ggplot2)
 library(forecast)
 
-# teste git
+# teste git, consigo dar commit por aqui
 
 # Dados -------------------------------------------------------------------
 dados_gpr_brutos <- read_xls('D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/dados/data_gpr_export.xls', 
