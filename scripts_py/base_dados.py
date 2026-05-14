@@ -20,6 +20,7 @@ print(retorno.head())
 print(retorno.shape)
 
 # Visualização
+plt.close()
 retorno['^BVSP'].plot(figsize=(10, 5))
 
 plt.title("Log-retorno Ibovespa")
@@ -28,23 +29,52 @@ plt.ylabel("Log-retorno")
 
 plt.tight_layout()
 plt.show()
-plt.close()
+
 
 
 ## Cambio
-cambio = yf.download("BRL=X", start = '1999-01-01', end = '2025-12-31')
+# sgs aceita no maximo janela de 10 anos
+cambio_99 = sgs.get({"cambio": 1}, start="1999-01-01", end="2009-01-01")
+cambio_09 = sgs.get({"cambio": 1}, start="2009-01-01", end="2019-01-01")
+cambio_19 = sgs.get({"cambio": 1}, start="2019-01-01", end="2025-12-31")
 
+# concatenar
+cambio_sgs = pd.concat([cambio_99, cambio_09, cambio_19])
+
+cambio_sgs = cambio_sgs.sort_index()
+
+print(cambio_sgs.head())
+print(cambio_sgs.tail())
+
+# Cambio 1999 a 2025
+plt.close()
+cambio_sgs['cambio'].plot(figsize=(10, 5))
+plt.title("Taxa de cambio")
+plt.xlabel("Data")
+plt.ylabel("Taxa")
+
+plt.tight_layout()
+plt.show()
 
 # Retorno
 
-retorno_cambio = np.log(cambio['Close'] / cambio['Close'].shift(1)).dropna()
+retorno_cambio = np.log(cambio_sgs["cambio"] / cambio_sgs["cambio"].shift(1))
+
+retorno_cambio = retorno_cambio.dropna()
 
 # Variancia Realizada
-var_cambio = (retorno_cambio**2).resample("ME").sum()
+
+var_cambio = (retorno_cambio ** 2).resample("ME").sum()
+
+var_cambio = var_cambio.to_frame(name="var_cambio")
+
+print(var_cambio.head())
+print(var_cambio.tail())
 
 
 # visualização cambio
-var_cambio["BRL=X"].plot(figsize=(10, 5))
+plt.close()
+var_cambio["var_cambio"].plot(figsize=(10, 5))
 
 plt.title("Variância realizada mensal do câmbio")
 plt.xlabel("Data")
@@ -57,7 +87,17 @@ plt.close()
 ## Indice de Commodities
 comm = sgs.get({"ic_br": 27574}, start = '1999-01-01', end = '2025-12-31')
 
-comm.plot()
+# visualização commodities
+comm["ic_br"].plot(figsize=(10, 5))
+
+plt.title("IC-BR")
+plt.xlabel("Data")
+plt.ylabel("Índice")
+
+plt.tight_layout()
+plt.show()
+
+plt.close()
 
 # Variação mensal = log-retorno
 ret_icbr = np.log(comm/ comm.shift(1)).dropna()
@@ -112,7 +152,7 @@ print(gpr_bra.head())
 print(gpr_bra.tail())
 print(gpr_bra.shape)
 
-# %% Gráfico GPR Brasil
+## Gráfico GPR Brasil
 
 plt.figure(figsize=(10, 5))
 
@@ -124,3 +164,77 @@ plt.ylabel("GPR Brasil")
 
 plt.tight_layout()
 plt.show()
+
+# Tabela agrupada inicial 
+# Retorno do Ibovespa e retorno do cambio 
+dados_diarios = retorno.join(other = retorno_cambio, how = 'outer')
+
+
+# Variancia realizada do Cambio, IC-BR em nível e GPR-BRA em nível
+
+#Padronizar índices mensais
+
+import pandas as pd
+
+# Câmbio
+var_cambio = var_cambio.copy()
+
+if isinstance(var_cambio, pd.Series):
+    var_cambio = var_cambio.to_frame(name="var_cambio")
+
+var_cambio.index = pd.to_datetime(var_cambio.index)
+var_cambio.index = var_cambio.index.to_period("M").to_timestamp()
+var_cambio = var_cambio.sort_index()
+
+
+# GPR Brasil
+gpr_bra = gpr_bra.copy()
+
+if "month" in gpr_bra.columns:
+    gpr_bra["month"] = pd.to_datetime(gpr_bra["month"])
+    gpr_bra = gpr_bra.set_index("month")
+
+gpr_bra.index = pd.to_datetime(gpr_bra.index)
+gpr_bra.index = gpr_bra.index.to_period("M").to_timestamp()
+gpr_bra = gpr_bra.sort_index()
+
+
+# IC-Br / Commodities
+comm = comm.copy()
+
+if "month" in comm.columns:
+    comm["month"] = pd.to_datetime(comm["month"])
+    comm = comm.set_index("month")
+
+comm.index = pd.to_datetime(comm.index)
+comm.index = comm.index.to_period("M").to_timestamp()
+comm = comm.sort_index()
+
+# Juntar variáveis mensais
+
+dados_mensais = pd.concat(
+    [var_cambio, gpr_bra, comm],
+    axis=1,
+    join="outer"
+).sort_index()
+
+print(dados_mensais.head(15))
+print(dados_mensais.tail())
+
+# salvando dados
+
+with pd.ExcelWriter("D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/impacto-geopolitico-ibovespa/dados/base_dissertacao.xlsx", engine="openpyxl") as writer:
+    
+    dados_diarios.to_excel(
+        writer,
+        sheet_name="dados_diarios",
+        index=True,
+        index_label="date"
+    )
+    
+    dados_mensais.to_excel(
+        writer,
+        sheet_name="dados_mensais",
+        index=True,
+        index_label="month"
+    )
