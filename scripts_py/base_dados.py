@@ -1,3 +1,6 @@
+# Carregando os dados, fazendo transformações iniciais e juntando em um Excel inicial
+
+
 # Pacotes
 import pandas as pd
 import numpy as np
