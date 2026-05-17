@@ -76,9 +76,14 @@ print(gpr_global[["gpr_global", "gpr_global_z"]].describe())
 
 # Juntar GPR Global na base mensal
 
-# Garantir que o índice da base mensal está no mesmo padrão
-base_mensal.index = pd.to_datetime(base_mensal.index)
-base_mensal.index = base_mensal.index.to_period("M").to_timestamp()
+# Corrigir índice da base mensal usando a coluna month
+
+base_mensal = base_mensal.copy()
+
+base_mensal["month"] = pd.to_datetime(base_mensal["month"])
+base_mensal["month"] = base_mensal["month"].dt.to_period("M").dt.to_timestamp()
+
+base_mensal = base_mensal.set_index("month")
 base_mensal = base_mensal.sort_index()
 
 # Remover colunas antigas caso existam
@@ -128,6 +133,7 @@ base_final = base_final.rename(columns={
     "cambio": "ret_cambio"
 })
 
+
 # Criar coluna de mês em formato simples para o R
 base_final["year_month"] = base_final["month"].dt.strftime("%Y-%m")
 
@@ -153,5 +159,12 @@ print(base_mfgarch_gpr.shape)
 base_mfgarch_gpr.to_excel(
     "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/impacto-geopolitico-ibovespa/dados//base_mfgarch_gpr.xlsx",
     sheet_name="dados",
+    index=False
+)
+
+# Base completa (por enquanto)
+# Salvando para teste no R
+base_final.to_excel(
+    "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/impacto-geopolitico-ibovespa/dados//base_mfgarch_completa.xlsx",
     index=False
 )
