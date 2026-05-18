@@ -88,11 +88,15 @@ base_mfgarch_completa <- base_teste_modelo_2 %>%
     gpr_bra = as.numeric(gpr_bra),
     gpr_global = as.numeric(gpr_global),
     gpr_global_z = as.numeric(gpr_global_z),
+    d_gpr_global = as.numeric(d_gpr_global),
+    log_gpr_global = as.numeric(log_gpr_global),
+    d_log_gpr_global = as.numeric(d_log_gpr_global),
     ret_ibov_100 = ret_ibov * 100
   ) %>%
   na.omit()
 
-# Modelo 3: GARCH-MIDAS com GPR Global
+# Modelo 3: GARCH-MIDAS com GPR Global 12 lags
+# não significativo
 modelo_gpr_global <- fit_mfgarch(
   data = base_mfgarch_completa,
   y = "ret_ibov_100",
@@ -107,7 +111,44 @@ modelo_gpr_global <- fit_mfgarch(
 modelo_gpr_global$par
 modelo_gpr_global$broom.mgarch
 
-# Modelo 4: GARCH-MIDAS com GPR Global padronizado
+# Modelo 4: GARCH-MIDAS com GPR Global 6 lags
+# não significativo
+
+modelo_gpr_global_6 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "gpr_global",
+  low.freq = "year_month",
+  K = 6,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+modelo_gpr_global_6$par
+modelo_gpr_global_6$broom.mgarch
+
+# Modelo 5: GARCH-MIDAS com GPR Global 3 lags
+# não significativo
+
+modelo_gpr_global_3 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+modelo_gpr_global_3$par
+modelo_gpr_global_3$broom.mgarch
+
+
+
+# Modelo 6: GARCH-MIDAS com GPR Global padronizado
+# não significativo
 modelo_gpr_global_z <- fit_mfgarch(
   data = base_mfgarch_completa,
   y = "ret_ibov_100",
@@ -132,32 +173,6 @@ acf(
 
 # Muita persistência, necessário estacionarizar
 
-# o codigo abaixo esta errado, eu preciso mudar na base_mensal o gpr fazendo as transformações e depois rodar aqui
-
-# Diferentes versões do GPR global
-
-base_mfgarch_completa <- base_mfgarch_completa %>%
-  mutate(
-    month = as.Date(month),
-    gpr_global = as.numeric(gpr_global)
-  ) %>%
-  arrange(month) %>%
-  mutate(
-    # 1. Diferença simples
-    d_gpr_global = gpr_global - lag(gpr_global),
-    
-    # Diferença simples padronizada
-    d_gpr_global_z = as.numeric(scale(d_gpr_global)),
-    
-    # 2. Log do GPR
-    log_gpr_global = log1p(gpr_global),
-    
-    # Log-diferença
-    d_log_gpr_global = log_gpr_global - lag(log_gpr_global),
-    
-    # Log-diferença padronizada
-    d_log_gpr_global_z = as.numeric(scale(d_log_gpr_global))
-  )
 
 # ACF das versões do GPR Global
 
@@ -181,20 +196,77 @@ acf(
   main = "ACF - Log-diferença do GPR Global"
 )
 
-par(mfrow = c(1, 1))
+Apar(mfrow = c(1, 1))
 
 
-# Modelo com Log-diferença do GPR padronizado
+# Modelo com Log-diferença do GPR com 6 lags
+# Deu positivo, mas não significativo (primeiro theta positivo até agora!)
+# Modelo com 12 lags deu negativo
 
-modelo_gpr_global_dlog <- fit_mfgarch(
+modelo_gpr_global_dlog_6 <- fit_mfgarch(
   data = base_mfgarch_completa,
   y = "ret_ibov_100",
-  x = "d_log_gpr_global_z",
+  x = "d_log_gpr_global",
   low.freq = "year_month",
   K = 6,
   gamma = FALSE,
   weighting = "beta.restricted"
 )
 
-modelo_gpr_global_dlog$par
-modelo_gpr_global_dlog$broom.mgarch
+modelo_gpr_global_dlog_6$par
+modelo_gpr_global_dlog_6$broom.mgarch
+
+# # Modelo com Log-diferença do GPR com 3 lags
+
+# Positivo e significativo! p-value 0.00895
+
+modelo_gpr_global_dlog_3 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+modelo_gpr_global_dlog_3$par
+modelo_gpr_global_dlog_3$broom.mgarch
+
+# comparando BIC entre os dois
+modelo_gpr_global_dlog_3$bic
+modelo_gpr_global_dlog$bic
+
+# resultados semelhantes, mas k = 6 melhor
+
+## Modelo com Diferença do GPR 6 lags
+# positivo, mas não significativo 
+
+modelo_gpr_global_d_6 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_gpr_global",
+  low.freq = "year_month",
+  K = 6,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+modelo_gpr_global_d_6$par
+modelo_gpr_global_d_6$broom.mgarch
+
+# Modelo com diferença do GPR com 3 lags
+# positivo, mas não significativo a 10%
+
+modelo_gpr_global_d_3 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+modelo_gpr_global_d_3$par
+modelo_gpr_global_d_3$broom.mgarch
