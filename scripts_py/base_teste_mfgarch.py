@@ -100,6 +100,59 @@ print(base_mensal.head())
 print(base_mensal.tail())
 print(base_mensal.columns)
 print(base_mensal[["gpr_global", "gpr_global_z"]].isna().sum())
+
+# Fazer transformações teste no GPR Global
+
+# Primeira diferença
+base_mensal['d_gpr_global'] = base_mensal['gpr_global'].diff()
+
+# Log do GPR global
+base_mensal['log_gpr_global'] = np.log1p(base_mensal['gpr_global'])
+
+# Log-Diferença
+
+base_mensal['d_log_gpr_global'] = base_mensal['log_gpr_global'].diff()
+
+
+# Fazer transformações teste no GPR Brasil
+
+# Primeira diferença
+base_mensal['d_gpr_bra'] = base_mensal['gpr_bra'].diff()
+
+# Log do GPR brasil
+base_mensal['log_gpr_bra'] = np.log(base_mensal['gpr_bra'])
+
+# Log-Diferença
+
+base_mensal['d_log_gpr_bra'] = base_mensal['log_gpr_bra'].diff()
+
+
+# Transformar câmbio também para exercício posterior
+
+# Primeira diferença
+base_mensal['d_var_cambio'] = base_mensal['var_cambio'].diff()
+
+# Log do Var cambio
+base_mensal['log_var_cambio'] = np.log(base_mensal['var_cambio'])
+
+# Log-Diferença
+
+base_mensal['d_log_var_cambio'] = base_mensal['log_var_cambio'].diff()
+
+
+# Transformar IC
+
+# Primeira diferença
+base_mensal['d_ic_br'] = base_mensal['ic_br'].diff()
+
+# Log do IC-BR
+base_mensal['log_ic_br'] = np.log(base_mensal['ic_br'])
+
+# Log-Diferença
+
+base_mensal['d_log_ic_br'] = base_mensal['log_ic_br'].diff()
+
+
 # Juntar base diária com variáveis mensais
 
 # Garantir que a data diária está como data
@@ -139,28 +192,21 @@ base_final["year_month"] = base_final["month"].dt.strftime("%Y-%m")
 
 # Conferir
 print(base_final.head())
+print(base_final.tail())
 print(base_final.columns)
 
-# Teste só GPR
-base_mfgarch_gpr = base_final[[
-    "date",
-    "ret_ibov",
-    "year_month",
-    "gpr_bra"
-]].dropna()
+# Salvando base mensal sem o merge com a diária
+# Recolocando coluna month
+base_mensal = base_mensal.reset_index()
 
-print(base_mfgarch_gpr.head())
-print(base_mfgarch_gpr.tail())
-print(base_mfgarch_gpr.shape)
+# caminho contrario para voltar month para indice
+# base_mensal = base_mensal.set_index("month")
 
-
-
-# Salvando para teste no R
-base_mfgarch_gpr.to_excel(
-    "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/impacto-geopolitico-ibovespa/dados//base_mfgarch_gpr.xlsx",
-    sheet_name="dados",
+base_mensal.to_excel(
+    "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/impacto-geopolitico-ibovespa/dados//base_descritiva_mensal.xlsx",
     index=False
 )
+
 
 # Base completa (por enquanto)
 # Salvando para teste no R

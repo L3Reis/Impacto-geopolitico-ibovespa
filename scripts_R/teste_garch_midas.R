@@ -5,74 +5,8 @@ library(mfGARCH)
 library(readxl)
 library(tidyr)
 
-## Importando base de dados crua
 
-# Base diária
-base_teste_modelo_1 <- read_excel(
-  "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/dados/base_mfgarch_gpr.xlsx"
-) |> drop_na()
-
-# Preparando dados para o Pacote mfGARCH. Ele recomenda multiplicar os log-retornos por 100
-base_mfgarch <- base_teste_modelo_1 %>%
-  mutate(
-    date = as.Date(date),
-    year_month = as.Date(paste0(year_month, "-01")),
-    ret_ibov = as.numeric(ret_ibov),
-    gpr_bra = as.numeric(gpr_bra),
-    gpr_global = as.numeric(gpr_global),
-    gpr_global_z = as.numeric(gpr_global_z),
-    ret_ibov_100 = ret_ibov * 100
-  ) %>%
-  select(
-    date,
-    ret_ibov_100,
-    year_month,
-    gpr_bra
-  ) %>%
-  na.omit()
-
-# Modelo 1: GARCH-MIDAS com GPR Brasil
-
-modelo_gpr <- fit_mfgarch(
-  data = base_mfgarch,
-  y = "ret_ibov_100",
-  x = "gpr_bra",
-  low.freq = "year_month",
-  K = 12,
-  gamma = FALSE,
-  weighting = "beta.restricted"
-)
-
-# Coeficientes
-
-modelo_gpr$par
-
-modelo_gpr$broom.mgarch
-
-
-# Teste com GPR padronizado
-# GPR padronizado = (GPR - média do GPR) / desvio-padrão do GPR
-
-base_mfgarch_2 <- base_mfgarch %>%
-  mutate(
-    gpr_bra_z = as.numeric(scale(gpr_bra))
-  )
-
-modelo_gpr_2 <- fit_mfgarch(
-  data = base_mfgarch_2,
-  y = "ret_ibov_100",
-  x = "gpr_bra_z",
-  low.freq = "year_month",
-  K = 6,
-  gamma = FALSE,
-  weighting = "beta.restricted"
-)
-
-modelo_gpr_2$par
-modelo_gpr_2$broom.mgarch
-
-
-# Testando GPR Global
+# Testando GPR Global e suas transformações
 
 
 base_teste_modelo_2 <- read_excel(
