@@ -8,7 +8,7 @@ library(readxl)
 library(tidyr)
 
 
-# Testando GPR Global e suas transformações
+# Testando GPR Brasil e suas transformações
 
 
 base_teste_modelo_2 <- read_excel(

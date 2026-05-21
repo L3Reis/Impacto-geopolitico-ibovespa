@@ -29,7 +29,10 @@ base_mfgarch_completa <- base_teste_modelo_2 %>%
   ) %>%
   na.omit()
 
-# Modelo 3: GARCH-MIDAS com GPR Global 12 lags
+
+# Modelo GPR em nível
+
+# Modelo GARCH-MIDAS com GPR Global 12 lags
 # não significativo
 modelo_gpr_global <- fit_mfgarch(
   data = base_mfgarch_completa,
@@ -45,7 +48,7 @@ modelo_gpr_global <- fit_mfgarch(
 modelo_gpr_global$par
 modelo_gpr_global$broom.mgarch
 
-# Modelo 4: GARCH-MIDAS com GPR Global 6 lags
+# Modelo  GARCH-MIDAS com GPR Global 6 lags
 # não significativo
 
 modelo_gpr_global_6 <- fit_mfgarch(
@@ -62,7 +65,7 @@ modelo_gpr_global_6 <- fit_mfgarch(
 modelo_gpr_global_6$par
 modelo_gpr_global_6$broom.mgarch
 
-# Modelo 5: GARCH-MIDAS com GPR Global 3 lags
+# Modelo  GARCH-MIDAS com GPR Global 3 lags
 # não significativo
 
 modelo_gpr_global_3 <- fit_mfgarch(
@@ -81,7 +84,7 @@ modelo_gpr_global_3$broom.mgarch
 
 
 
-# Modelo 6: GARCH-MIDAS com GPR Global padronizado
+# Modelo  GARCH-MIDAS com GPR Global padronizado
 # não significativo
 modelo_gpr_global_z <- fit_mfgarch(
   data = base_mfgarch_completa,
@@ -147,8 +150,14 @@ modelo_gpr_global_dlog_6 <- fit_mfgarch(
   weighting = "beta.restricted"
 )
 
+# Resultados
+#        mu      alpha       beta          m      theta         w2 
+# 0.06141032 0.07045546 0.91539729 0.97960369 0.26632892 2.86182396 
+# p-value: 5.134995e-01
+
 modelo_gpr_global_dlog_6$par
 modelo_gpr_global_dlog_6$broom.mgarch
+
 
 # # Modelo com Log-diferença do GPR com 3 lags
 
@@ -164,6 +173,11 @@ modelo_gpr_global_dlog_3 <- fit_mfgarch(
   weighting = "beta.restricted"
 )
 
+# Resultados
+#        mu      alpha       beta          m      theta         w2 
+# 0.05959316 0.06973897 0.91704556 1.01012147 0.49603868 1.00002991 
+# p-value: 8.955343e-02
+
 modelo_gpr_global_dlog_3$par
 modelo_gpr_global_dlog_3$broom.mgarch
 
@@ -172,6 +186,55 @@ modelo_gpr_global_dlog_3$bic
 modelo_gpr_global_dlog$bic
 
 # resultados semelhantes, mas k = 6 melhor
+
+
+# # Modelo com Log-diferença do GPR com 2 lags
+
+# Positivo e não significativo
+
+modelo_gpr_global_dlog_2 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 2,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#        mu      alpha       beta          m      theta         w2 
+# 0.06041784 0.07061676 0.91546665 0.99566673 0.21760519 1.00001592 
+# p-value: 6.985779e-01
+
+modelo_gpr_global_dlog_2$par
+modelo_gpr_global_dlog_2$broom.mgarch
+
+
+# # Modelo com Log-diferença do GPR com 4 lags
+
+# Positivo e não significativo
+
+modelo_gpr_global_dlog_4 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 4,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#       mu      alpha       beta          m      theta         w2 
+# 0.06036051 0.07018106 0.91559755 0.97573642 0.19933884 2.42827781 
+# p-value: 5.337953e-01
+
+modelo_gpr_global_dlog_4$par
+modelo_gpr_global_dlog_4$broom.mgarch
+
+
+### MODELOS COM DIFERENÇA DO GPR GLOBAL
 
 ## Modelo com Diferença do GPR 6 lags
 # positivo, mas não significativo 
