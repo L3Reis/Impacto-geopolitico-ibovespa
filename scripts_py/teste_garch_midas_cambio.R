@@ -133,3 +133,115 @@ modelo_log_cambio_3 <- fit_mfgarch(
 modelo_log_cambio_3$par
 modelo_log_cambio_3$broom.mgarch
 
+# Modelo com câmbio em diferença
+
+# Modelo Cambio em diferença com 6 lags
+# Negativo e  não significativo
+
+modelo_d_cambio <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_var_cambio",
+  low.freq = "year_month",
+  K = 6,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.06119944  0.07084562  0.91491397  0.97952104 -8.88737090  8.11733017 
+# p-value: 7.182883e-01
+
+modelo_d_cambio$par
+modelo_d_cambio$broom.mgarch
+
+
+# Modelo Cambio em diferença com 3 lags
+# Negativo e significativo
+
+modelo_d_cambio_3 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_var_cambio",
+  low.freq = "year_month",
+  K = 3,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.06028632  0.07092006  0.91544014  1.00793546 -8.72467597  4.93054111
+# p-value: 3.636182e-01
+
+modelo_d_cambio_3$par
+modelo_d_cambio_3$broom.mgarch
+
+
+## Modelo do cambio em log-diferença
+
+# Modelo Cambio em log-diferença com 6 lags
+# Negativo e quase significativo
+
+modelo_d_log_cambio <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_var_cambio",
+  low.freq = "year_month",
+  K = 6,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.06135037  0.07170312  0.91434608  0.98145596 -0.25498646  2.24421524 
+
+modelo_d_log_cambio$par
+modelo_d_log_cambio$broom.mgarch
+
+
+# Modelo Cambio em log-diferença com 3 lags
+# Negativo e  significativo
+
+modelo_d_log_cambio_3 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_var_cambio",
+  low.freq = "year_month",
+  K = 3,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.05988750  0.07176563  0.91446016  1.00631503 -0.12223631  1.71322344 
+# p-value: 1.645788e-01
+
+modelo_d_log_cambio_3$par
+modelo_d_log_cambio_3$broom.mgarch
+
+# Modelo Cambio em log-diferença com 1 lag
+# Negativo (quase zero) e  significativo
+
+modelo_d_log_cambio_1 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_var_cambio",
+  low.freq = "year_month",
+  K = 1,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#        mu       alpha        beta           m       theta 
+# 0.06097683  0.07159734  0.91540028  1.04485274 -0.03749853 
+# p-value: 1.402929e-10
+
+modelo_d_log_cambio_1$par
+modelo_d_log_cambio_1$broom.mgarch
+

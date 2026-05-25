@@ -188,6 +188,33 @@ modelo_gpr_global_dlog$bic
 # resultados semelhantes, mas k = 6 melhor
 
 
+# # Modelo com Log-diferença do GPR com 3 lags e assimétrico
+
+# Positivo e  e nao significativo
+
+modelo_gpr_global_dlog_3_assim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#        mu      alpha       beta      gamma          m      theta         w2 
+# 0.03597286 0.02917944 0.91655669 0.07285777 0.92191373 0.43949946 1.16563611 
+# p-value: 1.288602e-01 
+# opg.p.value: 5.060728e-02
+
+modelo_gpr_global_dlog_3_assim$par
+modelo_gpr_global_dlog_3_assim$broom.mgarch
+
+
+
+
+
 # # Modelo com Log-diferença do GPR com 2 lags
 
 # Positivo e não significativo
