@@ -133,6 +133,32 @@ modelo_log_cambio_3 <- fit_mfgarch(
 modelo_log_cambio_3$par
 modelo_log_cambio_3$broom.mgarch
 
+# Modelo Cambio em log com 1 lag
+# Negativo e  significativo
+
+modelo_log_cambio_1 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_var_cambio",
+  low.freq = "year_month",
+  K = 1,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta 
+# 0.06094074  0.07205343  0.91760234  0.32885537 -0.11540550 
+# p-value: 0.0098525039
+modelo_log_cambio_1$par
+modelo_log_cambio_1$broom.mgarch
+
+
+
+
+
+
+
 # Modelo com câmbio em diferença
 
 # Modelo Cambio em diferença com 6 lags
@@ -245,42 +271,4 @@ modelo_d_log_cambio_1 <- fit_mfgarch(
 modelo_d_log_cambio_1$par
 modelo_d_log_cambio_1$broom.mgarch
 
-
-### Modelo GPR Global + Cambio
-
-# Modelo GPR Global + Cambio em log-diferença com 3 lags
-
-# GPR positivo e significativo
-# cambio negativo
-
-modelo_d_log_gpr_cambio <- fit_mfgarch(
-  data = base_mfgarch_completa,
-  y = "ret_ibov_100",
-  
-  # Primeira variável MIDAS: GPR
-  x = "d_log_gpr_global",
-  low.freq = "year_month",
-  K = 3,
-  weighting = "beta.restricted",
-  
-  # Segunda variável MIDAS: câmbio
-  x.two = "d_log_var_cambio",
-  low.freq.two = "year_month",
-  K.two = 3,
-  weighting.two = "beta.restricted",
-  
-  gamma = TRUE
-)
-
-# Resultados
-#         mu       alpha        beta       gamma           m       theta 
-# 0.03570376  0.02894955  0.91467523  0.07579538  0.91503796  0.41605025 
-#         w2   theta.two      w2.two 
-# 1.16717610 -0.15302780  1.82261049 
-# theta p-value: 1.631930e-01
-# theta 2 p-value: 1.053562e-01 
-
-modelo_d_log_gpr_cambio$par
-modelo_d_log_gpr_cambio$broom.mgarch
-modelo_d_log_gpr_cambio$bic
 

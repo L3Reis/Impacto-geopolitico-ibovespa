@@ -4,6 +4,7 @@
 import pandas as pd
 import numpy as np
 from statsmodels.graphics.tsaplots import plot_acf
+from statsmodels.tsa.stattools import adfuller
 import matplotlib.pyplot as plt
 from pathlib import Path
 
@@ -60,3 +61,56 @@ pasta_descritiva.mkdir(parents=True, exist_ok=True)
 
 fig.savefig(pasta_descritiva / "acf_gpr_brasil.png", dpi=300)
 plt.close(fig)
+
+
+## TABELA DE CORRELAÇÃO ENTRE AS VARIAVEIS DE LONGO PRAZO
+
+base_corr = base_descritiva[[
+    "d_log_gpr_global",
+    "log_var_cambio",
+    "d_log_ic_br"
+]].copy()
+
+corr = base_corr.corr().round(3)
+
+print(corr)
+
+#                  d_log_gpr_global  log_var_cambio  d_log_ic_br
+# d_log_gpr_global             1.000          -0.031       -0.028
+# log_var_cambio              -0.031           1.000        0.188
+# d_log_ic_br                 -0.028           0.188        1.000
+
+
+## TESTE ADF DAS SERIES
+
+# GPR Global em log-diff
+# Resultado: Estacionário
+adf_d_log_gpr = adfuller(base_descritiva["d_log_gpr_global"].dropna())
+print(f"Estatística ADF: {adf_d_log_gpr[0]:.4f}")
+print(f"P-value: {adf_d_log_gpr[1]:.4f}")
+print(f"Valores críticos: {adf_d_log_gpr[4]}")
+
+
+
+
+# Cambio em log
+# Resultado: Estacionário
+adf_log_cambio = adfuller(base_descritiva["log_var_cambio"].dropna())
+print(f"Estatística ADF: {adf_log_cambio[0]:.4f}")
+print(f"P-value: {adf_log_cambio[1]:.4f}")
+print(f"Valores críticos: {adf_log_cambio[4]}")
+
+
+# IC-BR em log
+# Resultado: Não estacionário
+adf_log_ic_br = adfuller(base_descritiva["log_ic_br"].dropna())
+print(f"Estatística ADF: {adf_log_ic_br[0]:.4f}")
+print(f"P-value: {adf_log_ic_br[1]:.4f}")
+print(f"Valores críticos: {adf_log_ic_br[4]}")
+
+# IC-BR em log-diff
+# Resultado: Não estacionário
+adf_d_log_ic_br = adfuller(base_descritiva["d_log_ic_br"].dropna())
+print(f"Estatística ADF: {adf_d_log_ic_br[0]:.4f}")
+print(f"P-value: {adf_d_log_ic_br[1]:.4f}")
+print(f"Valores críticos: {adf_d_log_ic_br[4]}")

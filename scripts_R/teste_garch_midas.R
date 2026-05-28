@@ -161,7 +161,7 @@ modelo_gpr_global_dlog_6$broom.mgarch
 
 # # Modelo com Log-diferença do GPR com 3 lags
 
-# Positivo e significativo! p-value 0.00895
+# Positivo e significativo a 10% ! p-value 0.00895
 
 modelo_gpr_global_dlog_3 <- fit_mfgarch(
   data = base_mfgarch_completa,
