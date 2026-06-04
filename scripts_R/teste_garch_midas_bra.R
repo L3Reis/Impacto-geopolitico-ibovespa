@@ -1,3 +1,6 @@
+# * NÃO FAZ SENTIDO UTILIZAR O GPR BRASIL, PQ ELE É UMA MEDIDA DE QUANTAS VEZES A PALAVRA "BRASIL" é associada num jornal associada a uma noticia geopolitica
+
+
 # TESTANDO GPR BRASIL E SUAS TRANSFORMAÇÕES
 
 # Pacotes
@@ -231,3 +234,47 @@ modelo_d_log_gpr_bra_3 <- fit_mfgarch(
 # p-value: 6.864986e-01
 modelo_d_log_gpr_bra_3$par
 modelo_d_log_gpr_bra_3$broom.mgarch
+
+# MODELOS DO GPR BRASIL EM LOG
+
+# Modelo GPR Brasil com log e 12 lags
+# Negativo e significativo
+modelo_log_gpr_bra_12 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_gpr_bra",
+  low.freq = "year_month",
+  K = 12,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#        mu       alpha        beta       gamma           m       theta          w2 
+# 0.03391770  0.02283999  0.91153116  0.08205836 -0.65572091 -0.48931416  1.00001537 
+# p-value: 9.134683e-04
+modelo_log_gpr_bra_12$par
+modelo_log_gpr_bra_12$broom.mgarch
+
+
+
+
+# Modelo GPR Brasil com log e 3 lags
+# Negativo e não significativo
+
+modelo_log_gpr_bra_3 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_gpr_bra",
+  low.freq = "year_month",
+  K = 3,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.05753820  0.07102408  0.91496328  1.00449599 -0.03141253  1.00087575 
+# p-value: 6.864986e-01
+modelo_log_gpr_bra_3$par
+modelo_log_gpr_bra_3$broom.mgarch

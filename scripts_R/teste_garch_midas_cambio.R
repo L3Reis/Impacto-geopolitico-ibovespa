@@ -112,6 +112,30 @@ modelo_log_cambio <- fit_mfgarch(
 modelo_log_cambio$par
 modelo_log_cambio$broom.mgarch
 
+# * Modelo padrão até agora 02/06
+# Modelo Cambio em log com 12 lags assimétrico
+# Negativo e  significativo
+# Assimetria foi capturada através do gamma
+# w2 proximo de 10 = decaimento muito rapido, a transmissao cambial é muito rápida
+
+modelo_log_cambio_12 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_var_cambio",
+  low.freq = "year_month",
+  K = 12,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03223207  0.02329109  0.92747000  0.07590670 -1.03933539 -0.28778132  9.88877991
+# p-value: 4.103421e-02
+modelo_log_cambio_12$par
+modelo_log_cambio_12$broom.mgarch
+
+
 
 # Modelo Cambio em log com 3 lags
 # Negativo e  significativo

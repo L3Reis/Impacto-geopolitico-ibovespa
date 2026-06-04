@@ -225,7 +225,7 @@ modelo_gpr_global_dlog_2 <- fit_mfgarch(
   x = "d_log_gpr_global",
   low.freq = "year_month",
   K = 2,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -294,3 +294,74 @@ modelo_gpr_global_d_3 <- fit_mfgarch(
 
 modelo_gpr_global_d_3$par
 modelo_gpr_global_d_3$broom.mgarch
+
+## GPR GLOBAL EM LOG
+
+# # Modelo com Log do GPR com 12 lags assimétrico
+
+# Negativo e não significativo
+
+modelo_gpr_global_log_12 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 12,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03283620  0.02505897  0.91598111  0.07930984  1.89965057 -0.21797808  4.53067995
+# p-value: 3.448345e-01
+
+modelo_gpr_global_log_12$par
+modelo_gpr_global_log_12$broom.mgarch
+
+# # Modelo com Log do GPR com 24 lags assimétrico
+
+# Positivo e não significativo
+
+modelo_gpr_global_log_24 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 24,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03460597  0.02561087  0.91482518  0.07883306  0.88906659 -0.00644732  1.05942863
+# p-value: 8.893332e-01
+
+modelo_gpr_global_log_24$par
+modelo_gpr_global_log_24$broom.mgarch
+
+# # Modelo com Log do GPR com 3 lags assimétrico
+
+# Positivo e não significativo
+
+modelo_gpr_global_log_3 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03604818  0.02961751  0.91380634  0.07603684  1.62457008 -0.14778201  1.00000692 
+# p-value: 1.542663e-01
+
+modelo_gpr_global_log_3$par
+modelo_gpr_global_log_3$broom.mgarch
+
+# ! Hipótese por enquanto: Devido a diversas especificações estarem dando não significativas, partimos do pressuposto de que a agregação do ibovespa está afetando os coeficientes
+# ! e diferentes setores reagem de forma diferente ao risco geopolítico. Dessa forma, precisamos fazer a análise setorial deles

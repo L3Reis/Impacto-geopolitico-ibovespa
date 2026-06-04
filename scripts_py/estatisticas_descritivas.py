@@ -1,5 +1,11 @@
 # Estatísticas descritivas das séries
 
+# Instruções Better Comments
+# ! CRÍTICO: Lembre-se de manter K = 12 para o GPR não perder a memória longa
+# ? DÚVIDA: Testar se o setor de Consumo inverte o sinal de theta
+# TODO: Ortogonalizar o modelo 4 antes de rodar a Máxima Verossimilhança
+# * IMPORTANTE: O teste ADF validou o uso de log em nível.
+
 # pacotes
 import pandas as pd
 import numpy as np
@@ -83,6 +89,14 @@ print(corr)
 
 ## TESTE ADF DAS SERIES
 
+# GPR Global em log
+# Resultado: Estacionário
+adf_log_gpr = adfuller(base_descritiva["log_gpr_global"].dropna())
+print(f"Estatística ADF: {adf_log_gpr [0]:.4f}")
+print(f"P-value: {adf_log_gpr [1]:.4f}")
+print(f"Valores críticos: {adf_log_gpr [4]}")
+
+
 # GPR Global em log-diff
 # Resultado: Estacionário
 adf_d_log_gpr = adfuller(base_descritiva["d_log_gpr_global"].dropna())
@@ -109,7 +123,7 @@ print(f"P-value: {adf_log_ic_br[1]:.4f}")
 print(f"Valores críticos: {adf_log_ic_br[4]}")
 
 # IC-BR em log-diff
-# Resultado: Não estacionário
+# Resultado: Estacionário
 adf_d_log_ic_br = adfuller(base_descritiva["d_log_ic_br"].dropna())
 print(f"Estatística ADF: {adf_d_log_ic_br[0]:.4f}")
 print(f"P-value: {adf_d_log_ic_br[1]:.4f}")
