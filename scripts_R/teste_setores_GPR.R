@@ -1,13 +1,11 @@
-# 1. Carregamento Seguro
+# Pacotes
 library(readxl)
 library(mfGARCH)
 library(dplyr)
 
-# Substitua o caminho pelo mesmo que você usou no Python
+# Painel com setores
 painel_midas <- read_excel("D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/impacto-geopolitico-ibovespa/dados/base_setores_final.xlsx")
 
-# Inspeção visual rápida para garantir que não vieram índices numéricos como colunas
-head(painel_midas)
 
 # Arrumando dados para o pacote mfgarch
 painel_midas_limpo <- painel_midas %>%
@@ -41,13 +39,49 @@ modelo_financeiro <- fit_mfgarch(
 )
 
 # Resultados
-#         mu       alpha        beta       gamma           m       theta 
-# 0.06290182  0.03127375  0.92101125  0.06001591  2.19457293 -0.20918941 
-#        w2 
-# 1.00002981
-# P-value:  7.913522e-01
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.06250966  0.03295878  0.91990364  0.05860811  2.08057078 -0.18617158  4.02411755 
+# P-value:  4.209724e-01
 modelo_financeiro$par
 modelo_financeiro$broom.mgarch
+
+# MODELO COM 6 LAGS
+
+modelo_financeiro_6 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "finance_log_ret",     # O alvo: canal de fuga de capitais
+  x = "log_gpr_global",      # O choque: risco geopolítico global em log
+  low.freq = "year_month",   # A chave de transição MIDAS
+  K = 6,                    # Memória do conflito (12 meses)
+  gamma = TRUE,              # Controle de assimetria doméstica (obrigatório)
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#        mu       alpha        beta       gamma           m       theta          w2 
+# 0.06328591  0.03263851  0.91931578  0.05891237  2.52340689 -0.28368202  1.03520035
+# P-value:  2.182422e-01
+modelo_financeiro_6$par
+modelo_financeiro_6$broom.mgarch
+
+# MODELO COM 3 LAGS
+
+modelo_financeiro_3 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "finance_log_ret",     # O alvo: canal de fuga de capitais
+  x = "log_gpr_global",      # O choque: risco geopolítico global em log
+  low.freq = "year_month",   # A chave de transição MIDAS
+  K = 3,                    # Memória do conflito (12 meses)
+  gamma = TRUE,              # Controle de assimetria doméstica (obrigatório)
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#        mu       alpha        beta       gamma           m       theta          w2 
+# 0.06290182  0.03127375  0.92101125  0.06001591  2.19457293 -0.20918941  1.00002981
+# P-value:  7.913522e-01
+modelo_financeiro_3$par
+modelo_financeiro_3$broom.mgarch
 
 ## * SETOR DE CONSUMO
 #! Positivo e significativo
@@ -71,6 +105,43 @@ modelo_consumo <- fit_mfgarch(
 modelo_consumo$par
 modelo_consumo$broom.mgarch
 
+# Modelo com 6 Lags
+modelo_consumo_6 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "consumer_log_ret",    # O alvo: O setor vulnerável ao choque cambial e juros
+  x = "log_gpr_global",      # O choque: Risco global em nível
+  low.freq = "year_month",   
+  K = 6,                    # Memória de um ano para a propagação da crise
+  gamma = TRUE,              
+  weighting = "beta.restricted"
+)
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03114080  0.02848406  0.90637308  0.08567955 -1.08716087  0.35692932  1.00000078
+# P-VALUE: 3.952544e-02
+modelo_consumo_6$par
+modelo_consumo_6$broom.mgarch
+
+# Modelo com 3 lags
+
+modelo_consumo_3 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "consumer_log_ret",    # O alvo: O setor vulnerável ao choque cambial e juros
+  x = "log_gpr_global",      # O choque: Risco global em nível
+  low.freq = "year_month",   
+  K = 3,                    # Memória de um ano para a propagação da crise
+  gamma = TRUE,              
+  weighting = "beta.restricted"
+)
+
+# Resultado
+#        mu      alpha       beta      gamma          m      theta         w2 
+# 0.03066220 0.03142921 0.90520391 0.08464017 0.07415321 0.11700418 2.02087180 
+# P-VALUE: 5.693874e-01
+modelo_consumo_3$par
+modelo_consumo_3$broom.mgarch
+
 #* SETOR DE BENS BASICOS (ONDE FICAM AS COMMODITIES)
 #! NEGATIVO E SIGNIFICATIVO
  modelo_bens_basicos <- fit_mfgarch(
@@ -91,6 +162,47 @@ modelo_consumo$broom.mgarch
 # P-VALUE: 1.438017e-02
 modelo_bens_basicos$par
 modelo_bens_basicos$broom.mgarch
+
+# MODELO COM 6 LAGS
+
+ modelo_bens_basicos_6 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "basic_products_log_ret", # O alvo: O escudo das commodities
+  x = "log_gpr_global",         # O choque exógeno
+  low.freq = "year_month",   
+  K = 6,                    
+  gamma = TRUE,              
+  weighting = "beta.restricted"
+)
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.06418877  0.04723098  0.90573282  0.04358374  4.45416249 -0.68848824  1.98479079 
+# P-VALUE: 1.077834e-03
+modelo_bens_basicos_6$par
+modelo_bens_basicos_6$broom.mgarch
+
+# MODELO COM 3 LAGS
+
+ modelo_bens_basicos_3 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "basic_products_log_ret", # O alvo: O escudo das commodities
+  x = "log_gpr_global",         # O choque exógeno
+  low.freq = "year_month",   
+  K = 3,                    
+  gamma = TRUE,              
+  weighting = "beta.restricted"
+)
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta 
+# 0.06337388  0.04841047  0.90506880  0.04317313  3.77950566 -0.54322738 
+#         w2 
+# 4.27747777 
+# P-VALUE: 1.438017e-02
+modelo_bens_basicos_3$par
+modelo_bens_basicos_3$broom.mgarch
+
 
 #* SETOR DE ENERGIA
 #! Não significativo, o que pode significar que o setor de energia tem fatores a favor e contra

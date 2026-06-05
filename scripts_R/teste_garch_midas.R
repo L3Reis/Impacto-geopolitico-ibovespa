@@ -40,7 +40,7 @@ modelo_gpr_global <- fit_mfgarch(
   x = "gpr_global",
   low.freq = "year_month",
   K = 12,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -57,7 +57,7 @@ modelo_gpr_global_6 <- fit_mfgarch(
   x = "gpr_global",
   low.freq = "year_month",
   K = 6,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -74,7 +74,7 @@ modelo_gpr_global_3 <- fit_mfgarch(
   x = "gpr_global",
   low.freq = "year_month",
   K = 3,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -92,7 +92,7 @@ modelo_gpr_global_z <- fit_mfgarch(
   x = "gpr_global_z",
   low.freq = "year_month",
   K = 12,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -146,14 +146,14 @@ modelo_gpr_global_dlog_6 <- fit_mfgarch(
   x = "d_log_gpr_global",
   low.freq = "year_month",
   K = 6,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
 # Resultados
-#        mu      alpha       beta          m      theta         w2 
-# 0.06141032 0.07045546 0.91539729 0.97960369 0.26632892 2.86182396 
-# p-value: 5.134995e-01
+#        mu      alpha       beta      gamma          m      theta         w2 
+# 0.03830274 0.02944666 0.91574443 0.07301990 0.90930602 0.25552214 3.55470523 
+# p-value: 4.220011e-01
 
 modelo_gpr_global_dlog_6$par
 modelo_gpr_global_dlog_6$broom.mgarch
@@ -169,7 +169,7 @@ modelo_gpr_global_dlog_3 <- fit_mfgarch(
   x = "d_log_gpr_global",
   low.freq = "year_month",
   K = 3,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -248,7 +248,7 @@ modelo_gpr_global_dlog_4 <- fit_mfgarch(
   x = "d_log_gpr_global",
   low.freq = "year_month",
   K = 4,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -272,7 +272,7 @@ modelo_gpr_global_d_6 <- fit_mfgarch(
   x = "d_gpr_global",
   low.freq = "year_month",
   K = 6,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -288,7 +288,7 @@ modelo_gpr_global_d_3 <- fit_mfgarch(
   x = "d_gpr_global",
   low.freq = "year_month",
   K = 3,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 
@@ -319,27 +319,27 @@ modelo_gpr_global_log_12 <- fit_mfgarch(
 modelo_gpr_global_log_12$par
 modelo_gpr_global_log_12$broom.mgarch
 
-# # Modelo com Log do GPR com 24 lags assimétrico
+# # Modelo com Log do GPR com 6 lags assimétrico
 
 # Positivo e não significativo
 
-modelo_gpr_global_log_24 <- fit_mfgarch(
+modelo_gpr_global_log_6 <- fit_mfgarch(
   data = base_mfgarch_completa,
   y = "ret_ibov_100",
   x = "log_gpr_global",
   low.freq = "year_month",
-  K = 24,
+  K = 6,
   gamma = TRUE,
   weighting = "beta.restricted"
 )
 
 # Resultados
 #         mu       alpha        beta       gamma           m       theta          w2 
-# 0.03460597  0.02561087  0.91482518  0.07883306  0.88906659 -0.00644732  1.05942863
-# p-value: 8.893332e-01
+# 0.03901995  0.03003374  0.91423474  0.07222827  2.80058120 -0.41198534  1.37587320 
+# p-value: 1.007506e-01
 
-modelo_gpr_global_log_24$par
-modelo_gpr_global_log_24$broom.mgarch
+modelo_gpr_global_log_6$par
+modelo_gpr_global_log_6$broom.mgarch
 
 # # Modelo com Log do GPR com 3 lags assimétrico
 
