@@ -114,6 +114,13 @@ print(f"Estatística ADF: {adf_log_cambio[0]:.4f}")
 print(f"P-value: {adf_log_cambio[1]:.4f}")
 print(f"Valores críticos: {adf_log_cambio[4]}")
 
+# Cambio em log-DIFF
+# Resultado: Estacionário
+adf_d_log_cambio = adfuller(base_descritiva["d_log_var_cambio"].dropna())
+print(f"Estatística ADF: {adf_d_log_cambio[0]:.4f}")
+print(f"P-value: {adf_d_log_cambio[1]:.4f}")
+print(f"Valores críticos: {adf_d_log_cambio[4]}")
+
 
 # IC-BR em log
 # Resultado: Não estacionário
