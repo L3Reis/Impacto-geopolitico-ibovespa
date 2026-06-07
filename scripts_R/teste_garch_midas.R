@@ -13,7 +13,7 @@ base_teste_modelo_2 <- read_excel(
   "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/Impacto-geopolitico-ibovespa/dados/base_mfgarch_completa.xlsx"
 ) |> drop_na()
 
-# Preparando dados para o Pacote mfGARCH. Ele recomenda multiplicar os log-retornos por 100
+# Preparando dados para o Pacote mfGARCH. 
 base_mfgarch_completa <- base_teste_modelo_2 %>%
   mutate(
     date = as.Date(date),
@@ -145,7 +145,7 @@ modelo_gpr_global_dlog_6 <- fit_mfgarch(
   y = "ret_ibov_100",
   x = "d_log_gpr_global",
   low.freq = "year_month",
-  K = 6,
+  K = 12,
   gamma = TRUE,
   weighting = "beta.restricted"
 )
@@ -174,9 +174,9 @@ modelo_gpr_global_dlog_3 <- fit_mfgarch(
 )
 
 # Resultados
-#        mu      alpha       beta          m      theta         w2 
-# 0.05959316 0.06973897 0.91704556 1.01012147 0.49603868 1.00002991 
-# p-value: 8.955343e-02
+#        mu      alpha       beta      gamma          m      theta         w2 
+# 0.03597286 0.02917944 0.91655669 0.07285777 0.92191373 0.43949946 1.16563611 
+# p-value: 1.288602e-01
 
 modelo_gpr_global_dlog_3$par
 modelo_gpr_global_dlog_3$broom.mgarch
@@ -365,3 +365,138 @@ modelo_gpr_global_log_3$broom.mgarch
 
 # ! Hipótese por enquanto: Devido a diversas especificações estarem dando não significativas, partimos do pressuposto de que a agregação do ibovespa está afetando os coeficientes
 # ! e diferentes setores reagem de forma diferente ao risco geopolítico. Dessa forma, precisamos fazer a análise setorial deles
+
+#* GPR SIMETRICO
+
+## GPR GLOBAL EM LOG
+
+# # Modelo com Log do GPR com 12 lags simétrico
+
+# Negativo e não significativo
+
+modelo_gpr_global_log_12_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 12,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.05831367  0.07154329  0.91231240  3.70632548 -0.59585001  2.76715749 
+# p-value: 0.0568209250
+
+modelo_gpr_global_log_12_sim$par
+modelo_gpr_global_log_12_sim$broom.mgarch
+
+# # Modelo com Log do GPR com 6 lags simétrico
+
+# Positivo e não significativo
+
+modelo_gpr_global_log_6_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 6,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.06170380  0.07107284  0.91240234  4.17729599 -0.69912994  1.00007967 
+# p-value: 0.0140724570
+
+modelo_gpr_global_log_6_sim$par
+modelo_gpr_global_log_6_sim$broom.mgarch
+
+# # Modelo com Log do GPR com 3 lags assimétrico
+
+# Positivo e não significativo
+
+modelo_gpr_global_log_3_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.06136771  0.07139919  0.91280250  2.60126043 -0.35207538  1.00005584  
+# p-value: 8.642575e-01
+
+modelo_gpr_global_log_3_sim$par
+modelo_gpr_global_log_3_sim$broom.mgarch
+
+#* Modelos com LOG-DIFF simetricos
+
+# Modelo com Log-diferença do GPR com 6 lags)
+
+modelo_gpr_global_dlog_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 12,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#          mu        alpha         beta            m        theta           w2 
+# 0.058013155  0.071061124  0.914988642  0.985385831 -0.005578794  2.470243992 
+# p-value: 3.339807e-01
+
+modelo_gpr_global_dlog_sim$par
+modelo_gpr_global_dlog_sim$broom.mgarch
+
+
+
+# Modelo com Log-diferença do GPR com 6 lags
+
+modelo_gpr_global_dlog_6_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 6,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#        mu      alpha       beta          m      theta         w2 
+# 0.06141032 0.07045546 0.91539729 0.97960369 0.26632892 2.86182396 
+# p-value: 5.134995e-01
+
+modelo_gpr_global_dlog_6_sim$par
+modelo_gpr_global_dlog_6_sim$broom.mgarch
+
+
+# # Modelo com Log-diferença do GPR com 3 lags
+
+modelo_gpr_global_dlog_3_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#        mu      alpha       beta          m      theta         w2 
+# 0.05959316 0.06973897 0.91704556 1.01012147 0.49603868 1.00002991 
+# p-value: 8.955343e-02
+
+modelo_gpr_global_dlog_3_sim$par
+modelo_gpr_global_dlog_3_sim$broom.mgarch
