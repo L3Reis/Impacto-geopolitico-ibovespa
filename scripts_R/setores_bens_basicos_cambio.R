@@ -379,3 +379,321 @@ modelo_basicos_log_gpr_dlog_cambio_6 <- fit_mfgarch(
 # P-VALUE THETA 2: 2.057145e-01
 modelo_basicos_log_gpr_dlog_cambio_6$par
 modelo_basicos_log_gpr_dlog_cambio_6$broom.mgarch
+
+# 3 lags
+
+modelo_basicos_log_gpr_dlog_cambio_3 <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "d_log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 3,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta 
+# 0.06447515  0.04527583  0.90862552  0.04617593  3.49943727 -0.47919314 
+#         w2   theta.two      w2.two 
+# 2.24952917 -0.27678276  1.41109843 
+# P-VALUE THETA: 3.011873e-02
+# P-VALUE THETA 2: 2.117717e-03
+modelo_basicos_log_gpr_dlog_cambio_3$par
+modelo_basicos_log_gpr_dlog_cambio_3$broom.mgarch
+
+# 3 lags GPR e 1 lag cambio
+
+modelo_basicos_log_gpr_dlog_cambio_3_1 <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "d_log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 1,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta 
+# 0.06324756  0.04547727  0.90762610  0.04545867  3.75291368 -0.53502724 
+#         w2   theta.two 
+# 1.39954972 -0.06283267 
+# P-VALUE THETA: 8.656796e-03
+# P-VALUE THETA 2: 7.218758e-02
+modelo_basicos_log_gpr_dlog_cambio_3_1$par
+modelo_basicos_log_gpr_dlog_cambio_3_1$broom.mgarch
+
+
+#* LOG-DIFF/LOG
+
+modelo_basicos_dlog_gpr_log_cambio <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 12,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 12,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#          mu        alpha         beta        gamma            m        theta           w2 
+# 0.062414247  0.046771157  0.913193955  0.041214141  1.351054164 -1.339338231  1.007205040 
+#   theta.two       w2.two 
+# 0.008314036  4.794102168
+# P-VALUE THETA: 3.007848e-01
+# P-VALUE THETA 2: 8.779980e-02
+modelo_basicos_dlog_gpr_log_cambio$par
+modelo_basicos_dlog_gpr_log_cambio$broom.mgarch
+
+# 6 lags
+
+modelo_basicos_dlog_gpr_log_cambio_6 <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 6,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 6,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2   theta.two 
+# 0.06380891  0.04262703  0.92361522  0.03960112  0.52324402 -0.43467948  1.25852823 -0.11746363 
+#     w2.two 
+# 15.15603809 
+# P-VALUE THETA: 4.821780e-01 
+# P-VALUE THETA 2: 2.922210e-02
+modelo_basicos_dlog_gpr_log_cambio_6$par
+modelo_basicos_dlog_gpr_log_cambio_6$broom.mgarch
+
+# 3 lags
+
+modelo_basicos_dlog_gpr_log_cambio_3 <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 3,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2   theta.two 
+# 0.06386871  0.04084574  0.92753220  0.03866407  0.46277979 -0.12039261  7.31251853 -0.12883954 
+#     w2.two 
+# 9.46911423 
+# P-VALUE THETA: 3.879247e-01 
+# P-VALUE THETA 2: 1.100727e-02
+modelo_basicos_dlog_gpr_log_cambio_3$par
+modelo_basicos_dlog_gpr_log_cambio_3$broom.mgarch
+
+# 3 lags GPR e 1 lag cambio
+
+modelo_basicos_dlog_gpr_log_cambio_3_1 <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 1,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2   theta.two 
+# 0.06361630  0.04098900  0.92700695  0.03910737  0.48540231 -0.12054886  6.94393034 -0.12584983 
+# P-VALUE THETA: 3.659807e-01
+# P-VALUE THETA 2: 7.292073e-03
+modelo_basicos_dlog_gpr_log_cambio_3_1$par
+modelo_basicos_dlog_gpr_log_cambio_3_1$broom.mgarch
+
+
+#* LOG-DIFF/LOG-DIFF
+
+modelo_basicos_dlog_gpr_dlog_cambio <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 12,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "d_log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 12,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2   theta.two 
+# 0.06326500  0.04440596  0.91652682  0.04332066  1.29737525 -1.51934647  1.05610480 -0.46694455 
+#     w2.two 
+# 3.67985962 
+# P-VALUE THETA: 2.441087e-01
+# P-VALUE THETA 2: 5.195768e-02
+modelo_basicos_dlog_gpr_dlog_cambio$par
+modelo_basicos_dlog_gpr_dlog_cambio$broom.mgarch
+
+# 6 lags
+
+modelo_basicos_dlog_gpr_dlog_cambio_6 <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 6,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "d_log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 6,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2   theta.two 
+# 0.06418298  0.04436408  0.91732031  0.04220852  1.30572558 -0.59645283  1.24396915 -0.37707079 
+#     w2.two 
+# 2.35991153
+# P-VALUE THETA: 0.3333504182
+# P-VALUE THETA 2: 0.2452397186
+modelo_basicos_dlog_gpr_dlog_cambio_6$par
+modelo_basicos_dlog_gpr_dlog_cambio_6$broom.mgarch
+
+# 3 lags
+
+modelo_basicos_dlog_gpr_dlog_cambio_3 <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "d_log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 3,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2   theta.two 
+# 0.06340881  0.04340049  0.91999189  0.04121999  1.32243594 -0.15548724  3.83092658 -0.27329395 
+#     w2.two 
+# 1.48791437 
+# P-VALUE THETA: 3.439774e-01
+# P-VALUE THETA 2: 1.945458e-03
+modelo_basicos_dlog_gpr_dlog_cambio_3$par
+modelo_basicos_dlog_gpr_dlog_cambio_3$broom.mgarch
+
+# 3 lags para o GPR e 1 lag para cambio
+
+modelo_basicos_dlog_gpr_dlog_cambio_3_1 <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "basic_products_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "d_log_gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "d_log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 1,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2   theta.two 
+# 0.06405252  0.04330620  0.92043134  0.03982245  1.31427238  0.41927616  1.00000362 -0.06926226
+# P-VALUE THETA: 6.479492e-01
+# P-VALUE THETA 2: 6.308154e-02
+modelo_basicos_dlog_gpr_dlog_cambio_3_1$par
+modelo_basicos_dlog_gpr_dlog_cambio_3_1$broom.mgarch
