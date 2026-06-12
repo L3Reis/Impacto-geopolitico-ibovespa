@@ -30,7 +30,7 @@ base_mfgarch_completa <- base_teste_modelo_2 %>%
   na.omit()
 
 
-# Modelo GPR em nível
+#* Modelo GPR em nível
 
 # Modelo GARCH-MIDAS com GPR Global 12 lags
 # não significativo
@@ -45,6 +45,9 @@ modelo_gpr_global <- fit_mfgarch(
 )
 
 # Resultados
+#         mu        alpha         beta        gamma            m        theta           w2 
+# 3.164574e-02 2.372217e-02 9.176529e-01 8.019092e-02 8.882598e-01 6.612811e-05 1.699971e+00 
+# p-value: 4.048712e-01
 modelo_gpr_global$par
 modelo_gpr_global$broom.mgarch
 
@@ -62,6 +65,9 @@ modelo_gpr_global_6 <- fit_mfgarch(
 )
 
 # Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03888738  0.03013854  0.91583312  0.07123760  1.14542132 -0.00224774  1.07649968 
+# p-value: 2.793743e-01
 modelo_gpr_global_6$par
 modelo_gpr_global_6$broom.mgarch
 
@@ -79,8 +85,83 @@ modelo_gpr_global_3 <- fit_mfgarch(
 )
 
 # Resultados
+#           mu         alpha          beta         gamma             m         theta            w2 
+# 0.0358603621  0.0293627266  0.9154907378  0.0736980517  0.9564472050 -0.0003191518  1.9690496015
+# p-value: 5.009995e-01
 modelo_gpr_global_3$par
 modelo_gpr_global_3$broom.mgarch
+
+
+#* GPR em nível simétrico
+
+# Modelo GPR em nível
+
+# Modelo GARCH-MIDAS com GPR Global 12 lags
+# não significativo
+modelo_gpr_global_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "gpr_global",
+  low.freq = "year_month",
+  K = 12,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#          mu        alpha         beta            m        theta           w2 
+# 0.058170172  0.071453701  0.913617662  1.344517676 -0.003503815  2.588399376 
+# p-value: 2.028305e-01
+modelo_gpr_global_sim$par
+modelo_gpr_global_sim$broom.mgarch
+
+# Modelo  GARCH-MIDAS com GPR Global 6 lags
+# não significativo
+
+modelo_gpr_global_6_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "gpr_global",
+  low.freq = "year_month",
+  K = 6,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#          mu        alpha         beta            m        theta           w2 
+# 0.061062777  0.070849221  0.914166265  1.462225507 -0.004616317  1.000086036 
+# p-value: 8.260498e-02
+modelo_gpr_global_6_sim$par
+modelo_gpr_global_6_sim$broom.mgarch
+
+# Modelo  GARCH-MIDAS com GPR Global 3 lags
+# não significativo
+
+modelo_gpr_global_3_sim <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "gpr_global",
+  low.freq = "year_month",
+  K = 3,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.06029270  0.07131621  0.91422585  1.13794506 -0.00130876  1.00006246 
+# p-value: 2.261793e-01
+modelo_gpr_global_3_sim$par
+modelo_gpr_global_3_sim$broom.mgarch
+
+
+
+
+
+
+
+
 
 
 

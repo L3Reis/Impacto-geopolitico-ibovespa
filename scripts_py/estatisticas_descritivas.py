@@ -11,14 +11,305 @@ import pandas as pd
 import numpy as np
 from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.stattools import adfuller
+from scipy.stats import skew, kurtosis, jarque_bera
 import matplotlib.pyplot as plt
 from pathlib import Path
-
+from statsmodels.tsa.stattools import kpss
 # Carregando base mensal para análise descritiva
 
 base_descritiva = pd.read_excel(
     io = "D:/OneDrive/UFABC/Dissertação/volatilidade-IBOV-GPR/impacto-geopolitico-ibovespa/dados//base_descritiva_mensal.xlsx"
 )
+
+
+#todo ANÁLISE DO GPR E SUAS TRANSFORMAÇÕES
+
+tabela_gpr = base_descritiva[[
+    'month',
+    'gpr_global',
+    'log_gpr_global',
+    'd_log_gpr_global']
+].copy()
+
+series_gpr = [
+    'gpr_global',
+    'log_gpr_global',
+    'd_log_gpr_global'
+]
+
+# Função para as estatísticas descritivas
+
+def descritivas_series(df, colunas):
+    resultados = []
+
+    for col in colunas:
+        serie = df[col].dropna()
+        jb_stat, jb_pvalue = jarque_bera(serie)
+
+        resultados.append({
+            "serie": col,
+            "n_obs": serie.count(),
+            "media": serie.mean(),
+            "mediana": serie.median(),
+            "minimo": serie.min(),
+            "maximo": serie.max(),
+            "desvio_padrao": serie.std(),
+            "variancia": serie.var(),
+            "assimetria": skew(serie),
+            "curtose_pearson": kurtosis(serie, fisher=False),
+            "jarque_bera": jb_stat,
+            "jb_pvalue": jb_pvalue
+        })
+
+    return pd.DataFrame(resultados)
+
+desc_gpr = descritivas_series(tabela_gpr, series_gpr)
+desc_gpr
+
+#   serie	         n_obs	media	   mediana	    minimo	    maximo	    desvio_padrao	variancia	assimetria	curtose_pearson	jarque_bera	jb_pvalue
+#	gpr_global	     324	106.822099	92.977024	45.060562	512.529724	50.872539	    2588.015246	4.056717	28.024149	    9342.483798	0.000000e+00
+#	log_gpr_global	 324	4.610995	4.543050	3.829957	6.241308	0.346448	    0.120026	1.079647	6.099726	    192.656545	1.462726e-42
+#	d_log_gpr_global 323	0.002222	-0.008759	-0.594270	2.037860	0.228460	    0.052194	2.354644	21.982388	    5147.926170	0.000000e+00
+
+#* ADF do GPR GLOBAL
+def teste_adf_series(df, colunas):
+    resultados = []
+
+    for col in colunas:
+        serie = df[col].dropna()
+
+        adf = adfuller(serie, autolag="AIC")
+
+        resultados.append({
+            "serie": col,
+            "ADF_stat": adf[0],
+            "p_value": adf[1],
+            "lags_usados": adf[2],
+            "n_obs": adf[3],
+            "critico_1%": adf[4]["1%"],
+            "critico_5%": adf[4]["5%"],
+            "critico_10%": adf[4]["10%"]
+        })
+
+    return pd.DataFrame(resultados)
+
+adf_gpr = teste_adf_series(tabela_gpr, series_gpr)
+
+adf_gpr
+
+
+# serie	            ADF_stat	p_value	      lags_usados	n_obs	critico_1%	critico_5%	critico_10%
+# gpr_global	    -6.042269	1.337215e-07	2	         321	-3.450887	-2.870586	-2.571590
+# log_gpr_global	-6.300479	3.421938e-08	0	         323	-3.450759	-2.870530	-2.571560
+# d_log_gpr_global	-8.404149	2.190607e-13	9	         313	-3.451416	-2.870819	-2.571714
+
+
+
+#* KPSS DAS SERIES DO GPR
+
+def teste_kpss_series(df, colunas):
+    resultados = []
+
+    for col in colunas:
+        serie = df[col].dropna()
+
+        stat, p_value, lags, crit = kpss(
+            serie,
+            regression="c",
+            nlags="auto"
+        )
+
+        resultados.append({
+            "serie": col,
+            "KPSS_stat": stat,
+            "p_value": p_value,
+            "lags_usados": lags,
+            "critico_10%": crit["10%"],
+            "critico_5%": crit["5%"],
+            "critico_2.5%": crit["2.5%"],
+            "critico_1%": crit["1%"]
+        })
+
+    return pd.DataFrame(resultados)
+
+kpss_gpr = teste_kpss_series(tabela_gpr, series_gpr)
+
+kpss_gpr
+
+#	serie	         KPSS_stat	p_value	lags_usados	critico_10%	critico_5%	critico_2.5%	critico_1%
+#	gpr_global	     0.197222	0.1	     9	        0.347	     0.463	     0.574	         0.739
+#	log_gpr_global	 0.210883	0.1	     10	        0.347	     0.463	     0.574	         0.739
+#	d_log_gpr_globa  0.048494	0.1	     23	        0.347	     0.463	     0.574	         0.739
+
+
+
+#! Ambos o ADF quanto o KPSS reforçam a hipótese de estacionariedade das séries
+
+
+#* Gráficos das séries do GPR
+
+fig, axes = plt.subplots(3, 1, figsize=(11, 9), sharex=True)
+
+# 1) GPR em nível
+media_gpr = tabela_gpr["gpr_global"].mean()
+axes[0].plot(tabela_gpr["month"], tabela_gpr["gpr_global"], linewidth=1)
+axes[0].axhline(media_gpr, linestyle="--", linewidth=1, label=f"Média = {media_gpr:.2f}", color = 'black')
+axes[0].set_title("GPR Global mensal")
+axes[0].set_ylabel("Índice")
+axes[0].grid(False)
+axes[0].legend()
+
+# 2) GPR em log
+media_log = tabela_gpr["log_gpr_global"].mean()
+axes[1].plot(tabela_gpr["month"], tabela_gpr["log_gpr_global"], linewidth=1)
+axes[1].axhline(media_log, linestyle="--", linewidth=1, label=f"Média = {media_log:.2f}", color = 'black')
+axes[1].set_title("Log do GPR Global")
+axes[1].set_ylabel("log(GPR)")
+axes[1].grid(False)
+axes[1].legend()
+
+# 3) Diferença logarítmica do GPR
+media_dlog = tabela_gpr["d_log_gpr_global"].mean()
+axes[2].plot(tabela_gpr["month"], tabela_gpr["d_log_gpr_global"], linewidth=1)
+axes[2].axhline(media_dlog, linestyle="--", linewidth=1, label=f"Média = {media_dlog:.3f}", color = 'black')
+axes[2].set_title("Variação logarítmica mensal do GPR Global")
+axes[2].set_ylabel("Dif. log")
+axes[2].set_xlabel("Data")
+axes[2].grid(False)
+axes[2].legend()
+
+plt.margins(x=0.01)
+plt.tight_layout()
+plt.savefig(
+    "graficos_tabelas/descritiva/series/gpr_transformacoes_series.pdf",
+    bbox_inches="tight"
+)
+plt.show()
+
+#! a utilização do log suaviza os movimentos bruscos da série em nível, tornando mais palatável a estimação
+#! além da melhor interpretação econômica utilizando o logaritmico
+
+#* ACFs e PACFs do GPR
+
+fig, axes = plt.subplots(3, 2, figsize=(12, 11))
+
+# -------------------------
+# 1) GPR Global em nível
+# -------------------------
+
+plot_acf(
+    tabela_gpr["gpr_global"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[0, 0]
+)
+
+axes[0, 0].set_title("ACF — GPR Global")
+axes[0, 0].set_xlabel("Defasagem mensal")
+axes[0, 0].set_ylabel("Autocorrelação")
+axes[0, 0].grid(False)
+
+plot_pacf(
+    tabela_gpr["gpr_global"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[0, 1]
+)
+
+axes[0, 1].set_title("PACF — GPR Global")
+axes[0, 1].set_xlabel("Defasagem mensal")
+axes[0, 1].set_ylabel("Autocorrelação parcial")
+axes[0, 1].grid(False)
+
+
+# -------------------------
+# 2) Log do GPR Global
+# -------------------------
+
+plot_acf(
+    tabela_gpr["log_gpr_global"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[1, 0]
+)
+
+axes[1, 0].set_title("ACF — Log do GPR Global")
+axes[1, 0].set_xlabel("Defasagem mensal")
+axes[1, 0].set_ylabel("Autocorrelação")
+axes[1, 0].grid(False)
+
+plot_pacf(
+    tabela_gpr["log_gpr_global"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[1, 1]
+)
+
+axes[1, 1].set_title("PACF — Log do GPR Global")
+axes[1, 1].set_xlabel("Defasagem mensal")
+axes[1, 1].set_ylabel("Autocorrelação parcial")
+axes[1, 1].grid(False)
+
+
+# -------------------------
+# 3) Diferença logarítmica
+# -------------------------
+
+plot_acf(
+    tabela_gpr["d_log_gpr_global"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[2, 0]
+)
+
+axes[2, 0].set_title("ACF — Diferença logarítmica do GPR Global")
+axes[2, 0].set_xlabel("Defasagem mensal")
+axes[2, 0].set_ylabel("Autocorrelação")
+axes[2, 0].grid(False)
+
+plot_pacf(
+    tabela_gpr["d_log_gpr_global"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[2, 1]
+)
+
+axes[2, 1].set_title("PACF — Diferença logarítmica do GPR Global")
+axes[2, 1].set_xlabel("Defasagem mensal")
+axes[2, 1].set_ylabel("Autocorrelação parcial")
+axes[2, 1].grid(False)
+
+
+# -------------------------
+# Ajustes finais
+# -------------------------
+
+fig.suptitle("ACF e PACF das transformações do GPR Global", fontsize=14)
+
+plt.tight_layout(rect=[0, 0, 1, 0.97])
+
+plt.savefig(
+    "graficos_tabelas/descritiva/acf/acf_pacf_gpr_transformacoes.pdf",
+    bbox_inches="tight"
+)
+
+plt.show()
+
+
+
+
+
+
+
 
 # ACFs
 

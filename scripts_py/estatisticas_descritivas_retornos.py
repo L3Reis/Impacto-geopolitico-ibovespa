@@ -138,3 +138,92 @@ teste_arch_ibov
 #	1353.508873	1.079858e-284
 
 # Rejeita ausência de efeitos ARCH: há evidência de heterocedasticidade condicional.
+
+#* Gráfico da série
+
+serie_ibov= pd.DataFrame({
+    'date': ibov["date"].values,
+    'ibov_100': ibov_100.values
+})
+
+plt.figure(figsize= (12,5))
+plt.plot(serie_ibov['date'],serie_ibov['ibov_100'])
+plt.title("Log-retornos diários do Ibovespa")
+plt.xlabel('Data')
+plt.ylabel("Retorno diário (%)")
+plt.grid(False)
+plt.margins(x= 0.01)
+
+plt.savefig("graficos_tabelas/descritiva/series/log_retornos_ibovespa.pdf", bbox_inches="tight")
+
+plt.show()
+
+#* Histograma do Ibov
+plt.figure(figsize=(8, 5))
+plt.hist(ibov_100, bins=50, density=True)
+plt.title("Histograma dos retornos diários do Ibovespa")
+plt.xlabel("Retorno diário (%)")
+plt.ylabel("Densidade")
+plt.grid(False)
+
+plt.savefig("graficos_tabelas/descritiva/series/histograma_ibovespa.pdf", bbox_inches="tight")
+plt.show()
+
+#* Boxplot do Ibov
+
+plt.figure( figsize=(6,5))
+plt.boxplot(
+    ibov_100,
+    vert=False,
+    patch_artist=True,
+    widths=0.5,
+    boxprops=dict(facecolor="lightgray", edgecolor="black", linewidth=1),
+    medianprops=dict(color="darkblue", linewidth=2),
+    whiskerprops=dict(color="black", linewidth=1),
+    capprops=dict(color="black", linewidth=1),
+    flierprops=dict(
+        marker='o',
+        markerfacecolor='white',
+        markeredgecolor='black',
+        markersize=4,
+        linestyle='none',
+        alpha=0.6
+    )
+)
+
+plt.title("Boxplot dos retornos diários do Ibovespa")
+plt.xlabel("Retorno diário (%)")
+plt.yticks([])
+plt.grid(False)
+plt.tight_layout()
+
+plt.savefig("graficos_tabelas/descritiva/series/boxplot_ibovespa.pdf", bbox_inches="tight")
+plt.show()
+
+
+#* ACF e PACF dos retornos e retornos ao quadrado
+
+plot_acf(ibov_100, lags=40, zero = False)
+plt.title("ACF dos retornos do Ibovespa")
+plt.show()
+
+# Fazer gráficos mais bonitos depois
+
+plot_pacf(ibov_100, lags=40)
+plt.title("PACF dos retornos do Ibovespa")
+plt.show()
+
+# não apresenta autocorrelação forte
+
+# retornos ao quadrado
+
+plot_acf(ibov_100**2, lags=40, zero = False)
+plt.title("ACF dos retornos ao quadrado do Ibovespa")
+plt.show()
+
+plot_pacf(ibov_100**2, lags=40, method="ywm")
+plt.title("PACF dos retornos ao quadrado do Ibovespa")
+plt.show()
+
+# Mostra autocorrelação positiva e consistente, justificando o uso do GARCH
+# Demonstra clusterização da volatilidade
