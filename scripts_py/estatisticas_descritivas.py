@@ -9,7 +9,7 @@
 # pacotes
 import pandas as pd
 import numpy as np
-from statsmodels.graphics.tsaplots import plot_acf
+from statsmodels.graphics.tsaplots import plot_acf,plot_pacf
 from statsmodels.tsa.stattools import adfuller
 from scipy.stats import skew, kurtosis, jarque_bera
 import matplotlib.pyplot as plt
@@ -304,10 +304,225 @@ plt.savefig(
 
 plt.show()
 
+##________________________________________________________________________________________________________________________________________________
+##________________________________________________________________________________________________________________________________________________
+##________________________________________________________________________________________________________________________________________________
+##________________________________________________________________________________________________________________________________________________
+##________________________________________________________________________________________________________________________________________________
+
+#TODO =============================================================================
+#todo ESTATÍSTICAS DESCRITIVAS DO CÂMBIO
+#TODO =============================================================================
+
+tabela_cambio = base_descritiva[[
+    'month',
+    'var_cambio',
+    'log_var_cambio',
+    'd_log_var_cambio']
+].copy()
+
+series_cambio = [
+    'var_cambio',
+    'log_var_cambio',
+    'd_log_var_cambio'
+]
+
+#* Tabela descritiva
+desc_cambio = descritivas_series(tabela_cambio, series_cambio)
+desc_cambio
 
 
+#   serie	      n_obs	 media	    mediana	     minimo	     maximo	 desvio_padrao	variancia	assimetria	curtose_pearson	jarque_bera	jb_pvalue
+# var_cambio	    324	0.001989	0.001091	0.000043	0.042279	0.003552	0.000013	7.216078	69.968674	63356.719632	0.000000
+# log_var_cambio	324	-6.762410	-6.820788	-10.055964	-3.163473	0.961289	0.924077	0.343495	3.879957	16.824783	0.000222
+# d_log_var_cambio	323	-0.010613	-0.071713	-2.691355	2.677456	0.835749	0.698477	0.284886	3.612784	9.422769	0.008992
 
 
+#* ADF DO CAMBIO
+
+adf_cambio = teste_adf_series(tabela_cambio, series_cambio)
+
+adf_cambio
+
+
+#   serie	         ADF_stat	p_value	     lags_usados	n_obs	critico_1%	critico_5%	critico_10%
+#	var_cambio	     -9.988303	2.027630e-17	1	        322	    -3.450823	-2.870558	-2.571575
+#	log_var_cambio   -6.959912	9.221370e-10	1	        322	    -3.450823	-2.870558	-2.571575
+#	d_log_var_cambio -12.954959	3.315913e-24	3	        319	    -3.451017	-2.870643	-2.571620
+
+#! Em todas as tranformações, a variância do câmbio é estacionária
+
+#* KPSS do cambio
+
+kpss_cambio = teste_kpss_series(tabela_cambio, series_cambio)
+
+kpss_cambio
+
+
+#   serie	          KPSS_stat	p_value	lags_usados	critico_10%	critico_5%	critico_2.5%	critico_1%
+#	var_cambio	      0.201474	0.1	     7	        0.347	    0.463	    0.574	        0.739
+#	log_var_cambio	  0.062871	0.1	     9	        0.347 	    0.463	    0.574	        0.739
+#	d_log_var_cambio  0.107015	0.1	     21	        0.347	    0.463	    0.574	        0.739
+
+#! Confirma o resultado do ADF
+
+
+#* Gráficos das séries do Cambio
+
+fig, axes = plt.subplots(3, 1, figsize=(11, 9), sharex=True)
+
+# 1) Câmbio em nível
+media_cambio = tabela_cambio["var_cambio"].mean()
+axes[0].plot(tabela_cambio["month"], tabela_cambio["var_cambio"], linewidth=1)
+axes[0].axhline(media_cambio, linestyle="--", linewidth=1, label=f"Média = {media_cambio:.3f}", color = 'black')
+axes[0].set_title("Variância mensal do câmbio")
+axes[0].set_ylabel("Variância realizada")
+axes[0].grid(False)
+axes[0].legend()
+
+# 2) Câmbio em log
+media_log = tabela_cambio["log_var_cambio"].mean()
+axes[1].plot(tabela_cambio["month"], tabela_cambio["log_var_cambio"], linewidth=1)
+axes[1].axhline(media_log, linestyle="--", linewidth=1, label=f"Média = {media_log:.2f}", color = 'black')
+axes[1].set_title("Log da variância do câmbio")
+axes[1].set_ylabel("log(variância)")
+axes[1].grid(False)
+axes[1].legend()
+
+# 3) Diferença logarítmica do Câmbio
+media_dlog = tabela_cambio["d_log_var_cambio"].mean()
+axes[2].plot(tabela_cambio["month"], tabela_cambio["d_log_var_cambio"], linewidth=1)
+axes[2].axhline(media_dlog, linestyle="--", linewidth=1, label=f"Média = {media_dlog:.3f}", color = 'black')
+axes[2].set_title("Variação logarítmica mensal da variância do câmbio")
+axes[2].set_ylabel("Dif. log")
+axes[2].set_xlabel("Data")
+axes[2].grid(False)
+axes[2].legend()
+
+plt.margins(x=0.01)
+plt.tight_layout()
+plt.savefig(
+    "graficos_tabelas/descritiva/series/cambio_transformacoes_series.pdf",
+    bbox_inches="tight"
+)
+plt.show()
+
+#* -----------------------------------------------------------------------------
+#* ACF E PACF do Câmbio
+#* -----------------------------------------------------------------------------
+
+fig, axes = plt.subplots(3, 2, figsize=(12, 11))
+
+# -------------------------
+# 1) Cambio em nível
+# -------------------------
+
+plot_acf(
+    tabela_cambio["var_cambio"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[0, 0]
+)
+
+axes[0, 0].set_title("ACF — Variância mensal do câmbio")
+axes[0, 0].set_xlabel("Defasagem mensal")
+axes[0, 0].set_ylabel("Autocorrelação")
+axes[0, 0].grid(False)
+
+plot_pacf(
+    tabela_cambio["var_cambio"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[0, 1]
+)
+
+axes[0, 1].set_title("PACF — Variância mensal do câmbio")
+axes[0, 1].set_xlabel("Defasagem mensal")
+axes[0, 1].set_ylabel("Autocorrelação parcial")
+axes[0, 1].grid(False)
+
+
+# -------------------------
+# 2) Log do Cambio
+# -------------------------
+
+plot_acf(
+    tabela_cambio["log_var_cambio"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[1, 0]
+)
+
+axes[1, 0].set_title("ACF — Log da variância do câmbio")
+axes[1, 0].set_xlabel("Defasagem mensal")
+axes[1, 0].set_ylabel("Autocorrelação")
+axes[1, 0].grid(False)
+
+plot_pacf(
+    tabela_cambio["log_var_cambio"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[1, 1]
+)
+
+axes[1, 1].set_title("PACF — Log da variância do câmbio")
+axes[1, 1].set_xlabel("Defasagem mensal")
+axes[1, 1].set_ylabel("Autocorrelação parcial")
+axes[1, 1].grid(False)
+
+
+# -------------------------
+# 3) Diferença logarítmica
+# -------------------------
+
+plot_acf(
+    tabela_cambio["d_log_var_cambio"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[2, 0]
+)
+
+axes[2, 0].set_title("ACF — Diferença logarítmica da variância do câmbio")
+axes[2, 0].set_xlabel("Defasagem mensal")
+axes[2, 0].set_ylabel("Autocorrelação")
+axes[2, 0].grid(False)
+
+plot_pacf(
+    tabela_cambio["d_log_var_cambio"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[2, 1]
+)
+
+axes[2, 1].set_title("PACF — Diferença logarítmica da variância do câmbio")
+axes[2, 1].set_xlabel("Defasagem mensal")
+axes[2, 1].set_ylabel("Autocorrelação parcial")
+axes[2, 1].grid(False)
+
+
+# -------------------------
+# Ajustes finais
+# -------------------------
+
+fig.suptitle("ACF e PACF das transformações da variância do câmbio", fontsize=14)
+
+plt.tight_layout(rect=[0, 0, 1, 0.97])
+
+plt.savefig(
+    "graficos_tabelas/descritiva/acf/acf_pacf_cambio_transformacoes.pdf",
+    bbox_inches="tight"
+)
+
+plt.show()
 
 
 
@@ -397,6 +612,13 @@ print(f"Valores críticos: {adf_d_log_gpr[4]}")
 
 
 
+
+# Cambio em nivel
+
+adf_cambio = adfuller(base_descritiva["var_cambio"].dropna())
+print(f"Estatística ADF: {adf_cambio[0]:.4f}")
+print(f"P-value: {adf_cambio[1]:.4f}")
+print(f"Valores críticos: {adf_cambio[4]}")
 
 # Cambio em log
 # Resultado: Estacionário
