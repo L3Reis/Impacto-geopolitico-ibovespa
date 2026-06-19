@@ -47,10 +47,33 @@ base_mfgarch_completa <- base_teste_modelo_2 %>%
 
 ## GARCH-MIDAS direto com o câmbio
 
-# Modelo Cambio em nível com 6 lags
+# Modelo Cambio em nível com 12 lags
 # Negativo e  não significativo
 
 modelo_cambio <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "var_cambio",
+  low.freq = "year_month",
+  K = 12,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#           mu         alpha          beta             m         theta            w2 
+#   0.05725617    0.07025301    0.91900393    1.19366907 -101.75882893    4.25820500 
+# p-value: 2.936582e-02
+
+modelo_cambio$par
+modelo_cambio$broom.mgarch
+
+
+
+# Modelo Cambio em nível com 6 lags
+# Negativo e  não significativo
+
+modelo_cambio_6 <- fit_mfgarch(
   data = base_mfgarch_completa,
   y = "ret_ibov_100",
   x = "var_cambio",
@@ -65,8 +88,8 @@ modelo_cambio <- fit_mfgarch(
 #  0.06093546   0.07084734   0.91553712   1.01426782 -18.33662232  12.20932989 
 # p-value: 5.885932e-02
 
-modelo_cambio$par
-modelo_cambio$broom.mgarch
+modelo_cambio_6$par
+modelo_cambio_6$broom.mgarch
 
 
 # Modelo Cambio em nível com 3 lags
@@ -247,7 +270,7 @@ modelo_d_log_cambio <- fit_mfgarch(
 # Resultados
 #         mu       alpha        beta           m       theta          w2 
 # 0.06135037  0.07170312  0.91434608  0.98145596 -0.25498646  2.24421524 
-
+# p-value: 5.564020e-02
 modelo_d_log_cambio$par
 modelo_d_log_cambio$broom.mgarch
 
@@ -296,3 +319,22 @@ modelo_d_log_cambio_1$par
 modelo_d_log_cambio_1$broom.mgarch
 
 
+# Modelo Cambio em log-diferença com 12 lags
+# Negativo e quase significativo
+
+modelo_d_log_cambio_12 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_var_cambio",
+  low.freq = "year_month",
+  K = 12,
+  gamma = FALSE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta           m       theta          w2 
+# 0.05823967  0.07277454  0.91420659  0.99466279 -0.58758328  2.57414863 
+# p-value: 1.455841e-02
+modelo_d_log_cambio_12$par
+modelo_d_log_cambio_12$broom.mgarch

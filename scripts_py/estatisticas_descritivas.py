@@ -525,6 +525,125 @@ plt.savefig(
 plt.show()
 
 
+#todo =============================================================================
+#todo ESTATÍSTICAS DESCRITIVAS DO IC-BR
+#todo =============================================================================
+
+tabela_ic = base_descritiva[[
+    'month',
+    'ic_br',
+    'log_ic_br',
+    'd_log_ic_br']
+].copy()
+
+series_ic = [
+    'ic_br',
+    'log_ic_br',
+    'd_log_ic_br'
+]
+
+#* Tabela descritiva
+desc_ic = descritivas_series(tabela_ic, series_ic)
+desc_ic
+
+#	serie	     n_obs	media	    mediana	    minimo	    maximo	    desvio_padrao	variancia	    assimetria	curtose_pearson	jarque_bera	jb_pvalue
+#	ic_br	    324	    169.757222	120.350000	43.050000	482.570000	116.018215	    13460.226179	1.252045	3.250142	    85.496029	2.721280e-19
+#	log_ic_br	324	    4.936159	4.790402	3.762362	6.179126	0.612934	    0.375689	    0.430206	2.357710	    15.563400	4.173022e-04
+#	d_log_ic_br	323	    0.007138	0.003522	-0.124452	0.210191	0.039637	    0.001571	    0.702591	5.420821	    105.444843	1.267486e-23
+
+
+
+#* ADF DO IC-BR
+
+adf_ic = teste_adf_series(tabela_ic, series_ic)
+
+adf_ic
+
+
+#	serie	    ADF_stat	p_value	      lags_usados	n_obs	critico_1%	critico_5%	critico_10%
+#	ic_br	     0.962724	9.938566e-01	14	        309	    -3.451691	-2.870939	-2.571778
+#	log_ic_br	-0.259493	9.310486e-01	1	        322	    -3.450823	-2.870558	-2.571575
+#	d_log_ic_br	-14.495834	6.043263e-27	0	        322	    -3.450823	-2.870558	-2.571575
+
+#! Para nível e log, IC-BR não é estacionário
+
+#* KPSS do IC-BR
+
+kpss_ic = teste_kpss_series(tabela_ic, series_ic)
+
+kpss_ic
+
+#	serie	   KPSS_stat	p_value	lags_usados	critico_10%	critico_5%	critico_2.5%	critico_1%
+#	ic_br	    2.211930	0.01	11	        0.347	     0.463	      0.574	        0.739
+#	log_ic_br	2.544481	0.01	11	        0.347	     0.463	      0.574	        0.739
+#	d_log_ic_br	0.058149	0.10	4	        0.347	     0.463	      0.574	        0.739
+
+
+#! Reforça o resultado do ADF
+
+
+#* Gráficos das transformações do IC-BR
+
+fig, axes = plt.subplots(3, 1, figsize=(11, 9), sharex=True)
+
+# 1) Câmbio em nível
+media_ic = tabela_ic["ic_br"].mean()
+axes[0].plot(tabela_ic["month"], tabela_ic["ic_br"], linewidth=1)
+axes[0].set_title("Índice de Commodities (IC-Br)")
+axes[0].set_ylabel("Índice")
+axes[0].grid(False)
+
+# 2) Câmbio em log
+media_log = tabela_ic["log_ic_br"].mean()
+axes[1].plot(tabela_ic["month"], tabela_ic["log_ic_br"], linewidth=1)
+axes[1].set_title("Log do Índice de Commodities")
+axes[1].set_ylabel("log(IC-Br)")
+axes[1].grid(False)
+
+# 3) Diferença logarítmica do Câmbio
+media_dlog = tabela_ic["d_log_ic_br"].mean()
+axes[2].plot(tabela_ic["month"], tabela_ic["d_log_ic_br"], linewidth=1)
+axes[2].axhline(media_dlog, linestyle="--", linewidth=1, label=f"Média = {media_dlog:.3f}", color = 'black')
+axes[2].set_title("Variação logarítmica do Índice de Commodities")
+axes[2].set_ylabel("Dif. log")
+axes[2].set_xlabel("Data")
+axes[2].grid(False)
+axes[2].legend()
+
+plt.margins(x=0.01)
+plt.tight_layout()
+plt.savefig(
+    "graficos_tabelas/descritiva/series/ic_br_transformacoes_series.pdf",
+    bbox_inches="tight"
+)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # ACFs
 
