@@ -620,6 +620,135 @@ plt.show()
 
 
 
+#* -----------------------------------------------------------------------------
+#* ACF E PACF do IC-Br
+#* -----------------------------------------------------------------------------
+
+fig, axes = plt.subplots(3, 2, figsize=(12, 11))
+
+# -------------------------
+# 1) IC-Br em nível
+# -------------------------
+
+plot_acf(
+    tabela_ic["ic_br"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[0, 0]
+)
+
+axes[0, 0].set_title("ACF — Índice de Commodities (IC-Br)")
+axes[0, 0].set_xlabel("Defasagem mensal")
+axes[0, 0].set_ylabel("Autocorrelação")
+axes[0, 0].grid(False)
+
+plot_pacf(
+    tabela_ic["ic_br"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[0, 1]
+)
+
+axes[0, 1].set_title("PACF — Índice de Commodities (IC-Br)")
+axes[0, 1].set_xlabel("Defasagem mensal")
+axes[0, 1].set_ylabel("Autocorrelação parcial")
+axes[0, 1].grid(False)
+
+
+# -------------------------
+# 2) Log do IC-Br
+# -------------------------
+
+plot_acf(
+    tabela_ic["log_ic_br"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[1, 0]
+)
+
+axes[1, 0].set_title("ACF — Log do IC-Br")
+axes[1, 0].set_xlabel("Defasagem mensal")
+axes[1, 0].set_ylabel("Autocorrelação")
+axes[1, 0].grid(False)
+
+plot_pacf(
+    tabela_ic["log_ic_br"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[1, 1]
+)
+
+axes[1, 1].set_title("PACF — Log do IC-Br")
+axes[1, 1].set_xlabel("Defasagem mensal")
+axes[1, 1].set_ylabel("Autocorrelação parcial")
+axes[1, 1].grid(False)
+
+
+# -------------------------
+# 3) Diferença logarítmica
+# -------------------------
+
+plot_acf(
+    tabela_ic["d_log_ic_br"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    ax=axes[2, 0]
+)
+
+axes[2, 0].set_title("ACF — Diferença logarítmica do IC-Br")
+axes[2, 0].set_xlabel("Defasagem mensal")
+axes[2, 0].set_ylabel("Autocorrelação")
+axes[2, 0].grid(False)
+
+plot_pacf(
+    tabela_ic["d_log_ic_br"].dropna(),
+    lags=24,
+    alpha=0.05,
+    zero=False,
+    method="ywm",
+    ax=axes[2, 1]
+)
+
+axes[2, 1].set_title("PACF — Diferença logarítmica do IC-Br")
+axes[2, 1].set_xlabel("Defasagem mensal")
+axes[2, 1].set_ylabel("Autocorrelação parcial")
+axes[2, 1].grid(False)
+
+
+# -------------------------
+# Ajustes finais
+# -------------------------
+
+fig.suptitle("ACF e PACF das transformações do Índice de Commodities (IC-Br)", fontsize=14)
+
+plt.tight_layout(rect=[0, 0, 1, 0.97])
+
+plt.savefig(
+    "graficos_tabelas/descritiva/acf/acf_pacf_ic_br_transformacoes.pdf",
+    bbox_inches="tight"
+)
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
