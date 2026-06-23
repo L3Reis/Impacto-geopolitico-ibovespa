@@ -1,0 +1,17 @@
+"setor";"variavel1";"transformacao1";"K1";"variavel2";"transformacao2";"K2";"theta1";"p_value1";"theta2";"p_value2";"BIC";"erro"
+"Energia";"GPR";"LOG";12;"Cambio";"LOG";12;0,0685;0,6222;0,159;0,2242;24289,2978;NA
+"Energia";"GPR";"LOG";6;"Cambio";"LOG";6;-0,2267;0,8467;-0,0969;0,3225;24798,0721;NA
+"Energia";"GPR";"LOG";3;"Cambio";"LOG";3;-0,0907;0,5096;-0,1159;0,4805;25069,4439;NA
+"Energia";"GPR";"LOG";3;"Cambio";"LOG";1;-0,0985;0,5417;-0,0927;0,147;25060,7728;NA
+"Energia";"GPR";"LOG-DIFF";12;"Cambio";"LOG";12;0,0416;0,7464;-0,0798;0,514;24290,5519;NA
+"Energia";"GPR";"LOG-DIFF";6;"Cambio";"LOG";6;-0,068;0,842;-0,1106;0,2548;24800,231;NA
+"Energia";"GPR";"LOG-DIFF";3;"Cambio";"LOG";3;-0,1304;0,4237;-0,1254;0,2807;25068,5471;NA
+"Energia";"GPR";"LOG-DIFF";3;"Cambio";"LOG";1;-0,1223;0,4228;-0,104;0,1048;25060,0238;NA
+"Energia";"GPR";"LOG";12;"Cambio";"LOG-DIFF";12;-0,0439;0,9863;-0,4108;0,0701;24286,0047;NA
+"Energia";"GPR";"LOG";6;"Cambio";"LOG-DIFF";6;-0,3534;0,2086;-0,3281;0,0444;24793,7129;NA
+"Energia";"GPR";"LOG";3;"Cambio";"LOG-DIFF";3;-0,0891;0,5315;-0,1978;0,0348;25067,9464;NA
+"Energia";"GPR";"LOG";3;"Cambio";"LOG-DIFF";1;-0,1327;0,3242;-0,0368;0,2735;25063,2207;NA
+"Energia";"GPR";"LOG-DIFF";12;"Cambio";"LOG-DIFF";12;-0,1752;0,879;-0,3755;0,0975;24286,1432;NA
+"Energia";"GPR";"LOG-DIFF";6;"Cambio";"LOG-DIFF";6;-0,1076;0,3302;-0,3357;0,0335;24795,5973;NA
+"Energia";"GPR";"LOG-DIFF";3;"Cambio";"LOG-DIFF";3;-0,118;0,4662;-0,1988;0,0389;25067,4282;NA
+"Energia";"GPR";"LOG-DIFF";3;"Cambio";"LOG-DIFF";1;-0,0563;0,8874;-0,0373;0,2657;25064,1402;NA
