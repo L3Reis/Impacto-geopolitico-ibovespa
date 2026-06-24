@@ -366,6 +366,7 @@ modelo_log_gpr_log_cambio <- fit_mfgarch(
 
 modelo_log_gpr_log_cambio$par
 modelo_log_gpr_log_cambio$broom.mgarch
+modelo_log_gpr_log_cambio$optim$convergence
 
 # modelo com k = 6
 
@@ -399,6 +400,7 @@ modelo_log_gpr_log_cambio_6 <- fit_mfgarch(
 
 modelo_log_gpr_log_cambio_6$par
 modelo_log_gpr_log_cambio_6$broom.mgarch
+modelo_log_gpr_log_cambio_6$optim$message
 
 # modelo com k = 3
 
@@ -465,6 +467,7 @@ modelo_log_gpr_log_cambio_3_1 <- fit_mfgarch(
 
 modelo_log_gpr_log_cambio_3_1$par
 modelo_log_gpr_log_cambio_3_1$broom.mgarch
+modelo_log_gpr_log_cambio_3_1$optim$convergence
 
 #* MODELO COM GPR EM LOG E CAMBIO EM LOG-DIFF
 
@@ -498,6 +501,7 @@ modelo_log_gpr_dlog_cambio <- fit_mfgarch(
 
 modelo_log_gpr_dlog_cambio$par
 modelo_log_gpr_dlog_cambio$broom.mgarch
+modelo_log_gpr_dlog_cambio$optim$convergence
 
 # Modelo com 6 lags
 
@@ -531,6 +535,7 @@ modelo_log_gpr_dlog_cambio_6 <- fit_mfgarch(
 
 modelo_log_gpr_dlog_cambio_6$par
 modelo_log_gpr_dlog_cambio_6$broom.mgarch
+modelo_log_gpr_dlog_cambio_6$optim$convergence
 
 # Modelo com 3 lags
 
