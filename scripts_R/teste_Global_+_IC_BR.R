@@ -177,6 +177,7 @@ modelo_log_gpr_ic_6 <- fit_mfgarch(
 modelo_log_gpr_ic_6$par
 modelo_log_gpr_ic_6$broom.mgarch
 modelo_log_gpr_ic_6$bic
+modelo_log_gpr_ic_6$optim$convergence
 
 # 3 LAGS
 

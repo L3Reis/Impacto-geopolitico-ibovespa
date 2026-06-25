@@ -182,6 +182,7 @@ modelo_consumo_6 <- fit_mfgarch(
 # P-VALUE: 3.952544e-02
 modelo_consumo_6$par
 modelo_consumo_6$broom.mgarch
+modelo_consumo_6$optim$convergence
 
 # Modelo com 3 lags
 
@@ -298,6 +299,7 @@ modelo_bens_basicos$broom.mgarch
 # P-VALUE: 1.077834e-03
 modelo_bens_basicos_6$par
 modelo_bens_basicos_6$broom.mgarch
+modelo_bens_basicos_6$optim$convergence
 
 # MODELO COM 3 LAGS
 

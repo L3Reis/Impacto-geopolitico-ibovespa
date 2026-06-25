@@ -249,6 +249,7 @@ modelo_basicos_log_gpr_log_cambio_6 <- fit_mfgarch(
 # P-VALUE THETA 2: 1.435372e-01
 modelo_basicos_log_gpr_log_cambio_6$par
 modelo_basicos_log_gpr_log_cambio_6$broom.mgarch
+modelo_basicos_log_gpr_log_cambio_6$optim$convergence
 
 # 3 lags
 

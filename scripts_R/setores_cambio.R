@@ -169,7 +169,7 @@ modelo_consumo_log_gpr_log_cambio_6 <- fit_mfgarch(
 # P-VALUE THETA 2: 1.033638e-01
 modelo_consumo_log_gpr_log_cambio_6$par
 modelo_consumo_log_gpr_log_cambio_6$broom.mgarch
-
+modelo_consumo_log_gpr_log_cambio_6$optim$convergence
 
 # 3 Lags
 

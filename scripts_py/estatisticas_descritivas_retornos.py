@@ -43,6 +43,24 @@ descritivas_ibov["curtose excedente"] = ibov_100.kurt()
 descritivas_ibov["curtose de Pearson"] = ibov_100.kurt() + 3
 print(descritivas_ibov)
 
+#count                 6686.000000
+#mean                     0.047032
+#std                      1.764330
+#min                    -15.993027
+#1%                      -4.595121
+#5%                      -2.682798
+#25%                     -0.864089
+#75%                      1.001650
+#95%                      2.588682
+#99%                      4.453841
+#max                     28.832454
+#mediana                  0.071546
+#assimetria               0.330881
+#curtose excedente       16.604249
+#curtose de Pearson      19.604249
+
+
+
 # Aparentemente está tudo correto, só analisar posteriormente os valores max e min
 
 #* Teste Jarque-Bera
@@ -55,6 +73,11 @@ teste_jb_ibov = pd.DataFrame({
 })
 
 teste_jb_ibov
+
+
+#    JB_stat	     JB_pvalue
+#	76804.567377	0.0
+
 
 # interpretação
 
@@ -116,8 +139,8 @@ ljung_ibov_quad = acorr_ljungbox(
 )
 
 ljung_ibov_quad
-#	lb_stat	lb_pvalue
-# 5	1176.758703	3.177247e-252
+#	    lb_stat	    lb_pvalue
+# 5	    1176.758703	3.177247e-252
 # 10	1616.897137	0.000000e+00
 # 20	1897.890494	0.000000e+00
 
@@ -148,7 +171,6 @@ serie_ibov= pd.DataFrame({
 
 plt.figure(figsize= (12,5))
 plt.plot(serie_ibov['date'],serie_ibov['ibov_100'])
-plt.title("Log-retornos diários do Ibovespa")
 plt.xlabel('Data')
 plt.ylabel("Retorno diário (%)")
 plt.grid(False)
@@ -161,7 +183,6 @@ plt.show()
 #* Histograma do Ibov
 plt.figure(figsize=(8, 5))
 plt.hist(ibov_100, bins=50, density=True)
-plt.title("Histograma dos retornos diários do Ibovespa")
 plt.xlabel("Retorno diário (%)")
 plt.ylabel("Densidade")
 plt.grid(False)
@@ -201,29 +222,44 @@ plt.savefig("graficos_tabelas/descritiva/series/boxplot_ibovespa.pdf", bbox_inch
 plt.show()
 
 
-#* ACF e PACF dos retornos e retornos ao quadrado
+#* ACF dos retornos e retornos ao quadrado
 
-plot_acf(ibov_100, lags=40, zero = False)
-plt.title("ACF dos retornos do Ibovespa")
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
+
+# ACF dos retornos
+plot_acf(
+    ibov_100,
+    lags=40,
+    zero=False,
+    alpha=0.05,
+    ax=axes[0]
+)
+
+axes[0].set_title("Retornos")
+axes[0].set_xlabel("Defasagem diária")
+axes[0].set_ylabel("Autocorrelação")
+axes[0].set_ylim(-0.10, 0.10)
+
+# ACF dos retornos ao quadrado
+plot_acf(
+    ibov_100**2,
+    lags=40,
+    zero=False,
+    alpha=0.05,
+    ax=axes[1]
+)
+
+axes[1].set_title("Retornos ao quadrado")
+axes[1].set_xlabel("Defasagem diária")
+axes[1].set_ylabel("Autocorrelação")
+axes[1].set_ylim(-0.05, 0.30)
+
+plt.tight_layout()
+
+# Salvar em alta resolução
+plt.savefig(
+    "graficos_tabelas/descritiva/acf/acf_retornos_ibovespa.pdf",
+    bbox_inches="tight"
+)
+
 plt.show()
-
-# Fazer gráficos mais bonitos depois
-
-plot_pacf(ibov_100, lags=40)
-plt.title("PACF dos retornos do Ibovespa")
-plt.show()
-
-# não apresenta autocorrelação forte
-
-# retornos ao quadrado
-
-plot_acf(ibov_100**2, lags=40, zero = False)
-plt.title("ACF dos retornos ao quadrado do Ibovespa")
-plt.show()
-
-plot_pacf(ibov_100**2, lags=40, method="ywm")
-plt.title("PACF dos retornos ao quadrado do Ibovespa")
-plt.show()
-
-# Mostra autocorrelação positiva e consistente, justificando o uso do GARCH
-# Demonstra clusterização da volatilidade
