@@ -402,7 +402,6 @@ modelo_gpr_global_log_12$broom.mgarch
 
 # # Modelo com Log do GPR com 6 lags assimétrico
 
-# Positivo e não significativo
 
 modelo_gpr_global_log_6 <- fit_mfgarch(
   data = base_mfgarch_completa,

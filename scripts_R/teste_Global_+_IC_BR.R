@@ -101,7 +101,65 @@ modelo_d_log_ic_3 <- fit_mfgarch(
 modelo_d_log_ic_3$par
 modelo_d_log_ic_3$broom.mgarch
 
+#* MODELO IC-BR ASSIMETRICO
+#! Utilizaremos somente LOG-DIFF por conta da estacionariedade
 
+modelo_d_log_ic <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_ic_br",
+  low.freq = "year_month",
+  K = 12,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03203688  0.02304079  0.92042040  0.08023228  0.97421186 -0.10492934  1.14676866  
+# p-value: 3.635481e-02
+modelo_d_log_ic$par
+modelo_d_log_ic$broom.mgarch
+modelo_d_log_ic$optim$convergence # modelo converge
+
+# 6 Lags
+
+modelo_d_log_ic_6 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_ic_br",
+  low.freq = "year_month",
+  K = 6,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03879341  0.02889531  0.91760141  0.07212147  0.92993431 -0.03330880  2.59618985  
+# p-value: 1.508352e-01
+modelo_d_log_ic_6$par
+modelo_d_log_ic_6$broom.mgarch
+
+
+# 3 Lags
+
+modelo_d_log_ic_3 <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "d_log_ic_br",
+  low.freq = "year_month",
+  K = 3,
+  gamma = TRUE,
+  weighting = "beta.restricted"
+)
+
+# Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03588874  0.02889753  0.91671390  0.07332446  0.93299802 -0.01810423  2.17365352 
+# p-value: 2.393775e-01
+modelo_d_log_ic_3$par
+modelo_d_log_ic_3$broom.mgarch
 
 
 

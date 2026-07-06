@@ -101,7 +101,83 @@ modelo_consumo_cambio_1 <- fit_mfgarch(
 modelo_consumo_cambio_1$par
 modelo_consumo_cambio_1$broom.mgarch
 
-#TODO TESTAR DEPOIS LOG-DIFF DO CAMBIO
+#TODO  LOG-DIFF DO CAMBIO
+
+# 12 LAGS
+modelo_consumo_dlog_cambio <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "consumer_log_ret",    # O alvo: O setor vulnerável ao choque cambial e juros
+  x = "d_log_var_cambio",      # O choque: Risco global em nível
+  low.freq = "year_month",   
+  K = 12,                    # Memória de um ano para a propagação da crise
+  gamma = TRUE,              
+  weighting = "beta.restricted"
+)
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.02738379  0.02973283  0.90534692  0.08555742  0.56456147 -0.42106820  3.28073592 
+# P-VALUE: 7.580976e-01
+modelo_consumo_dlog_cambio$par
+modelo_consumo_dlog_cambio$broom.mgarch
+
+# 6LAGS
+modelo_consumo_dlog_cambio_6 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "consumer_log_ret",    # O alvo: O setor vulnerável ao choque cambial e juros
+  x = "d_log_var_cambio",      # O choque: Risco global em nível
+  low.freq = "year_month",   
+  K = 6,                    # Memória de um ano para a propagação da crise
+  gamma = TRUE,              
+  weighting = "beta.restricted"
+)
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03154514  0.03008605  0.90632960  0.08505099  0.57691087 -0.34161729  1.93483541  
+# P-VALUE: 2.855870e-02
+modelo_consumo_dlog_cambio_6$par
+modelo_consumo_dlog_cambio_6$broom.mgarch
+
+# 3 LAGS
+modelo_consumo_dlog_cambio_3 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "consumer_log_ret",    # O alvo: O setor vulnerável ao choque cambial e juros
+  x = "d_log_var_cambio",      # O choque: Risco global em nível
+  low.freq = "year_month",   
+  K = 3,                    # Memória de um ano para a propagação da crise
+  gamma = TRUE,              
+  weighting = "beta.restricted"
+)
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03022368  0.03163218  0.90506149  0.08555544  0.61816417 -0.15581858  1.27983426  
+# P-VALUE: 6.704681e-02
+modelo_consumo_dlog_cambio_3$par
+modelo_consumo_dlog_cambio_3$broom.mgarch
+
+
+# 1 LAG
+modelo_consumo_dlog_cambio_1 <- fit_mfgarch(
+  data = painel_midas_limpo, 
+  y = "consumer_log_ret",    # O alvo: O setor vulnerável ao choque cambial e juros
+  x = "d_log_var_cambio",      # O choque: Risco global em nível
+  low.freq = "year_month",   
+  K = 1,                    # Memória de um ano para a propagação da crise
+  gamma = TRUE,              
+  weighting = "beta.restricted"
+)
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta 
+# 0.03051500  0.03112836  0.90588166  0.08482470  0.61398252 -0.05058580  
+# P-VALUE: 7.344783e-02
+modelo_consumo_dlog_cambio_1$par
+modelo_consumo_dlog_cambio_1$broom.mgarch
+
+
+
 
 
 #* Para o setor de consumo, vamos testar o GPR + Cambio

@@ -293,7 +293,7 @@ axes[2, 1].grid(False)
 # Ajustes finais
 # -------------------------
 
-fig.suptitle("ACF e PACF das transformações do GPR Global", fontsize=14)
+#fig.suptitle("ACF e PACF das transformações do GPR Global", fontsize=14)
 
 plt.tight_layout(rect=[0, 0, 1, 0.97])
 
@@ -513,7 +513,7 @@ axes[2, 1].grid(False)
 # Ajustes finais
 # -------------------------
 
-fig.suptitle("ACF e PACF das transformações da variância do câmbio", fontsize=14)
+#fig.suptitle("ACF e PACF das transformações da variância do câmbio", fontsize=14)
 
 plt.tight_layout(rect=[0, 0, 1, 0.97])
 

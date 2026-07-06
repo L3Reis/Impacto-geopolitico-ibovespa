@@ -434,6 +434,7 @@ modelo_log_gpr_log_cambio_3 <- fit_mfgarch(
 
 modelo_log_gpr_log_cambio_3$par
 modelo_log_gpr_log_cambio_3$broom.mgarch
+modelo_log_gpr_log_cambio_3$optim$convergence
 
 # modelo com k = 3 no gpr e k = 1 no cambio
 
