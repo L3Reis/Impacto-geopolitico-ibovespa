@@ -396,9 +396,11 @@ modelo_gpr_global_log_12 <- fit_mfgarch(
 #         mu       alpha        beta       gamma           m       theta          w2 
 # 0.03283620  0.02505897  0.91598111  0.07930984  1.89965057 -0.21797808  4.53067995
 # p-value: 3.448345e-01
+#! MODELO CONVERGE
 
 modelo_gpr_global_log_12$par
 modelo_gpr_global_log_12$broom.mgarch
+modelo_gpr_global_log_12$optim$convergence
 
 # # Modelo com Log do GPR com 6 lags assimétrico
 
