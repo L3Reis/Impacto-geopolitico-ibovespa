@@ -7,6 +7,8 @@ library(ggplot2)
 library(mfGARCH)
 library(readxl)
 library(tidyr)
+library(lmtest)
+library(sandwich)
 
 
 # Adaptando para o modelo
@@ -283,7 +285,7 @@ modelo_log_gpr_dlog_cambio <- fit_mfgarch(
   y = "ret_ibov_100",
   
   # Primeira variável MIDAS: GPR
-  x = "log_gpr_global",
+  x = "d_log_gpr_global",
   low.freq = "year_month",
   K = 12,
   weighting = "beta.restricted",
@@ -364,17 +366,29 @@ ggplot(comparacao_tau_rv, aes(x = year_month)) +
 #! Aparentemente o modelo captura muito bem a volatilidade de longo prazo do IBovespa
 
 ggplot(comparacao_tau_rv, aes(x = year_month)) +
-  geom_line(aes(y = tau_z, linetype = "Tau estimado padronizado")) +
+  geom_line(aes(y = tau_z, linetype = "Tau estimado padronizado"), color = 'red') +
   geom_line(aes(y = rv_z, linetype = "RV do Ibovespa padronizado")) +
   labs(
     title = "Tau estimado vs variância realizada do Ibovespa",
     x = "Mês",
     y = "Séries padronizadas",
-    linetype = ""
+    linetype = 'Séries'
   ) +
   theme_minimal()
 
 #! o Componente de longo prazo não captura bem a dinâmica
+
+
+ggplot(comparacao_tau_rv, aes(x = year_month)) +
+  geom_line(aes(y = tau_z, linetype = "Tau estimado padronizado"), color = 'red') +
+  geom_line(aes(y = vol_realizada_z, linetype = "RV do Ibovespa padronizado")) +
+  labs(
+    title = "Tau estimado vs variância realizada do Ibovespa",
+    x = "Mês",
+    y = "Séries padronizadas",
+    linetype = 'Séries'
+  ) +
+  theme_minimal()
 
 # correlação
 
@@ -435,7 +449,7 @@ ggplot(comparacao_tau_rv_dlog, aes(x = year_month)) +
   theme_minimal()
 
 ggplot(comparacao_tau_rv_dlog, aes(x = year_month)) +
-  geom_line(aes(y = tau_z, linetype = "Tau estimado padronizado")) +
+  geom_line(aes(y = tau_z, linetype = "Tau estimado padronizado"), color = 'blue') +
   geom_line(aes(y = rv_z, linetype = "RV do Ibovespa padronizado")) +
   labs(
     title = "Tau estimado (dlog) vs variância realizada do Ibovespa",
@@ -529,5 +543,73 @@ modelo_benchmark_log$optim$convergence
 
 #todo primeiro mostre que o GPR move a variância cambial (uma regressão simples da RV cambial no GPR, tipo primeiro estágio); 
 
+base_canal_mensal <- base_mfgarch_completa %>%
+  distinct(year_month, .keep_all = TRUE) %>%
+  arrange(year_month) %>%
+  select(
+    year_month,
+    log_var_cambio,
+    d_log_var_cambio,
+    log_gpr_global,
+    d_log_gpr_global
+  )
 
+#* log do cambio e log do gpr
+reg_log <- lm(
+  log_var_cambio ~ log_gpr_global,
+  data = base_canal_mensal
+)
+
+summary(reg_log)
+
+# Coefficients:
+#               Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)     -7.2745     0.7043 -10.328   <2e-16 ***
+# log_gpr_global   0.1088     0.1523   0.715    0.475    
+
+#* dlog cambio e gpr
+
+
+reg_dlog <- lm(
+  d_log_var_cambio ~ d_log_gpr_global,
+  data = base_canal_mensal
+)
+
+summary(reg_dlog)
+
+# Coefficients:
+#                 Estimate Std. Error t value Pr(>|t|)
+# (Intercept)      -0.01025    0.04653  -0.220    0.826
+# d_log_gpr_global -0.16358    0.20398  -0.802    0.423
+
+
+
+
+base_canal_mensal <- base_canal_mensal %>%
+  arrange(year_month) %>%
+  mutate(
+    d_log_gpr_l1 = lag(d_log_gpr_global, 1),
+    d_log_gpr_l2 = lag(d_log_gpr_global, 2),
+    d_log_gpr_l3 = lag(d_log_gpr_global, 3),
+    log_gpr_l1 = lag(d_log_gpr_global, 1),
+    log_gpr_l2 = lag(d_log_gpr_global, 2),
+    log_gpr_l3 = lag(d_log_gpr_global, 3)
+  )
+
+reg_dlog_lags <- lm(
+  d_log_var_cambio ~ d_log_gpr_global + d_log_gpr_l1 +
+    d_log_gpr_l2 + d_log_gpr_l3,
+  data = base_canal_mensal
+)
+
+summary(reg_dlog_lags)
+
+
+reg_log_lags <- lm(
+  log_var_cambio ~ log_gpr_global + log_gpr_l1 +
+    log_gpr_l2 + log_gpr_l3,
+  data = base_canal_mensal
+)
+
+summary()
 #todo depois compare o θ do GPR com e sem o controle do câmbio
