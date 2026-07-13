@@ -46,6 +46,8 @@ modelo_consumo_cambio <- fit_mfgarch(
 # P-VALUE: 2.859376e-01
 modelo_consumo_cambio$par
 modelo_consumo_cambio$broom.mgarch
+modelo_consumo_cambio$optim$convergence
+#! modelo converge
 
 # 6 LAGS
 modelo_consumo_cambio_6 <- fit_mfgarch(
@@ -120,6 +122,8 @@ modelo_consumo_dlog_cambio <- fit_mfgarch(
 # P-VALUE: 7.580976e-01
 modelo_consumo_dlog_cambio$par
 modelo_consumo_dlog_cambio$broom.mgarch
+modelo_consumo_dlog_cambio$optim$convergence
+#! modelo converge
 
 # 6LAGS
 modelo_consumo_dlog_cambio_6 <- fit_mfgarch(
@@ -213,6 +217,9 @@ modelo_consumo_log_gpr_log_cambio <- fit_mfgarch(
 # P-VALUE THETA 2: 9.007169e-01
 modelo_consumo_log_gpr_log_cambio$par
 modelo_consumo_log_gpr_log_cambio$broom.mgarch
+modelo_consumo_log_gpr_log_cambio$optim$convergence
+#! modelo converge
+
 
 # 6 Lags
 

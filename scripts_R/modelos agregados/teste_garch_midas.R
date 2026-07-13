@@ -192,30 +192,6 @@ acf(
 # Muita persistência, necessário estacionarizar
 
 
-# ACF das versões do GPR Global
-
-par(mfrow = c(3, 1))
-
-acf(
-  na.omit(base_mfgarch_completa$gpr_global),
-  lag.max = 48,
-  main = "ACF - GPR Global em nível"
-)
-
-acf(
-  na.omit(base_mfgarch_completa$d_gpr_global),
-  lag.max = 48,
-  main = "ACF - Diferença simples do GPR Global"
-)
-
-acf(
-  na.omit(base_mfgarch_completa$d_log_gpr_global),
-  lag.max = 48,
-  main = "ACF - Log-diferença do GPR Global"
-)
-
-Apar(mfrow = c(1, 1))
-
 
 # Modelo com Log-diferença do GPR com 6 lags
 # Deu positivo, mas não significativo (primeiro theta positivo até agora!)

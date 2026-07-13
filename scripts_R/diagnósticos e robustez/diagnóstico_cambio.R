@@ -58,7 +58,7 @@ modelo_log_cambio_12_asi <- fit_mfgarch(
   low.freq = "year_month",
   K = 12,
   gamma = TRUE,
-  weighting = "beta.restricted"
+  weighting = "beta.restricted",
 )
 
 # Resultados
@@ -84,6 +84,46 @@ modelo_log_cambio_12_asi$optim$convergence
 modelo_log_cambio_12_asi$optim$message
 
 #! modelo não converge
+
+
+#* Modelo com multi.start = TRUE
+
+modelo_log_cambio_12_asi <- fit_mfgarch(
+  data = base_mfgarch_completa,
+  y = "ret_ibov_100",
+  x = "log_var_cambio",
+  low.freq = "year_month",
+  K = 12,
+  gamma = TRUE,
+  weighting = "beta.restricted",
+  multi.start = TRUE
+)
+
+# Resultados
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.03163418  0.02309645  0.92756525  0.07621090 -1.09573688 -0.29676316  9.49480000 
+
+modelo_log_cambio_12_asi$par
+modelo_log_cambio_12_asi$broom.mgarch
+
+#! w2 não aparece colado no limite
+
+#       term    estimate rob.std.err      p.value opg.std.err  opg.p.value
+# mu       mu  0.03163418 0.016907716 6.134635e-02 0.087589894 7.179780e-01
+# alpha alpha  0.02309645 0.006053031 1.358071e-04 0.006030742 1.282553e-04
+# beta   beta  0.92756525 0.010182886 0.000000e+00 0.005612065 0.000000e+00
+# gamma gamma  0.07621090 0.012519446 1.147580e-09 0.011097231 6.530998e-12
+# m         m -1.09573688 0.969967815 2.586182e-01 0.666237290 1.000390e-01
+# theta theta -0.29676316 0.140999272 3.531620e-02 0.083227428 3.629009e-04
+# w2       w2  9.49480000 4.755285824 4.585959e-02 3.851196881 1.368545e-02
+
+#* Olhando a convergência
+modelo_log_cambio_12_asi$optim$convergence
+modelo_log_cambio_12_asi$optim$message
+modelo_log_cambio_12_asi$variance.ratio
+# 15% de variance ratio
+
+#! modelo converge
 
 # 6 lags
 
@@ -211,7 +251,8 @@ modelo_log_gpr_log_cambio <- fit_mfgarch(
   K.two = 12,
   weighting.two = "beta.restricted",
   
-  gamma = TRUE
+  gamma = TRUE,
+  multi.start = TRUE
 )
 
 # Resultados
@@ -238,7 +279,7 @@ modelo_log_gpr_log_cambio$optim$convergence
 # theta.two theta.two -0.33529312 0.151802298 2.719213e-02  0.089833003 1.896604e-04
 # w2.two       w2.two  8.34932634 3.668783104 2.285946e-02  3.130891450 7.658705e-03
 
-#! modelo não converge
+#! modelo converge
 
 # K = 6
 
@@ -285,7 +326,7 @@ modelo_log_gpr_dlog_cambio <- fit_mfgarch(
   y = "ret_ibov_100",
   
   # Primeira variável MIDAS: GPR
-  x = "d_log_gpr_global",
+  x = "log_gpr_global",
   low.freq = "year_month",
   K = 12,
   weighting = "beta.restricted",
@@ -328,7 +369,7 @@ rv_ibov_mensal <- base_mfgarch_completa |>
 
 # Extraindo o τ estimado
 
-tau_cambio_mensal <- modelo_log_cambio_12$df.fitted %>%
+tau_cambio_mensal <- modelo_log_cambio_12_asi$df.fitted %>%
   group_by(year_month) %>%
   summarise(
     tau = mean(tau, na.rm = TRUE),
@@ -571,7 +612,7 @@ summary(reg_log)
 
 
 reg_dlog <- lm(
-  d_log_var_cambio ~ d_log_gpr_global,
+  d_log_var_cambio ~ log_gpr_global,
   data = base_canal_mensal
 )
 
