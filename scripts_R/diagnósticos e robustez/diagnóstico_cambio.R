@@ -88,7 +88,7 @@ modelo_log_cambio_12_asi$optim$message
 
 #* Modelo com multi.start = TRUE
 
-modelo_log_cambio_12_asi <- fit_mfgarch(
+modelo_log_cambio_12_asi_multi <- fit_mfgarch(
   data = base_mfgarch_completa,
   y = "ret_ibov_100",
   x = "log_var_cambio",
@@ -118,12 +118,12 @@ modelo_log_cambio_12_asi$broom.mgarch
 # w2       w2  9.49480000 4.755285824 4.585959e-02 3.851196881 1.368545e-02
 
 #* Olhando a convergência
-modelo_log_cambio_12_asi$optim$convergence
+modelo_log_cambio_12_asi_multi$optim$convergence
 modelo_log_cambio_12_asi$optim$message
 modelo_log_cambio_12_asi$variance.ratio
 # 15% de variance ratio
 
-#! modelo converge
+#! modelo converge, modelo sem o multi nao converge em log
 
 # 6 lags
 

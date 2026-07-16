@@ -183,6 +183,56 @@ modelo_consumo_log_gpr_dlog_cambio$optim$convergence
 #todo ha uma grande mudança quando usa multi ou nao
 
 
+modelo_consumo_log_gpr_dlog_cambio_multi <- fit_mfgarch(
+  data = painel_midas_limpo,
+  y = "consumer_log_ret",
+  
+  # Primeira variável MIDAS: GPR
+  x = "log_gpr_global",
+  low.freq = "year_month",
+  K = 12,
+  weighting = "beta.restricted",
+  
+  # Segunda variável MIDAS: câmbio
+  x.two = "d_log_var_cambio",
+  low.freq.two = "year_month",
+  K.two = 12,
+  weighting.two = "beta.restricted",
+  
+  gamma = TRUE,
+  multi.start = TRUE
+)
+
+
+# Resultado
+#         mu       alpha        beta       gamma           m       theta          w2   theta.two 
+# 0.03048914  0.02594527  0.90694595  0.08968995 -2.57908059  0.67304822  1.00176241 -0.71139913 
+#     w2.two 
+# 1.99243810 
+modelo_consumo_log_gpr_dlog_cambio_multi$par
+modelo_consumo_log_gpr_dlog_cambio_multi$broom.mgarch
+modelo_consumo_log_gpr_dlog_cambio_multi$optim$convergence
+#! modelo converge
+
+#               term    estimate rob.std.err      p.value opg.std.err  opg.p.value
+# mu               mu  0.03048914 0.014633632 3.720587e-02 0.101248613 7.633143e-01
+# alpha         alpha  0.02594527 0.007836433 9.301239e-04 0.007127896 2.726783e-04
+# beta           beta  0.90694595 0.011201801 0.000000e+00 0.006570252 0.000000e+00
+# gamma         gamma  0.08968995 0.014568697 7.444192e-10 0.015573264 8.450027e-09
+# m                 m -2.57908059 1.282073503 4.425706e-02 0.975026805 8.165757e-03
+# theta         theta  0.67304822 0.275303859 1.449539e-02 0.199818321 7.563302e-04
+# w2               w2  1.00176241 0.597862819 9.382199e-02 0.704745018 1.551849e-01
+# theta.two theta.two -0.71139913 0.352745938 4.372198e-02 0.359867020 4.805984e-02
+# w2.two       w2.two  1.99243810 0.640129256 1.854749e-03 0.980067566 4.205657e-02
+
+
+
+
+
+
+
+
+
 
 #* Bens básicos
 
@@ -276,8 +326,7 @@ modelo_basicos_log_gpr_dlog_cambio <- fit_mfgarch(
 # 0.06482894  0.04724652  0.90690269  0.04529137  4.04373264 -0.59949785  4.01739632 
 #  theta.two      w2.two 
 # -0.44051019  3.84226097 
-# P-VALUE THETA: 2.079305e-02
-# P-VALUE THETA 2: 8.852193e-02
+
 modelo_basicos_log_gpr_dlog_cambio$par
 modelo_basicos_log_gpr_dlog_cambio$broom.mgarch
 modelo_basicos_log_gpr_dlog_cambio$optim$convergence
@@ -348,7 +397,7 @@ modelo_financeiro_dlog_cambio <- fit_mfgarch(
 modelo_financeiro_dlog_cambio$par
 modelo_financeiro_dlog_cambio$broom.mgarch
 modelo_financeiro_dlog_cambio$optim$convergence
-
+#! modelo converge
 
 #       term    estimate rob.std.err      p.value opg.std.err  opg.p.value
 # mu       mu  0.06135552 0.020345809 2.564421e-03 0.153772014 6.898909e-01
@@ -442,10 +491,10 @@ modelo_energia$optim$convergence
 # w2       w2  3.30473089 2.542766124 1.937176e-01 11.045806915 7.647995e-01
 
 
-modelo_energia_cambio <- fit_mfgarch(
+modelo_energia_dlog_cambio <- fit_mfgarch(
   data = painel_midas_limpo, 
   y = "energy_log_ret",    # O alvo: O setor vulnerável ao choque cambial e juros
-  x = "log_var_cambio",      # O choque: Risco global em nível
+  x = "d_log_var_cambio",      # O choque: Risco global em nível
   low.freq = "year_month",   
   K = 12,                    # Memória de um ano para a propagação da crise
   gamma = TRUE,              
@@ -453,22 +502,22 @@ modelo_energia_cambio <- fit_mfgarch(
 )
 
 # Resultado
-#        mu      alpha       beta      gamma          m      theta         w2 
-# 0.05821519 0.04957252 0.88012545 0.07492618 2.34127744 0.16805249 1.69593385 
-# P-VALUE: 1.935791e-01 
-modelo_energia_cambio$par
-modelo_energia_cambio$broom.mgarch
-modelo_energia_cambio$optim$convergence
+#         mu       alpha        beta       gamma           m       theta          w2 
+# 0.05750827  0.04920757  0.89017958  0.07033446  1.22855264 -0.38693524  3.39634795 
+
+modelo_energia_dlog_cambio$par
+modelo_energia_dlog_cambio$broom.mgarch
+modelo_energia_dlog_cambio$optim$convergence
 #! modelo converge
 
-#       term   estimate rob.std.err      p.value opg.std.err  opg.p.value
-# mu       mu 0.05821519 0.020343319 4.214599e-03 0.175472149 7.400681e-01
-# alpha alpha 0.04957252 0.008990783 3.513585e-08 0.010622966 3.063106e-06
-# beta   beta 0.88012545 0.018072054 0.000000e+00 0.009866774 0.000000e+00
-# gamma gamma 0.07492618 0.020363729 2.337890e-04 0.022918996 1.078620e-03
-# m         m 2.34127744 0.880010292 7.802208e-03 0.598509685 9.159349e-05
-# theta theta 0.16805249 0.129264793 1.935791e-01 0.086183264 5.118286e-02
-# w2       w2 1.69593385 0.743406280 2.253061e-02 1.497851353 2.575317e-01
+#       term    estimate rob.std.err      p.value opg.std.err  opg.p.value
+# mu       mu  0.05750827 0.020246954 4.506519e-03 0.169145187 7.338614e-01
+# alpha alpha  0.04920757 0.008557719 8.920149e-09 0.010267634 1.647214e-06
+# beta   beta  0.89017958 0.015054436 0.000000e+00 0.008989891 0.000000e+00
+# gamma gamma  0.07033446 0.018119893 1.037648e-04 0.021390542 1.008623e-03
+# m         m  1.22855264 0.124477935 0.000000e+00 0.196204886 3.810956e-10
+# theta theta -0.38693524 0.227546317 8.904292e-02 0.435617440 3.744087e-01
+# w2       w2  3.39634795 0.806150456 2.519511e-05 3.885727268 3.820871e-01
 
 
 

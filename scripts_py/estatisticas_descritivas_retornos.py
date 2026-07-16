@@ -263,3 +263,451 @@ plt.savefig(
 )
 
 plt.show()
+
+
+# =============================================================================
+# Estatísticas descritivas para os setores
+# =============================================================================
+
+setores = pd.read_excel(
+    io = "dados/base_setores_final.xlsx"
+)
+
+def descritivas_series(df, colunas):
+    resultados = []
+
+    for col in colunas:
+        serie = df[col].dropna()
+        jb_stat, jb_pvalue = jarque_bera(serie)
+
+        resultados.append({
+            "serie": col,
+            "n_obs": serie.count(),
+            "media": serie.mean(),
+            "mediana": serie.median(),
+            "minimo": serie.min(),
+            "maximo": serie.max(),
+            "desvio_padrao": serie.std(),
+            "variancia": serie.var(),
+            "assimetria": skew(serie),
+            "curtose_pearson": kurtosis(serie, fisher=False),
+            "jarque_bera": jb_stat,
+            "jb_pvalue": jb_pvalue
+        })
+
+    return pd.DataFrame(resultados)
+
+tabela_setores = setores[[
+    'date',
+    'consumer_log_ret',
+    'basic_products_log_ret',
+    'finance_log_ret',
+    'energy_log_ret']
+].copy()
+
+series_setores = [
+    'consumer_log_ret',
+    'basic_products_log_ret',
+    'finance_log_ret',
+    'energy_log_ret'
+]
+
+desc_setores = descritivas_series(tabela_setores, series_setores)
+desc_setores
+
+#	serie	               n_obs	media	mediana	      minimo	maximo	  desvio_padrao	variancia	assimetria	curtose_pearson	jarque_bera	jb_pvalue
+#	consumer_log_ret	   6423	 0.028069	0.062133	-16.566528	12.373398	1.476483	2.180003	-0.411780	11.875032	   21261.317130	0.0
+#	basic_products_log_ret 6423	 0.062602	0.066888	-17.032132	16.010241	1.994225	3.976933	-0.186911	8.704274	   8745.578106	0.0
+#	finance_log_ret	       6423	 0.062254	0.067549	-13.977472	19.783081	1.942661	3.773932	 0.078823	8.482458	   050.749450	0.0
+#	energy_log_ret	       6423	 0.053331	0.093939	-20.649959	14.633259	1.949480	3.800474	-0.546722	10.157747	   14031.299493	0.0
+
+
+def teste_adf_series(df, colunas):
+    resultados = []
+
+    for col in colunas:
+        serie = df[col].dropna()
+
+        adf = adfuller(serie, autolag="AIC")
+
+        resultados.append({
+            "serie": col,
+            "ADF_stat": adf[0],
+            "p_value": adf[1],
+            "lags_usados": adf[2],
+            "n_obs": adf[3],
+            "critico_1%": adf[4]["1%"],
+            "critico_5%": adf[4]["5%"],
+            "critico_10%": adf[4]["10%"]
+        })
+
+    return pd.DataFrame(resultados)
+
+adf_setores = teste_adf_series(tabela_setores, series_setores)
+
+adf_setores    
+
+#	serie	               ADF_stat	     p_value	lags_usados	n_obs	critico_1%	critico_5%	critico_10%
+#	consumer_log_ret	   -17.930446	2.884509e-30	17	    6405	-3.431371	-2.861991	-2.567010
+#	basic_products_log_ret -19.844302	0.000000e+00	15	    6407	-3.431371	-2.861991	-2.567010
+#	finance_log_ret	       -16.287805	3.361792e-29	24	    6398	-3.431372	-2.861992	-2.567011
+#	energy_log_ret	       -29.754190	0.000000e+00	6	    6416	-3.431370	-2.861991	-2.567010
+
+#* Teste ARCH
+
+def teste_arch_series(df, colunas, nlags=10):
+    resultados = []
+
+    for col in colunas:
+        serie = (
+            df[col]
+            .replace([np.inf, -np.inf], np.nan)
+            .dropna()
+        )
+
+        arch_stat, arch_pvalue, _, _ = het_arch(serie, nlags=nlags)
+
+        resultados.append({
+            "serie": col,
+            "n_obs": serie.count(),
+            "ARCH_stat": arch_stat,
+            "ARCH_pvalue": arch_pvalue,
+            "nlags": nlags,
+            "conclusao_5%": (
+                "Rejeita H0: há efeitos ARCH"
+                if arch_pvalue < 0.05
+                else "Não rejeita H0"
+            )
+        })
+
+    return pd.DataFrame(resultados)
+
+
+teste_arch_setores = teste_arch_series(
+    tabela_setores,
+    series_setores,
+    nlags=10
+)
+
+teste_arch_setores
+
+#	serie	               n_obs	ARCH_stat	  ARCH_pvalue	nlags	conclusao_5%
+#	consumer_log_ret	    6423	1646.930347	 0.000000e+00	10	    Rejeita H0: há efeitos ARCH
+#	basic_products_log_ret	6423	1188.474911	 4.410718e-249	10	    Rejeita H0: há efeitos ARCH
+#	finance_log_ret	        6423	1301.706549	 1.638357e-273	10	    Rejeita H0: há efeitos ARCH
+#	energy_log_ret	        6423	1466.473344	 4.390332e-309	10	    Rejeita H0: há efeitos ARCH
+
+
+
+#* Teste Ljung-Box - testar autocorrelação conjunta até determinadas defasagens
+
+ljung_ibov = acorr_ljungbox(
+    ibov_100,
+    lags=[5, 10, 20],
+    return_df=True
+)
+
+ljung_ibov
+#	    lb_stat	    lb_pvalue
+# 5	    14.178354	0.014515
+# 10	35.709255	0.000094
+# 20	51.891852	0.000118
+
+# Nos lags, rejeitamos ausência de correlação - Então há autocorrelação
+
+# Para verificar os retornos ao quadrado
+
+ljung_ibov_quad = acorr_ljungbox(
+    ibov_100**2,
+    lags=[5, 10, 20],
+    return_df=True
+)
+
+ljung_ibov_quad
+
+def teste_ljungbox_series(df, colunas, lags=[5, 10, 20], ao_quadrado=False):
+    resultados = []
+
+    for col in colunas:
+        serie = (
+            df[col]
+            .replace([np.inf, -np.inf], np.nan)
+            .dropna()
+        )
+
+        if ao_quadrado:
+            serie_teste = serie ** 2
+            tipo = "retornos_ao_quadrado"
+        else:
+            serie_teste = serie
+            tipo = "retornos"
+
+        ljung = acorr_ljungbox(
+            serie_teste,
+            lags=lags,
+            return_df=True
+        )
+
+        for lag, row in ljung.iterrows():
+            resultados.append({
+                "serie": col,
+                "tipo": tipo,
+                "lag": lag,
+                "LB_stat": row["lb_stat"],
+                "LB_pvalue": row["lb_pvalue"],
+                "conclusao_5%": (
+                    "Rejeita H0: há autocorrelação"
+                    if row["lb_pvalue"] < 0.05
+                    else "Não rejeita H0"
+                )
+            })
+
+    return pd.DataFrame(resultados)
+
+
+ljung_setores = teste_ljungbox_series(
+    tabela_setores,
+    series_setores,
+    lags=[5, 10, 20],
+    ao_quadrado=False
+)
+
+ljung_setores
+
+
+#   serie	                tipo	   lag	LB_stat	   LB_pvalue	conclusao_5%
+#	consumer_log_ret	    retornos	5	13.626653	0.018163	Rejeita H0: há autocorrelação
+#	consumer_log_ret	    retornos	10	33.147896	0.000257	Rejeita H0: há autocorrelação
+#	consumer_log_ret	    retornos	20	57.448879	0.000018	Rejeita H0: há autocorrelação
+#	basic_products_log_ret	retornos	5	14.066716	0.015191	Rejeita H0: há autocorrelação
+#	basic_products_log_ret	retornos	10	27.414134	0.002239	Rejeita H0: há autocorrelação
+#	basic_products_log_ret	retornos	20	48.837330	0.000324	Rejeita H0: há autocorrelação
+#	finance_log_ret	        retornos	5	17.246675	0.004055	Rejeita H0: há autocorrelação
+#	finance_log_ret	        retornos	10	31.737207	0.000443	Rejeita H0: há autocorrelação
+#	finance_log_ret	        retornos	20	49.748419	0.000241	Rejeita H0: há autocorrelação
+#	energy_log_ret	        retornos	5	5.564580	0.350916	Não rejeita H0
+#	energy_log_ret	        retornos	10	24.439508	0.006515	Rejeita H0: há autocorrelação
+#	energy_log_ret	        retornos	20	32.758286	0.035859	Rejeita H0: há autocorrelação
+
+
+
+ljung_setores_quad = teste_ljungbox_series(
+    tabela_setores,
+    series_setores,
+    lags=[5, 10, 20],
+    ao_quadrado=True
+)
+
+ljung_setores_quad
+
+
+# serie	                   tipo	               lag	LB_stat	    LB_pvalue	conclusao_5%
+#	consumer_log_ret	   retornos_ao_quadrado	5	3189.916711	0.0	    Rejeita H0: há autocorrelação
+#	consumer_log_ret	   retornos_ao_quadrado	10	3896.565493	0.0	    Rejeita H0: há autocorrelação
+#	consumer_log_ret	   retornos_ao_quadrado	20	4609.501774	0.0	    Rejeita H0: há autocorrelação
+#	basic_products_log_ret retornos_ao_quadrado	5	2346.750044	0.0	    Rejeita H0: há autocorrelação
+#	basic_products_log_ret retornos_ao_quadrado	10	3181.980970	0.0	    Rejeita H0: há autocorrelação
+#	basic_products_log_ret retornos_ao_quadrado	20	4082.605697	0.0	    Rejeita H0: há autocorrelação
+#	finance_log_ret	       retornos_ao_quadrado	5	2038.776000	0.0	    Rejeita H0: há autocorrelação
+#	finance_log_ret	       retornos_ao_quadrado	10	3720.383707	0.0	    Rejeita H0: há autocorrelação
+#	finance_log_ret	       retornos_ao_quadrado	20	5269.756574	0.0	    Rejeita H0: há autocorrelação
+#	energy_log_ret	       retornos_ao_quadrado	5	2999.621353	0.0	    Rejeita H0: há autocorrelação
+#	energy_log_ret	       retornos_ao_quadrado	10	3843.769374	0.0	    Rejeita H0: há autocorrelação
+#	energy_log_ret	       retornos_ao_quadrado	20	4421.507182	0.0	    Rejeita H0: há autocorrelação
+
+
+#* Gráfico das séries do Ibovespa
+
+fig, axes = plt.subplots(4, 1, figsize=(11, 9), sharex=True)
+
+# 1) Consumo
+axes[0].plot(tabela_setores['date'], tabela_setores['consumer_log_ret'], linewidth=1)
+# axes[0].axhline(media_gpr, linestyle="--", linewidth=1, label=f"Média = {media_gpr:.2f}", color = 'black')
+axes[0].set_title("Setor - Consumo")
+axes[0].set_ylabel("Retorno diário (%)")
+axes[0].grid(False)
+# axes[0].legend()
+
+# 2) Bens básicos
+axes[1].plot(tabela_setores['date'], tabela_setores['basic_products_log_ret'], linewidth=1)
+# axes[1].axhline(media_log, linestyle="--", linewidth=1, label=f"Média = {media_log:.2f}", color = 'black')
+axes[1].set_title("Setor - Bens Básicos")
+axes[1].set_ylabel("Retorno diário (%)")
+axes[1].grid(False)
+# axes[1].legend()
+
+# 3) Financeiro
+axes[2].plot(tabela_setores['date'], tabela_setores['finance_log_ret'], linewidth=1)
+# axes[2].axhline(media_dlog, linestyle="--", linewidth=1, label=f"Média = {media_dlog:.3f}", color = 'black')
+axes[2].set_title("Setor - Financeiro")
+axes[2].set_ylabel("Retorno diário (%)")
+# axes[2].set_xlabel("Data")
+axes[2].grid(False)
+# axes[2].legend()
+
+# 3) Energia
+axes[3].plot(tabela_setores['date'], tabela_setores['energy_log_ret'], linewidth=1)
+# axes[3].axhline(media_dlog, linestyle="--", linewidth=1, label=f"Média = {media_dlog:.3f}", color = 'black')
+axes[3].set_title("Setor - Energia")
+axes[3].set_ylabel("Retorno diário (%)")
+axes[3].set_xlabel("Data")
+axes[3].grid(False)
+# axes[3].legend()
+
+plt.margins(x=0.01)
+plt.tight_layout()
+plt.savefig(
+    "graficos_tabelas/descritiva/series/retornos_setores.pdf",
+    bbox_inches="tight"
+)
+plt.show()
+
+#* ACF dos setores
+
+fig, axes = plt.subplots(4, 2, figsize=(12, 11))
+
+# -------------------------
+# 1) Consumo
+# -------------------------
+
+plot_acf(
+    tabela_setores['consumer_log_ret'].dropna(),
+    lags= 40,
+    alpha=0.05,
+    zero=False,
+    ax=axes[0, 0]
+)
+
+axes[0, 0].set_title("Consumo")
+axes[0, 0].set_xlabel("Defasagem diária")
+axes[0, 0].set_ylabel("Autocorrelação")
+axes[0, 0].set_ylim(-0.10, 0.10)
+axes[0, 0].grid(False)
+
+plot_acf(
+    tabela_setores['consumer_log_ret'].dropna()**2,
+    lags= 40,
+    alpha=0.05,
+    zero=False,
+    ax=axes[0, 1]
+)
+
+axes[0, 1].set_title("Consumo ao quadrado")
+axes[0, 1].set_xlabel("Defasagem diária")
+axes[0, 1].set_ylabel("Autocorrelação")
+axes[0, 1].set_ylim(-0.10, 0.50)
+axes[0, 1].grid(False)
+
+
+# -------------------------
+# 2) Bens Básicos
+# -------------------------
+
+plot_acf(
+    tabela_setores['basic_products_log_ret'].dropna(),
+    lags=40,
+    alpha=0.05,
+    zero=False,
+    ax=axes[1, 0]
+)
+
+axes[1, 0].set_title("Bens Básicos")
+axes[1, 0].set_xlabel("Defasagem diária")
+axes[1, 0].set_ylabel("Autocorrelação")
+axes[1, 0].set_ylim(-0.10, 0.10)
+axes[1, 0].grid(False)
+
+plot_acf(
+    tabela_setores['basic_products_log_ret'].dropna()**2,
+    lags= 40,
+    alpha=0.05,
+    zero=False,
+    ax=axes[1, 1]
+)
+
+axes[1, 1].set_title("Bens Básicos ao quadrado")
+axes[1, 1].set_xlabel("Defasagem diária")
+axes[1, 1].set_ylabel("Autocorrelação")
+axes[1, 1].set_ylim(-0.10, 0.50)
+axes[1, 1].grid(False)
+
+
+# -------------------------
+# 3) Financeiro
+# -------------------------
+
+plot_acf(
+    tabela_setores['finance_log_ret'].dropna(),
+    lags=40,
+    alpha=0.05,
+    zero=False,
+    ax=axes[2, 0]
+)
+
+axes[2, 0].set_title("Financeiro")
+axes[2, 0].set_xlabel("Defasagem diária")
+axes[2, 0].set_ylabel("Autocorrelação")
+axes[2, 0].set_ylim(-0.10, 0.10)
+axes[2, 0].grid(False)
+
+plot_acf(
+    tabela_setores['finance_log_ret'].dropna()**2,
+    lags=40,
+    alpha=0.05,
+    zero=False,
+    ax=axes[2, 1]
+)
+
+axes[2, 1].set_title("Financeiro ao quadrado")
+axes[2, 1].set_xlabel("Defasagem diária")
+axes[2, 1].set_ylabel("Autocorrelação")
+axes[2, 1].set_ylim(-0.10, 0.50)
+axes[2, 1].grid(False)
+
+
+# -------------------------
+# 4) Energia
+# -------------------------
+
+plot_acf(
+    tabela_setores['energy_log_ret'].dropna(),
+    lags=40,
+    alpha=0.05,
+    zero=False,
+    ax=axes[3, 0]
+)
+
+axes[3, 0].set_title("Energia")
+axes[3, 0].set_xlabel("Defasagem diária")
+axes[3, 0].set_ylabel("Autocorrelação")
+axes[3, 0].set_ylim(-0.10, 0.10)
+axes[3, 0].grid(False)
+
+plot_acf(
+    tabela_setores['energy_log_ret'].dropna()**2,
+    lags=40,
+    alpha=0.05,
+    zero=False,
+    ax=axes[3, 1]
+)
+
+axes[3, 1].set_title("Energia ao quadrado")
+axes[3, 1].set_xlabel("Defasagem diária")
+axes[3, 1].set_ylabel("Autocorrelação")
+axes[3, 1].set_ylim(-0.10, 0.50)
+axes[3, 1].grid(False)
+
+# -------------------------
+# Ajustes finais
+# -------------------------
+
+#fig.suptitle("ACF e PACF das transformações do GPR Global", fontsize=14)
+
+plt.tight_layout(rect=[0, 0, 1, 0.97])
+
+plt.savefig(
+    "graficos_tabelas/descritiva/acf/acf_setores.pdf",
+    bbox_inches="tight"
+)
+
+plt.show()
