@@ -167,7 +167,8 @@ modelo_consumo_log_gpr_dlog_cambio <- fit_mfgarch(
   K.two = 12,
   weighting.two = "beta.restricted",
   
-  gamma = TRUE
+  gamma = TRUE,
+  multi.start = TRUE
 )
 
 

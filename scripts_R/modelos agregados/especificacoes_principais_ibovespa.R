@@ -144,7 +144,7 @@ modelo_dlog_cambio_12 <- fit_mfgarch(
   x = "d_log_var_cambio",
   low.freq = "year_month",
   K = 12,
-  gamma = FALSE,
+  gamma = TRUE,
   weighting = "beta.restricted"
 )
 

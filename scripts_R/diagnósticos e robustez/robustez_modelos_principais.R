@@ -388,6 +388,192 @@ diag_log_gpr_dlog_cambio <- diagnosticar_mfgarch(
 
 #todo MODELO COM GPR EM LOG E IC-BR EM LOG-DIFF 6 LAGS
 
+
+diag_log_gpr_global_12<- diagnosticar_mfgarch(
+  modelo_gpr_global_log_12,
+  nome_modelo = "Ibov - Log GPR - 12 lags"
+)
+
+#-------------------------------------
+# DIAGNÓSTICO: Ibov - Log GPR - 12 lags 
+#-------------------------------------
+
+#                   modelo observacoes      alpha      beta      gamma
+# Ibov - Log GPR - 12 lags        6421 0.02505897 0.9159811 0.07930984
+# persistencia persistencia_menor_1 alpha_positivo beta_positivo
+#     0.980695                 TRUE           TRUE          TRUE
+# alpha_mais_gamma_positivo codigo_convergencia convergiu hessiana_ok
+#                      TRUE                   0      TRUE        TRUE
+# g_positivo tau_positivo      BIC
+#       TRUE         TRUE 23382.66
+
+# Testes residuais:
+#                  teste lag estatistica   p_value      interpretacao
+#  Ljung-Box — resíduos  10     7.17972 0.7083763 OK: não rejeita H0
+#  Ljung-Box — resíduos  20    15.37340 0.7546577 OK: não rejeita H0
+# Ljung-Box — resíduos²  10    11.36255 0.3299779 OK: não rejeita H0
+# Ljung-Box — resíduos²  20    18.00460 0.5871052 OK: não rejeita H0
+#               ARCH-LM  12    11.73810 0.4669362 OK: não rejeita H0
+
+
+diag_dlog_cambio_12<- diagnosticar_mfgarch(
+  modelo_dlog_cambio_12,
+  nome_modelo = "Ibov - dLog cambio - 12 lags"
+)
+
+#-------------------------------------
+#DIAGNÓSTICO: Ibov - dLog cambio - 12 lags 
+#-------------------------------------
+
+#                        modelo observacoes      alpha      beta      gamma persistencia persistencia_menor_1
+# Ibov - dLog cambio - 12 lags        6421 0.02279998 0.9185273 0.08363307    0.9831438                 TRUE
+# alpha_positivo beta_positivo alpha_mais_gamma_positivo codigo_convergencia convergiu hessiana_ok g_positivo
+#           TRUE          TRUE                      TRUE                   0      TRUE        TRUE       TRUE
+# tau_positivo      BIC
+#         TRUE 23366.36
+
+# Testes residuais:
+#                  teste lag estatistica   p_value      interpretacao
+#  Ljung-Box — resíduos  10    6.887801 0.7359931 OK: não rejeita H0
+#  Ljung-Box — resíduos  20   15.517548 0.7460676 OK: não rejeita H0
+# Ljung-Box — resíduos²  10   11.930410 0.2897409 OK: não rejeita H0
+# Ljung-Box — resíduos²  20   18.276466 0.5692017 OK: não rejeita H0
+#               ARCH-LM  12   12.428280 0.4119253 OK: não rejeita H0
+
+
+diag_log_cambio_12<- diagnosticar_mfgarch(
+  modelo_consumo,
+  nome_modelo = "Consumo - Log GPR - 12 lags"
+)
+
+# -------------------------------------
+# DIAGNÓSTICO: Consumo - Log GPR - 12 lags 
+# -------------------------------------
+
+#                      modelo observacoes      alpha      beta      gamma persistencia persistencia_menor_1
+# Consumo - Log GPR - 12 lags        6175 0.02714343 0.9034483 0.08881391    0.9749987                 TRUE
+# alpha_positivo beta_positivo alpha_mais_gamma_positivo codigo_convergencia convergiu hessiana_ok g_positivo
+#           TRUE          TRUE                      TRUE                   0      TRUE        TRUE       TRUE
+# tau_positivo      BIC
+#         TRUE 20303.11
+
+# Testes residuais:
+#                 teste lag estatistica   p_value      interpretacao
+#  Ljung-Box — resíduos  10    11.86915 0.2939093 OK: não rejeita H0
+#  Ljung-Box — resíduos  20    26.58534 0.1473384 OK: não rejeita H0
+# Ljung-Box — resíduos²  10    11.13717 0.3469314 OK: não rejeita H0
+# Ljung-Box — resíduos²  20    18.67830 0.5428166 OK: não rejeita H0
+#               ARCH-LM  12    13.16156 0.3574081 OK: não rejeita H0
+
+diag_dlog_cambio_12<- diagnosticar_mfgarch(
+  modelo_consumo_dlog_cambio,
+  nome_modelo = "Consumo - DLOG GPR - 12 lags"
+)
+
+# -------------------------------------
+# DIAGNÓSTICO: Consumo - DLOG GPR - 12 lags 
+# -------------------------------------
+
+#                        modelo observacoes      alpha      beta      gamma persistencia persistencia_menor_1
+# Consumo - DLOG GPR - 12 lags        6175 0.02973283 0.9053469 0.08555742    0.9778585                 TRUE
+# alpha_positivo beta_positivo alpha_mais_gamma_positivo codigo_convergencia convergiu hessiana_ok g_positivo
+#           TRUE          TRUE                      TRUE                   0      TRUE        TRUE       TRUE
+# tau_positivo      BIC
+#         TRUE 20303.69
+
+# Testes residuais:
+#                  teste lag estatistica   p_value      interpretacao
+#  Ljung-Box — resíduos  10    12.03746 0.2825570 OK: não rejeita H0
+#  Ljung-Box — resíduos  20    26.51476 0.1494759 OK: não rejeita H0
+# Ljung-Box — resíduos²  10    11.49017 0.3206241 OK: não rejeita H0
+# Ljung-Box — resíduos²  20    19.61613 0.4821610 OK: não rejeita H0
+#               ARCH-LM  12    13.99220 0.3012066 OK: não rejeita H0
+
+diag_log_gpr_dlog_cambio_12<- diagnosticar_mfgarch(
+  modelo_consumo_log_gpr_dlog_cambio,
+  nome_modelo = "Consumo - LOG GPR/ DLOG CAMBIO - 12 lags"
+)
+
+
+# -------------------------------------
+# DIAGNÓSTICO: Consumo - LOG GPR/ DLOG CAMBIO - 12 lags 
+# -------------------------------------
+
+#                                    modelo observacoes      alpha      beta      gamma persistencia
+# Consumo - LOG GPR/ DLOG CAMBIO - 12 lags        6175 0.02594527 0.9069459 0.08968995    0.9777362
+# persistencia_menor_1 alpha_positivo beta_positivo alpha_mais_gamma_positivo codigo_convergencia convergiu
+#                 TRUE           TRUE          TRUE                      TRUE                   0      TRUE
+# hessiana_ok g_positivo tau_positivo      BIC
+#        TRUE       TRUE         TRUE 20310.87
+
+# Testes residuais:
+#                  teste lag estatistica   p_value      interpretacao
+#  Ljung-Box — resíduos  10    12.03697 0.2825897 OK: não rejeita H0
+#  Ljung-Box — resíduos  20    26.67354 0.1447012 OK: não rejeita H0
+# Ljung-Box — resíduos²  10    11.46950 0.3221269 OK: não rejeita H0
+# Ljung-Box — resíduos²  20    19.88957 0.4648566 OK: não rejeita H0
+#               ARCH-LM  12    14.03445 0.2985138 OK: não rejeita H0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 diag_log_gpr_ic_6 <- diagnosticar_mfgarch(
   modelo_log_gpr_ic_6,
   nome_modelo = 'Ibov - Log GPR + Dlog IC-Br - 6 lags'

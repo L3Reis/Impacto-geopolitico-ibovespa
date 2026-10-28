@@ -22,6 +22,29 @@ base_descritiva = pd.read_excel(
 )
 
 
+#* Correlação LOG GPR e LOG-DIFF CAMBIO
+
+
+from scipy.stats import pearsonr
+
+base_cor = base_descritiva[
+    ["log_gpr_global", "d_log_var_cambio"]
+].dropna()
+
+corr, p_value = pearsonr(
+    base_cor["log_gpr_global"],
+    base_cor["d_log_var_cambio"]
+)
+
+print("Correlação:", corr)
+print("p-valor:", p_value)
+
+# >>> print("Correlação:", corr)
+# Correlação: 0.008776347265056009
+# >>> print("p-valor:", p_value)
+# p-valor: 0.8751488571015587
+#! Não há correlação entre as variaveis
+
 #todo ANÁLISE DO GPR E SUAS TRANSFORMAÇÕES
 
 tabela_gpr = base_descritiva[[
@@ -36,6 +59,7 @@ series_gpr = [
     'log_gpr_global',
     'd_log_gpr_global'
 ]
+
 
 # Função para as estatísticas descritivas
 

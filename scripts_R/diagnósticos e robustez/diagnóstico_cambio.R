@@ -47,7 +47,7 @@ base_mfgarch_completa <- base_teste_modelo_2 %>%
     d_log_var_cambio
   ) |> na.omit()
 
-
+# Correlação LOG GPR E LOG_DIFF CAMBIO
 #TODO Cheque: (i) se o mfgarch está convergindo bem e se o parâmetro w do polinômio Beta não está colado no limite
 #TODO Testaremos primeiramente com a especificação principal em log e K = 12
 
@@ -252,7 +252,7 @@ modelo_log_gpr_log_cambio <- fit_mfgarch(
   weighting.two = "beta.restricted",
   
   gamma = TRUE,
-  multi.start = TRUE
+  multi.start = FALSE
 )
 
 # Resultados
@@ -279,7 +279,7 @@ modelo_log_gpr_log_cambio$optim$convergence
 # theta.two theta.two -0.33529312 0.151802298 2.719213e-02  0.089833003 1.896604e-04
 # w2.two       w2.two  8.34932634 3.668783104 2.285946e-02  3.130891450 7.658705e-03
 
-#! modelo converge
+#! modelo converge com multi.start TRUE, mas nao converge com FALSE
 
 # K = 6
 
