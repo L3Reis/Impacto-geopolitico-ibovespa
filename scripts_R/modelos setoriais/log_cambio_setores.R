@@ -34,9 +34,10 @@ modelo_consumo_cambio <- fit_mfgarch(
   y = "consumer_log_ret",    # O alvo: O setor vulnerável ao choque cambial e juros
   x = "log_var_cambio",      # O choque: Risco global em nível
   low.freq = "year_month",   
-  K = 12,                    # Memória de um ano para a propagação da crise
+  K = 18,                    # Memória de um ano para a propagação da crise
   gamma = TRUE,              
-  weighting = "beta.restricted"
+  weighting = "beta.restricted",
+  multi.start = TRUE
 )
 
 # Resultado
@@ -68,16 +69,17 @@ modelo_consumo_log_gpr_log_cambio <- fit_mfgarch(
   # Primeira variável MIDAS: GPR
   x = "log_gpr_global",
   low.freq = "year_month",
-  K = 12,
+  K = 18,
   weighting = "beta.restricted",
   
   # Segunda variável MIDAS: câmbio
   x.two = "log_var_cambio",
   low.freq.two = "year_month",
-  K.two = 12,
+  K.two = 18,
   weighting.two = "beta.restricted",
   
-  gamma = TRUE
+  gamma = TRUE,
+  multi.start = TRUE
 )
 
 
