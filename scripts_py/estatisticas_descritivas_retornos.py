@@ -1,4 +1,5 @@
 # pacotes
+
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.stattools import adfuller
@@ -10,13 +11,21 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import statsmodels.api as sm
 
 
-#todo Pegando o log-retorno do ibovespa
-ibov = pd.read_excel(
-    io = "dados/base_mfgarch_completa.xlsx"
-)
+#* Mesma base de entrada dos modelos no R
+base_mfgarch_completa = pd.read_excel(
+    "dados/base_mfgarch_completa.xlsx",
+    parse_dates=["date"]
+).dropna()
 
-# No GARCH Entra multiplicado por 100
-ibov_100 = ibov['ret_ibov'] * 100
+base_mfgarch_completa = base_mfgarch_completa[
+    base_mfgarch_completa["date"] >= "2000-02-02"
+].copy()
+
+base_mfgarch_completa["ret_ibov_100"] = base_mfgarch_completa["ret_ibov"] * 100
+
+# Nomes utilizados nas descritivas, testes e gráficos abaixo
+ibov = base_mfgarch_completa
+ibov_100 = ibov["ret_ibov_100"]
 
 #* Auditoria inicial
 print(ibov_100.info())
@@ -43,21 +52,23 @@ descritivas_ibov["curtose excedente"] = ibov_100.kurt()
 descritivas_ibov["curtose de Pearson"] = ibov_100.kurt() + 3
 print(descritivas_ibov)
 
-#count                 6686.000000
-#mean                     0.047032
-#std                      1.764330
-#min                    -15.993027
-#1%                      -4.595121
-#5%                      -2.682798
-#25%                     -0.864089
-#75%                      1.001650
-#95%                      2.588682
-#99%                      4.453841
-#max                     28.832454
-#mediana                  0.071546
-#assimetria               0.330881
-#curtose excedente       16.604249
-#curtose de Pearson      19.604249
+
+#count                 6420.000000
+# mean                     0.035475
+# std                      1.700145
+# min                    -15.993027
+# 1%                      -4.401755
+# 5%                      -2.667207
+# 25%                     -0.853156
+# 50%                      0.065350
+# 75%                      0.984654
+# 95%                      2.527043
+# 99%                      4.283883
+# max                     13.676612
+# mediana                  0.065350
+# assimetria              -0.347312
+# curtose excedente        7.056686
+# curtose de Pearson      10.056686
 
 
 
@@ -75,8 +86,8 @@ teste_jb_ibov = pd.DataFrame({
 teste_jb_ibov
 
 
-#    JB_stat	     JB_pvalue
-#	76804.567377	0.0
+#        JB_stat  JB_pvalue
+#  13425.395755        0.0
 
 
 # interpretação
@@ -123,10 +134,10 @@ ljung_ibov = acorr_ljungbox(
 )
 
 ljung_ibov
-#	    lb_stat	    lb_pvalue
-# 5	    14.178354	0.014515
-# 10	35.709255	0.000094
-# 20	51.891852	0.000118
+#      lb_stat  lb_pvalue
+# 5    9.946805   0.076757
+# 10  25.194939   0.004988
+# 20  48.780389   0.000330
 
 # Nos lags, rejeitamos ausência de correlação - Então há autocorrelação
 
@@ -139,10 +150,10 @@ ljung_ibov_quad = acorr_ljungbox(
 )
 
 ljung_ibov_quad
-#	    lb_stat	    lb_pvalue
-# 5	    1176.758703	3.177247e-252
-# 10	1616.897137	0.000000e+00
-# 20	1897.890494	0.000000e+00
+#        lb_stat  lb_pvalue
+# 5   3775.606688        0.0
+# 10  5414.823749        0.0
+# 20  6916.240933        0.0
 
 #! Existe autocorrelação nos retornos ao quadrado, justificando o uso do GARCH, pois é uma evidência de clusterização de volatilidade
 
@@ -157,8 +168,8 @@ teste_arch_ibov = pd.DataFrame({
 
 teste_arch_ibov
 
-#   ARCH_stat	ARCH_pvalue
-#	1353.508873	1.079858e-284
+#    ARCH_stat  ARCH_pvalue
+#  1751.48482          0.0
 
 # Rejeita ausência de efeitos ARCH: há evidência de heterocedasticidade condicional.
 
@@ -269,9 +280,31 @@ plt.show()
 # Estatísticas descritivas para os setores
 # =============================================================================
 
-setores = pd.read_excel(
-    io = "dados/base_setores_final.xlsx"
+#* Mesma base de entrada dos modelos setoriais no R
+painel_midas = pd.read_excel(
+    "dados/base_setores_final.xlsx",
+    parse_dates=["date"]
 )
+
+painel_midas["year_month"] = pd.to_datetime(painel_midas["year_month"] + "-01")
+
+series_setores = [
+    'consumer_log_ret',
+    'basic_products_log_ret',
+    'finance_log_ret',
+    'energy_log_ret'
+]
+
+colunas_numericas = series_setores + ["log_gpr_global"]
+painel_midas[colunas_numericas] = painel_midas[colunas_numericas].apply(
+    pd.to_numeric, errors="coerce"
+)
+
+painel_midas_limpo = painel_midas.dropna().copy()
+setores = painel_midas_limpo
+
+# Os retornos setoriais já estão multiplicados por 100
+tabela_setores = setores[["date"] + series_setores].copy()
 
 def descritivas_series(df, colunas):
     resultados = []
@@ -297,29 +330,15 @@ def descritivas_series(df, colunas):
 
     return pd.DataFrame(resultados)
 
-tabela_setores = setores[[
-    'date',
-    'consumer_log_ret',
-    'basic_products_log_ret',
-    'finance_log_ret',
-    'energy_log_ret']
-].copy()
-
-series_setores = [
-    'consumer_log_ret',
-    'basic_products_log_ret',
-    'finance_log_ret',
-    'energy_log_ret'
-]
-
 desc_setores = descritivas_series(tabela_setores, series_setores)
-desc_setores
+print(desc_setores.to_string(index=False))
 
-#	serie	               n_obs	media	mediana	      minimo	maximo	  desvio_padrao	variancia	assimetria	curtose_pearson	jarque_bera	jb_pvalue
-#	consumer_log_ret	   6423	 0.028069	0.062133	-16.566528	12.373398	1.476483	2.180003	-0.411780	11.875032	   21261.317130	0.0
-#	basic_products_log_ret 6423	 0.062602	0.066888	-17.032132	16.010241	1.994225	3.976933	-0.186911	8.704274	   8745.578106	0.0
-#	finance_log_ret	       6423	 0.062254	0.067549	-13.977472	19.783081	1.942661	3.773932	 0.078823	8.482458	   050.749450	0.0
-#	energy_log_ret	       6423	 0.053331	0.093939	-20.649959	14.633259	1.949480	3.800474	-0.546722	10.157747	   14031.299493	0.0
+
+#                 serie  n_obs    media  mediana     minimo    maximo  desvio_padrao  variancia  assimetria  curtose_pearson  jarque_bera  jb_pvalue
+#      consumer_log_ret   6423 0.028069 0.062133 -16.566528 12.373398       1.476483   2.180003   -0.411780        11.875032 21261.317130        0.0
+# basic_products_log_ret   6423 0.062602 0.066888 -17.032132 16.010241       1.994225   3.976933   -0.186911         8.704274  8745.578106        0.0
+#       finance_log_ret   6423 0.062254 0.067549 -13.977472 19.783081       1.942661   3.773932    0.078823         8.482458  8050.749450        0.0
+#        energy_log_ret   6423 0.053331 0.093939 -20.649959 14.633259       1.949480   3.800474   -0.546722        10.157747 14031.299493        0.0
 
 
 def teste_adf_series(df, colunas):

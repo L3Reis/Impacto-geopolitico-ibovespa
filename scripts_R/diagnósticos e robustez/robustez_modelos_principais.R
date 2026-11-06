@@ -362,29 +362,80 @@ diag_consumo_24 <- diagnosticar_mfgarch(
 
 
 
-#todo Modelo Bens básicos e GPR 6 lags
+#todo Modelo Bens básicos e GPR 24 lags
 
-diag_bens_basicos_6 <- diagnosticar_mfgarch(
-  modelo_bens_basicos_6,
-  nome_modelo = 'basicos - log gpr'
+diag_bens_basicos_24 <- diagnosticar_mfgarch(
+  modelo_bens_basicos_24,
+  nome_modelo = 'basicos - log gpr 24 lags'
 )
 
 # -------------------------------------
-# DIAGNÓSTICO: basicos - log gpr 
+# DIAGNÓSTICO: basicos - log gpr 24 lags 
 # -------------------------------------
 
-#             modelo observacoes      alpha      beta      gamma persistencia persistencia_menor_1 alpha_positivo beta_positivo
-# basicos - log gpr        6299 0.04723098 0.9057328 0.04358374    0.9747557                 TRUE           TRUE          TRUE
-# alpha_mais_gamma_positivo codigo_convergencia convergiu hessiana_ok g_positivo tau_positivo      BIC
-#                      TRUE                   0      TRUE        TRUE       TRUE         TRUE 25194.27
+#                     modelo observacoes      alpha      beta      gamma persistencia persistencia_menor_1 alpha_positivo beta_positivo alpha_mais_gamma_positivo codigo_convergencia convergiu hessiana_ok g_positivo tau_positivo      BIC
+# basicos - log gpr 24 lags        5929 0.04835103 0.9067924 0.04328961    0.9767882                 TRUE           TRUE          TRUE                      TRUE                   0      TRUE        TRUE       TRUE         TRUE 23662.26
 
 # Testes residuais:
-#                  teste lag estatistica    p_value       interpretacao
-#  Ljung-Box — resíduos  10   22.992184 0.01077547 Atenção: rejeita H0
-#  Ljung-Box — resíduos  20   34.475990 0.02307944 Atenção: rejeita H0
-# Ljung-Box — resíduos²  10    2.648957 0.98852273  OK: não rejeita H0
-# Ljung-Box — resíduos²  20    6.457555 0.99812137  OK: não rejeita H0
-#               ARCH-LM  12    4.126286 0.98104819  OK: não rejeita H0
+#                  teste lag estatistica     p_value       interpretacao
+#  Ljung-Box — resíduos   5   15.753341 0.007584744 Atenção: rejeita H0
+#  Ljung-Box — resíduos  10   23.481800 0.009101298 Atenção: rejeita H0
+#  Ljung-Box — resíduos  20   34.000226 0.026123159 Atenção: rejeita H0
+# Ljung-Box — resíduos²   5    2.158019 0.826876225  OK: não rejeita H0
+# Ljung-Box — resíduos²  10    2.564868 0.989896339  OK: não rejeita H0
+# Ljung-Box — resíduos²  20    5.580851 0.999356707  OK: não rejeita H0
+#               ARCH-LM  10    2.568881 0.989833485  OK: não rejeita H0
 
 #! O Ljung-box mostra que o modelo não eliminou totalmente a depedência linear dos retornos, mas isso não afeta a volatilidade
 
+
+#todo Modelo Financeiro e GPR 24 lags
+
+
+diag_financeiro_24 <- diagnosticar_mfgarch(
+  modelo_financeiro_24,
+  nome_modelo = 'Financeiro - log gpr 24 lags'
+)
+
+# -------------------------------------
+# DIAGNÓSTICO: Financeiro - log gpr 24 lags 
+# -------------------------------------
+
+#                        modelo observacoes     alpha      beta      gamma persistencia persistencia_menor_1 alpha_positivo beta_positivo alpha_mais_gamma_positivo codigo_convergencia convergiu hessiana_ok g_positivo tau_positivo      BIC
+# Financeiro - log gpr 24 lags        5929 0.0353119 0.9173428 0.05870523    0.9820073                 TRUE           TRUE          TRUE                      TRUE                   0      TRUE        TRUE       TRUE         TRUE 23247.21
+
+# Testes residuais:
+#                  teste lag estatistica   p_value      interpretacao
+#  Ljung-Box — resíduos   5    8.789766 0.1177493 OK: não rejeita H0
+#  Ljung-Box — resíduos  10   13.615835 0.1912465 OK: não rejeita H0
+#  Ljung-Box — resíduos  20   18.947568 0.5252365 OK: não rejeita H0
+# Ljung-Box — resíduos²   5    0.523815 0.9912253 OK: não rejeita H0
+# Ljung-Box — resíduos²  10    3.903978 0.9515747 OK: não rejeita H0
+# Ljung-Box — resíduos²  20   10.395149 0.9604280 OK: não rejeita H0
+#               ARCH-LM  10    3.902102 0.9516553 OK: não rejeita H0
+
+#todo Modelo energia e GPR 24 lags
+
+
+
+diag_energia_24 <- diagnosticar_mfgarch(
+  modelo_energia_24,
+  nome_modelo = 'Energia - log gpr 24 lags'
+)
+
+# -------------------------------------
+# DIAGNÓSTICO: Energia - log gpr 24 lags 
+# -------------------------------------
+
+#                     modelo observacoes      alpha      beta      gamma persistencia persistencia_menor_1 alpha_positivo beta_positivo alpha_mais_gamma_positivo codigo_convergencia convergiu hessiana_ok g_positivo tau_positivo      BIC
+# Energia - log gpr 24 lags        5929 0.05140576 0.8854969 0.06907814    0.9714417                 TRUE           TRUE          TRUE                      TRUE                   0      TRUE        TRUE       TRUE         TRUE 23234.75
+
+# Testes residuais:
+#                  teste lag estatistica   p_value      interpretacao
+#  Ljung-Box — resíduos   5   4.6015394 0.4664138 OK: não rejeita H0
+#  Ljung-Box — resíduos  10   8.9918586 0.5328764 OK: não rejeita H0
+#  Ljung-Box — resíduos  20  13.8010392 0.8404387 OK: não rejeita H0
+# Ljung-Box — resíduos²   5   0.6764409 0.9842366 OK: não rejeita H0
+# Ljung-Box — resíduos²  10   3.5366911 0.9658378 OK: não rejeita H0
+# Ljung-Box — resíduos²  20  10.2412579 0.9635833 OK: não rejeita H0
+#               ARCH-LM  10   3.4798054 0.9677796 OK: não rejeita H0
