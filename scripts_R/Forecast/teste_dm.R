@@ -4,11 +4,7 @@ library(tidyr)
 
 testar_dm <- function(d, h) {
   n <- length(d)
-  if (n <= h + 1L || !all(is.finite(d)) || !is.finite(var(d)) || var(d) == 0) {
-    warning("DM nao calculado: poucas observacoes, perdas invalidas ou diferencial constante.", call. = FALSE)
-    return(tibble(n = n, lag_HAC = NA_integer_, diferenca = if (n) mean(d) else NA_real_,
-                  DM = NA_real_, p_value = NA_real_))
-  }
+  stopifnot(n > h + 1L, all(is.finite(d)), var(d) > 0)
   ajuste <- lm(d ~ 1)
   lag_hac <- min(n - 2L, max(h - 1L,
     floor(sandwich::bwNeweyWest(ajuste, prewhite = FALSE))))
@@ -27,16 +23,12 @@ base_dm <- perdas_expanding |>
   arrange(horizonte, perda, origem)
 stopifnot(!anyDuplicated(base_dm[c("origem", "horizonte", "perda")]))
 
-resultados_dm <- if (nrow(base_dm)) {
-  base_dm |>
-    group_by(horizonte, perda) |>
-    group_modify(~ testar_dm(.x$gpr - .x$vr, .y$horizonte)) |>
-    ungroup()
-} else tibble()
+resultados_dm <- base_dm |>
+  group_by(horizonte, perda) |>
+  group_modify(~ testar_dm(.x$gpr - .x$vr, .y$horizonte)) |>
+  ungroup()
 
-if (nrow(resultados_dm)) {
-  print(as.data.frame(resultados_dm), row.names = FALSE, digits = 6)
-} else message("DM nao calculado: nenhuma previsao pareada valida.")
+print(as.data.frame(resultados_dm), row.names = FALSE, digits = 6)
 
 # horizonte perda    n lag_HAC   diferenca        DM  p_value
 #         1   MSE 2564      30 -8.44618027 -1.018860 0.308269
@@ -45,3 +37,5 @@ if (nrow(resultados_dm)) {
 #         5 QLIKE 2560      21  0.00256810  0.485016 0.627665
 #        22   MSE 2543      26  0.50849892  0.401144 0.688314
 #        22 QLIKE 2543      31 -0.00329470 -0.288161 0.773224
+
+load("resultados/sessao_forecast.RData")
