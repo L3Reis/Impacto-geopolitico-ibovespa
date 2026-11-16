@@ -1,7 +1,0 @@
-function (w1, w2, K) 
-{
-    weights <- sapply(c(1:K), FUN = function(j) (j/(K + 1))^(w1 - 
-        1) * (1 - j/(K + 1))^(w2 - 1))
-    weights <- weights/sum(weights)
-    weights
-}

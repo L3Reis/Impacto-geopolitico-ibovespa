@@ -75,3 +75,9 @@ SHA256 da entrada: `259a1958ac6bc5e7df6de1573511bb01a661c6fcac19b4288d2c33248633
 SHA256 do teste_dm.R auditado: `2ae2e0e9b2d7274f77be21e10a48eeaa5e2721c625342daeb2e1de35c2647270`.
 
 Referencia: [documentacao oficial do sandwich](https://cran.r-universe.dev/sandwich/doc/manual.html), secao Newey-West HAC Covariance Matrix Estimation.
+
+## Limpeza dos arquivos legados (16/11/2026)
+
+Foram removidos 223 arquivos das tentativas antigas. Permanecem os 11 scripts dos exercicios atuais, as perdas exportadas e esta auditoria. No teste_dm.R, foi removido o carregamento automatico da sessao antiga e a tabela antiga de comentarios. O calculo estatistico foi preservado e os 30 testes atuais foram novamente conferidos apos a exclusao.
+
+SHA256 do teste_dm.R apos a limpeza: `2c69b2c9aa445fccf7a551e337fcb0977e70e98125a47c10e40ccb7edf43b589`.

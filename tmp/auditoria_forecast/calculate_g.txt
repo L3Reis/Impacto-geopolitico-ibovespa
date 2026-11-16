@@ -1,5 +1,0 @@
-function (omega, alpha, beta, gamma, returns, g0) 
-{
-    .Call("_mfGARCH_calculate_g", PACKAGE = "mfGARCH", omega, 
-        alpha, beta, gamma, returns, g0)
-}

@@ -29,13 +29,3 @@ resultados_dm <- base_dm |>
   ungroup()
 
 print(as.data.frame(resultados_dm), row.names = FALSE, digits = 6)
-
-# horizonte perda    n lag_HAC   diferenca        DM  p_value
-#         1   MSE 2564      30 -8.44618027 -1.018860 0.308269
-#         1 QLIKE 2564      23  0.00322436  0.732380 0.463937
-#         5   MSE 2560      22 -5.95961237 -1.046717 0.295230
-#         5 QLIKE 2560      21  0.00256810  0.485016 0.627665
-#        22   MSE 2543      26  0.50849892  0.401144 0.688314
-#        22 QLIKE 2543      31 -0.00329470 -0.288161 0.773224
-
-load("resultados/sessao_forecast.RData")

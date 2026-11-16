@@ -1,0 +1,201 @@
+﻿{
+    "status":  "concluida",
+    "data":  "2026-11-16",
+    "workspace":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa",
+    "arquivos_removidos":  223,
+    "bytes_removidos":  53958519,
+    "removidos":  [
+                      {
+                          "relativo":  "scripts_R/Forecast/forecast_expanding_basicos.R",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\scripts_R\\Forecast\\forecast_expanding_basicos.R",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  16413
+                      },
+                      {
+                          "relativo":  "scripts_R/Forecast/forecast_expanding_consumo.R",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\scripts_R\\Forecast\\forecast_expanding_consumo.R",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  9070
+                      },
+                      {
+                          "relativo":  "scripts_R/Forecast/forecast_expanding_energia.R",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\scripts_R\\Forecast\\forecast_expanding_energia.R",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  9257
+                      },
+                      {
+                          "relativo":  "scripts_R/Forecast/forecast_expanding_mfgarch.R",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\scripts_R\\Forecast\\forecast_expanding_mfgarch.R",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  16091
+                      },
+                      {
+                          "relativo":  "scripts_R/Forecast/forecast_gpr.R",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\scripts_R\\Forecast\\forecast_gpr.R",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  8243
+                      },
+                      {
+                          "relativo":  "scripts_R/Forecast/forecast_gpr_mfgarch.R",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\scripts_R\\Forecast\\forecast_gpr_mfgarch.R",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  2758
+                      },
+                      {
+                          "relativo":  "scripts_R/Forecast/forecast_rolling_mfgarch.R",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\scripts_R\\Forecast\\forecast_rolling_mfgarch.R",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  6731
+                      },
+                      {
+                          "relativo":  "scripts_R/Forecast/funcoes_forecast.R",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\scripts_R\\Forecast\\funcoes_forecast.R",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  12011
+                      },
+                      {
+                          "relativo":  "resultados/forecast",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\resultados\\forecast",
+                          "diretorio":  true,
+                          "arquivos":  186,
+                          "bytes":  50526517
+                      },
+                      {
+                          "relativo":  "resultados/sessao_forecast.RData",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\resultados\\sessao_forecast.RData",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  2535319
+                      },
+                      {
+                          "relativo":  "tmp/auditoria_forecast",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\tmp\\auditoria_forecast",
+                          "diretorio":  true,
+                          "arquivos":  16,
+                          "bytes":  172240
+                      },
+                      {
+                          "relativo":  "tmp/diagnostico_vr",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\tmp\\diagnostico_vr",
+                          "diretorio":  true,
+                          "arquivos":  11,
+                          "bytes":  641539
+                      },
+                      {
+                          "relativo":  "previsoes/previsao_garch_midas_1m.rds",
+                          "absoluto":  "D:\\OneDrive\\UFABC\\Dissertação\\volatilidade-IBOV-GPR\\Impacto-geopolitico-ibovespa\\previsoes\\previsao_garch_midas_1m.rds",
+                          "diretorio":  false,
+                          "arquivos":  1,
+                          "bytes":  2330
+                      }
+                  ],
+    "preservados_antes":  [
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_basicos_gamma.R",
+                                  "sha256":  "636D4F08DDC0D95B86593079467ABD5888159716487AEEAA85086132AE18357C"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_basicos_media_gamma.R",
+                                  "sha256":  "F34533D95B74D0986A65134D85A75E057F9CCE5EA405C1D16C664C6DFF3E88C5"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_consumo_gamma.R",
+                                  "sha256":  "C89543EC4698C19F7F7051BC2A86C7A0762641587124E89DC7390BD6DD279833"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_consumo_media_gamma.R",
+                                  "sha256":  "54150B01A1382B6FBC0D2E1D15B9DBE55FB6D25C6ACDA72EDB6B637DC3967E5D"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_energia_gamma.R",
+                                  "sha256":  "3C5272B63B391A642B832C3708EA84F2C1B5D0D24F4B08EF7F4CCC6923105F7D"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_energia_media_gamma.R",
+                                  "sha256":  "256CE67ACEFC658FF5745EFBF005093B10737FA81312B904ECCF8CFA4252FD19"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_financeiro.R",
+                                  "sha256":  "801BC496EAE3A9C5ED41739DA4EFFE7879E773AD57A41E2EED34A75F053A610D"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_financeiro_media_gamma.R",
+                                  "sha256":  "4B510F33A5E3E05B07D83BB600825D1713C97D138F1C41435235BE108FC245E7"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_ibovespa_gamma.R",
+                                  "sha256":  "7BF567DEFC46771080A3761D3F4A5E5C5CE18948939F0E82251A6FFD74F9302A"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/forecast_expanding_ibovespa_media_gamma.R",
+                                  "sha256":  "91F782EA1EF2E61D245DD065F8A16B23C7964F1F74CCBE245D71BD1F255D51E6"
+                              },
+                              {
+                                  "relativo":  "scripts_R/Forecast/teste_dm.R",
+                                  "sha256":  "0C3F6919119D67E71BE597A12518BC59A3374FE6843173A57A664ECDCC0C750F"
+                              },
+                              {
+                                  "relativo":  "tmp/perdas_media_auditoria_dm.rds",
+                                  "sha256":  "259A1958AC6BC5E7DF6DE1573511BB01A661C6FCAC19B4288D2C33248633C50E"
+                              }
+                          ],
+    "preservados_depois":  [
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_basicos_gamma.R",
+                                   "sha256":  "636D4F08DDC0D95B86593079467ABD5888159716487AEEAA85086132AE18357C"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_basicos_media_gamma.R",
+                                   "sha256":  "F34533D95B74D0986A65134D85A75E057F9CCE5EA405C1D16C664C6DFF3E88C5"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_consumo_gamma.R",
+                                   "sha256":  "C89543EC4698C19F7F7051BC2A86C7A0762641587124E89DC7390BD6DD279833"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_consumo_media_gamma.R",
+                                   "sha256":  "54150B01A1382B6FBC0D2E1D15B9DBE55FB6D25C6ACDA72EDB6B637DC3967E5D"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_energia_gamma.R",
+                                   "sha256":  "3C5272B63B391A642B832C3708EA84F2C1B5D0D24F4B08EF7F4CCC6923105F7D"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_energia_media_gamma.R",
+                                   "sha256":  "256CE67ACEFC658FF5745EFBF005093B10737FA81312B904ECCF8CFA4252FD19"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_financeiro.R",
+                                   "sha256":  "801BC496EAE3A9C5ED41739DA4EFFE7879E773AD57A41E2EED34A75F053A610D"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_financeiro_media_gamma.R",
+                                   "sha256":  "4B510F33A5E3E05B07D83BB600825D1713C97D138F1C41435235BE108FC245E7"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_ibovespa_gamma.R",
+                                   "sha256":  "7BF567DEFC46771080A3761D3F4A5E5C5CE18948939F0E82251A6FFD74F9302A"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/forecast_expanding_ibovespa_media_gamma.R",
+                                   "sha256":  "91F782EA1EF2E61D245DD065F8A16B23C7964F1F74CCBE245D71BD1F255D51E6"
+                               },
+                               {
+                                   "relativo":  "scripts_R/Forecast/teste_dm.R",
+                                   "sha256":  "2C69B2C9AA445FCCF7A551E337FCB0977E70E98125A47C10E40CCB7EDF43B589"
+                               },
+                               {
+                                   "relativo":  "tmp/perdas_media_auditoria_dm.rds",
+                                   "sha256":  "259A1958AC6BC5E7DF6DE1573511BB01A661C6FCAC19B4288D2C33248633C50E"
+                               }
+                           ],
+    "ajuste_dm":  "Removido apenas o carregamento da sessao antiga e a tabela antiga de comentarios; formula estatistica preservada."
+}
