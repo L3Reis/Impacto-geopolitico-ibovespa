@@ -1,0 +1,723 @@
+PAGE 1
+                                             InternationalJournalofForecasting36(2020)684–694
+
+
+                                                 Contents lists available atScienceDirect
+
+                                      InternationalJournalofForecasting
+
+
+                                         journal homepage:www.elsevier.com/locate/ijforecast
+
+
+Forecastingstockpricevolatility:Newevidencefromthe
+GARCH-MIDASmodel
+LuWang  a,FengMab,∗,JingLiuc,LinYanga
+aSchoolofMathematics,SouthwestJiaotongUniversity,Chengdu,China
+bSchoolofEconomicsandManagement,SouthwestJiaotongUniversity,Chengdu,China
+cBusinessSchoolofSichuanUniversity,Chengdu,China
+
+
+a r t i c l e    i n f o                         a  b  s  t  r  a  c  t
+
+
+Keywords:                                        Thispaperintroducesacombinationofasymmetryandextremevolatilityeffectsinorder
+Stockmarket                                      tobuildsuperiorextensionsoftheGARCH-MIDASmodelformodelingandforecasting
+GARCH-MIDAS                                      the stock volatility. Our in-sample results clearly verify that extreme shocks have a
+Out-of-sampleforecasts                           significantimpactonthestockvolatilityandthatthevolatilitycanbeinfluencedmore
+Volatilityforecasting                            by the asymmetry effect than by the extreme volatility effect in both the long and
+Forecastingevaluation                            short term. Out-of-sample results with several robustness checks demonstrate that
+
+                                                 our proposed models can achieve better performances in forecasting the volatility.
+                                                 Furthermore,theimprovementinpredictiveabilityisattributedmorestronglytothe
+                                                 introductionofasymmetryandextremevolatilityeffectsfortheshort-termvolatility
+                                                 component.
+                                                  ©2019InternationalInstituteofForecasters.PublishedbyElsevierB.V.Allrightsreserved.
+
+
+
+1.  Introduction                                                            Dueker,1997;Hansen&Lunde,2005;Wang&Wu,2012).
+                                                                            However,GARCH-classmodelsarestrictlylimitedtous-
+   Accuratemodelingandforecastingofthestockmarket                           ingdataatthesamefrequency,sotheyarenotsuitable
+volatilityplaysacrucialroleinfinancialregulation,port-                      forinvestigatingthemaindriversoflong-termfinancial
+foliodecisions,riskmanagement,creditderivativesand                          marketvolatility(Ghysels,Santa-Clara,&Valkanov,2006).
+other fields, which affect financial market participants’                   RecentstudieshavedocumentedthattheGARCH-MIDAS
+decision-makingprocesses.Financialregulatoryauthor-                         classspecificationsproposedbyEngle,Ghysels,andSohn
+ities pay a greatdeal of attention to the stockmarket                       (2013)demonstratesuperiorforecastingabilitiesforthe
+volatilityinordertoavoidthevolatilityspillovereffect                        stockvolatility(seee.g.Asgharian,Hou,&Javed,2013;
+ofradicalchangesintheglobalfinancialmarkets.Market                          Girardin&Joyeux,2013).Thenotableadvantageofthis
+investorseventrackthestockmarketvolatilityinreal                            model over the traditional GARCH-class models is that
+timesoastooptimizeportfoliostrategyandavoidmarket                           it can decompose the total conditional variance of the
+risk.Therefore,theissueofforecastingthestockmarket                          conventional GARCH model into two parts: short-term
+volatilityhasattractedtheattentionofmanyscholars(see                        volatility, with a high frequency captured by aGARCH
+e.g.Andersen,Bollerslev,Diebold,&Labys,2003;Corsi,                          process,andlong-termvolatility,withalowfrequency.
+2009;Fuertes, Izzeldin, & Kalotychou,2009;Patton &                          Because of this advantage, GARCH-MIDAS is employed
+Sheppard,2015;Poon&Granger,2003).                                           widely in empirical studies (see e.g.Asgharian, Chris-
+   Traditionally,thestockvolatilityhasbeenforecastby                        tiansen,&Hou,2015;Fang,Chen,Yu,&Qian,2018;Pan,
+utilizingtheGARCHmodelanditsextensions(seee.g.                              Wang,Wu,&Yin,2017).
+Bekaert&Hoerova,2014;Bollerslev&Mikkelsen,1996;                                 TheasymmetryeffectfirstexaminedbyBlack(1976)
+                                                                            impliesthatassetreturnsandvolatilitiesresponddiffer-
+ ∗ Correspondingauthor.                                                     entlytobadnewsandgoodnews.Sinceanasymmetric
+    E-mailaddress: mafeng2016@swjtu.edu.cn(F.Ma).                           volatilityimpliesnegatively-skewedreturndistributions,
+
+https://doi.org/10.1016/j.ijforecast.2019.08.005
+0169-2070/©2019InternationalInstituteofForecasters. PublishedbyElsevierB.V.Allrightsreserved.
+
+PAGE 2
+                              L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694              685
+
+i.e.,itcanhelptoexplainsomeoftheprobabilityoflarge                    smallandlargenews,(b)theasymmetricresponsesofthe
+losses, many studies consider the asymmetry effect in                 stockreturnvolatilitytogoodversusbadnews,and(c)
+GARCH-classmodelswhenforecastingthestockvolatility.                   thepredictiveaccuracyofourextendedvolatilitymodels.
+The related results show that the asymmetric GARCH-                       Incontrasttopreviousstudies,wecontributetothe
+classmodelsseemtoperformbetterthanthesymmetric                        literature on stock volatility predictability in three di-
+GARCH models (see e.g.Alberg, Shalit, & Yosef,2008;                   mensions. First, due to many factors, such as extreme
+Awartani&Corradi,2005;Byun&Cho,2013;Pan&Liu,                          weather events, political disputes, and economic poli-
+2018).Nevertheless,tothebestofourknowledge,the                        cies,thestatisticalpropertyofvolatilityundergoesmajor
+impactoftheasymmetryeffectforGARCH-MIDASclass                         changes.Becauseofthesefactors,weintendtocharac-
+models has not received sufficient attention. Recently,               terize the extreme volatility effect to account for both
+Asgharian, Christiansen, and Hou(2018) extended the                   the short-term and long-term components in GARCH-
+GARCH-MIDASmodelbyincorporatingasymmetryinthe                         MIDASclassmodels.Tothisend,weadoptthevolatility
+long-termcomponentofmacrovariables;however,asa                        thresholdsinGARCH-MIDASmodelsforextremelynega-
+firststepinthisresearch,weextendtheGARCH-MIDAS                        tiveandpositivereturns,respectively,andconstructnew
+modeltoaccountfortheasymmetryeffectbothinthe                          volatilitymodelsinordertoprovideanewperspective
+long-andshort-termvolatilitycomponents.                               onmodelingandforecastingthestockvolatility.Follow-
+   OneshortcomingofthestandardGARCH-MIDASmodel                        ingArısoy, Altay-Salih, and Akdeniz(2015) andHuang
+isthatitdoesnotaccommodateextrememarketevents,                        (2015),thethresholdsaredeterminedbytheempirical
+whichhasbeenconsideredtoprovideacomplementary                         quantileofthereturn.Furthermore,theproposedmod-
+understandingofthestockmarketvolatility.Inparticu-                    els are instrumental, asMcNeil and Frey(2000) note
+lar,wheneventsoccur,peopleareconcernedmorewith                        thatthepredictionaccuracycanbeimprovedsignificantly
+largestockpricefluctuationsthanwithmildfluctuations.                  byconsideringtheinfluenceofextremeevents,particu-
+Variousexogenousevents,suchasregionalwars,political                   larlyinstockmarkets,wherelargevolatilityshocksare
+affairsandfinancialcrises,havebeenfoundtoproduce                      quitecommonbecausethestockmarketvolatilityischar-
+violentfluctuationsinthestockvolatility(seee.g.Chan&                  acterizedbydifferentdynamicsunderdifferentmarket
+Wei,1996;Ma,JiandPan,2019;Ma,Liao,ZhangandCao,                        conditions.Asfarasweknow,therehavebeennostudies
+2019;Nikkinen,Omran,Sahlström,&Äijö,2008;Schw-                        todateinwhichtheextremevolatilityeffectisdescribed
+ert,2011).Forexample,Choudhry(2010)notesthatthe                       inaGARCH-MIDASframework.Thepresentstudywillfill
+majorityofthewartimeeventsinWorldWarIIthathis-                        thisgap.
+torianslabelimportantresultedinstructuralbreaksinthe                      Second,Mele(2007)showsthattheasymmetryeffect
+stockreturnvolatility.Schwert(2011)confirmstheexis-                   isanimportantfactorthatcontainsinformationthatin-
+tenceofhighlevelsofvolatilityfollowingrecentperiods                   fluencesthestockpricevolatility,andAnnaert,DeCeuster,
+ofmarketstress,suchasthestockcrashof1987andthe                        andVerstegen(2013)showthatextremeshocksinstock
+subprimemortgagecrisisof2007,regardlessofwhether                      marketsincreasethefuturevolatility.Therefore,wemod-
+thevolatilityismeasuredinmonthlyreturns,dailyre-                      ifythestandardvarianceequationsintheGARCH-MIDAS
+turns,or15-minutereturns.Hence,extremeeventsare                       model by adding dummy variables for the asymmetry
+relatedcloselytoextremevolatility,whichisgenerally                    andthresholdeffectstogether.Basedondifferentcom-
+definedasthepotentialforsignificantadversedeviations                  binations of asymmetric and threshold financial asset
+fromtheexpectedpredictionresults.AccordingtoJacob                     volatilitiesintheshort-termandlong-termcomponents,
+(2007),theGARCHmodel’sforecastingperformancecan                       wedevelopatotalof15extensionsoftheGARCH-MIDAS
+alsobeimprovedbyincludingextremevalueestimators.                      model.Thenewmodelscandescribetheimpactofnot
+For this reason, we address the effect of the extreme                 only‘good’and‘bad’news(informationasymmetries),but
+volatilitywhenstockmarketsfaceextremeshocks.Fur-                      also‘small’and‘large’news(theextremevolatilityeffect)
+thermore,similarlytoexistingstudies(see,e.g.,Andersen,                onthestockvolatility.Therefore,wecaninvestigatethose
+Bollerslev,&Diebold,2007;Behrens,Lopes,&Gamerman,                     modelsinordertogainnewinsights,andwebeginby
+2004;Gençay,Selçuk,&Ulugülya   ˇgci,2003),weidentify                  investigatingthesimultaneousimpactsofasymmetryand
+extremevolatilitynaturallybasedonthresholdsinexcess                   thresholdeffectsonforecastingthestockpricevolatility.
+of some critical value for the stock return. Therefore,                   Finally, our third contribution is an empirical com-
+we usually call this effect the threshold effect instead              parison of the standard model, the asymmetry model,
+oftheextremevolatilityeffect.Weintroducethreshold                     thethresholdmodel,andtheasymmetry-thresholdmodel
+effect characteristics to the GARCH-MIDAS model and                   intheframeworkoftheGARCH-MIDASmodelfittedto
+examinewhethertheGARCH-MIDASmodelthatcontains                         dailyS&P500returns.Fivelossfunctioncriteriaareem-
+thethresholdeffectcanforecastbetterthanthestandard                    ployedforevaluatingtheforecastingperformancesof15
+GARCH-MIDASmodelwithoutthethresholdeffect.                            extendedGARCH-MIDASmodelswhenlargefluctuations
+   Throughthediscussionthatboththeasymmetryand                        occur.Furthermore,byusingthemodelconfidenceset
+threshold effects have significant impacts on the stock               (MCS)test(Hansen,Lunde,&Nason,2011),wefindcon-
+volatility forecasting, this study modifies the GARCH-                sistentevidencethattheestimatedasymmetry-threshold
+MIDASmodelbyaddingthetwoeffectsinordertocap-                          models are closer to the observed sample than mod-
+turetheleverageeffectandtheextremeriskphenomenon                      elsthatincorporateeithertheasymmetryeffectorthe
+instockmarkets.Ourextendedmodelaccountsfor(a)                         extreme volatility effect. Although none of the models
+theinfluenceofextremeeventsonthestockvolatilitiesof                   emergesasclearlythebestintheout-of-sampleperiod,
+
+PAGE 3
+686              L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694
+
+itseemsthatmodelsthatincludebothasymmetryand                             AssumingthatEi−1,t (ri,t)isequalto µ,Eq.(1)canbe
+extremevolatilityeffectscanimprovethepredictability                  writtenasfollows:
+ofthestockvolatility.Moreover,theproposedGARCH-                      ri,t = µ + √τtgi,tεi,t, ∀i =1,2, . . . ,Nt.       (3)
+MIDAS models can also be used to forecast the future
+volatilitiesofothermarkets,suchastheoil,bond,and                         Theshortcomponentgi,t isdrivenbythefollowing
+exchangemarkets.                                                     standardGARCH(1,1)process:
+   WeemploythedailypricedataoftheS&P500index
+from 1993 to 2016 in our forecasting analysis. Fifteen               gi,t = (1 − α − β) + α(ri,t − µ)2
+extended GARCH-MIDAS models are used to generate                                                   τt       + βgi−1,t,     (4)
+forecasts.TheMCStest,usingfivelossfunctioncriteria,is                where α >0, β >0, α + β <1.
+employedforevaluatingthemodels’forecastingperfor-                        Thelongcomponent τt iscapturedasthesmoothed
+mances.Wefindthatmodelsthatcontaintheasymmetry                       realizedvolatilityoftheMIDASregression:
+and extreme volatility effects perform best, while the
+standardmodelperformsworstout-of-sample,whichim-                                   K∑
+pliesthatconsideringboththeasymmetryeffectandthe                     τt =m + θ        ϕk(ω1, ω2)RVt−k,           (5)
+extremevolatilityeffectcanimprovethepredictabilityof                              k=1
+thestockvolatility.Morespecifically,wefindsignificant                whereRVtdenotesthefixedtimespanrealizedvolatility
+evidencethat(a)badnewshasagreaterinfluencethan                       (RV)attimet:
+good news, (b) negative and positive extreme shocks
+have significant, somehow differential impacts on the                         Nt∑
+stockvolatility,(c)thestockvolatilityismorelikelyto                  RVt =       r2i,t,                   (6)
+beaffectedbynegativeextremeshocksthanbypositive                              i=1
+extremeshocks,and(d)boththeasymmetryeffectand                        and ϕk(ω1, ω2)isthefunctionthatdefinestheweight-
+theextremevolatilityeffectcanaffectthestockvolatility                ingschemeofMIDASfilters.Fortheweightingfunction,
+in both the long term and the short term, though the                 Engleetal.(2013)proposeboththebetaandexponen-
+impactofeffectsintheshorttermisgreater.Thesecon-                     tiallyweightedlagstructures.Ghysels,Sinko,andValka-
+clusionsarerobustandreliablefordifferentbenchmarks                   nov(2007) indicate that the beta polynomial is more
+andthresholdwindows.                                                 flexible and used more commonly for accommodating
+   Theremainderofthispaperisorganizedasfollows.                      variouslagstructures.Thus,weconsideronlythebeta
+Section2presentsthemethodologyofourasymmetry-                        function,whichiswrittenasfollows:
+thresholdGARCH-MIDASmodel.Section3describesthe
+data.Section4showsthein-sampleandout-of-sample                       ϕk (ω1, ω2) =     (k/K)ω1−1(1 −k/K)ω2−1∑K
+empiricalresults.Thefinalsectionconcludesthepaper.
+                                                                                        j=1 (j/K)ω1−1(1 −j/K)ω2−1 ,     (7)
+2.  Methodology                                                      and we set  ω2 equal to one so that  ϕ is a monotonic
+                                                                     functionof ω1.
+   Thissectionprovidesbriefdescriptionsofthestandard                     There are two kinds of estimation methods for es-
+GARCH-MIDAS model and of the corresponding mod-                      timating the GARCH-MIDAS model: fixed-window and
+elsextendedbycapturingtheasymmetryandextreme                         rolling-window. As was discussed byAngelidis, Benos,
+volatilityeffects.                                                   and Degiannakis(2004) andDegiannakis, Livada, and
+                                                                     Panas(2008),theuseofrestrictedrollingwindowsam-
+2.1.StandardGARCH-MIDASmodel                                         plesinout-of-sampleforecastingcancapturethechanges
+                                                                     inmarketactivitymoreeffectively.Specifically,therolling
+   Letri,tbethelogreturnondayiinmontht;then,the                      window scheme employs a fixed rolling window that
+GARCH-MIDASmodelproposedbyEngleetal.(2013)and                        allowstheparameterstobere-estimatedonadailybasis.
+EngleandRangel(2008)canbedescribedasthefollowing                     Itremovestherestrictionthat τtisfixedformontht,and
+process:                                                             welet τandgbothchangeatadailyfrequency.Therefore,
+ri,t −Ei−1,t (ri,t) = √τtgi,tεi,t, ∀i =1,2, . . . ,Nt    (1)         wecapturetheinformationupdatedinthelongtermby
+                                                                     consideringarollingwindowscheme,definedasfollows:
+
+
+                                                                                             K∑
+εi,t ⏐⏐ψi−1,t ∼N(0,1) ,               (2)                            τ(rω)                      ϕk(ω1, ω2)RV(rω)
+                                                                      i     =m(rω)i    + θ(rω)i               i−k ,      (8)
+where Nt is the number of trading days in month t;                                          k=1
+Ei−1,t()istheconditionalexpectation,giveninformation                 where RV(rω)
+uptotime(i–1);and ψi−1,t denotestheinformation                                  i      =  ∑N′i=1r2i−j is the rolling window (rω)
+setuptodayi–1ofperiodt.Obviously,thevolatility                       realizedvolatility,whileidenotesthedayoftheperiod.
+hastwoseparatecomponents:gi,tdenotestheshort-term                    We set N′ equal to 22, which means that we use the
+component,whichaccountsfordailyfluctuations,and τt                   monthlyrealizedvolatilitywiththerollingwindowre-
+represents the long-term component, which initially is               alizedvolatility.Forsimplicity,wedropthesuperscript
+assumedtobefixedformontht.                                           ‘‘(rω)’’intheequationsthatfollow.
+
+PAGE 4
+                              L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694              687
+
+2.2.GARCH-MIDASwiththeasymmetryeffect                                 thresholdsforextremelynegativereturnsandextremely
+                                                                      positivereturns,respectively.Specifically,1{}  = 1indi-
+   Weaccountfortheasymmetryeffectbymodifyingthe                       catesahighstockvolatility,while1{}  = 0denotesthe
+GARCH-MIDASmodelstoincorporatethesignasymmetry                        existenceoflowvolatility.
+ofthevolatilityprocessasanadditionalexplanatoryvari-                      The general specification of the volatility threshold
+able.GivenstudiessuchasthoseofCharfeddine(2016),                      dummies 1{} depends on the hypothesis to be tested,
+Degiannakis(2004),Lin,Chen,andGerlach(2012),and                       whetherri,t  <q1andri,t  >q2.Wesuggestdefiningthe
+PanandLiu(2018),wefindthattheGARCH-MIDASmodel                         volatilitythresholdasqi  = Qi(δi),i  = 1,2,where δiis
+with an asymmetry term is a suitable model for fore-                  thequantilelevel(namely,aparameterassumingvalues
+castingthestockpricevolatility.Wethereforeextendthe                   betweenzeroandone)andQi(δi)denotestheempirical δi
+GARCH-MIDASmodeltoaccountfortheasymmetryeffect                        quantileofthereturnri,t.Obviously,theparameters γ −∗
+intheshort-andlong-termvolatilitycomponents.                          and γ +∗ inEq.(11)includeinformationonthethresh-
+   Fortheshort-termasymmetryeffect,weusetheGJR                        old effect when extreme negative shocks and extreme
+(1,1)specificationtomodeltheprocessoftheshort-term                    positiveshocksoccur,respectively.
+componentasfollows:                                                       Similarly to the short-term case, we also model a
+                                (                 )                   thresholdstructurebasedonthelong-termvolatilitylev-
+gi,t = (1 − α − β −0.5γ ) +      α +1{ri−1,t<0}γ                      elsasfollows:
+         (ri,t − µ)2                                                                   K∑                      K∑
+      ×                                                               τi =m + θ−∗         ϕk(ω)RS−∗i−k + θ+∗      ϕk(ω)RS+∗i−k
+              τt       + βgi−1,t,            (9)                                      k=1                     k=1
+where1{}isanindicatorfunction,whichmeansthatthe                                   K∑
+function takes a value of one if the condition is satis-                   + θ∗      ϕk(ω)RS∗i−k,             (12)
+fied,andzerootherwise.Obviously,theasymmetryterm                                 k=1
+1{ri−1,t<0}issettodifferentiatepositivereturnsfromneg-                whereRS−∗
+ativereturns.                                                                    i−k  = ∑N′j=1r2i−j1{ri−j<q1}andRS+∗i−k  = ∑N′j=1r2i−j
+   Forthelong-termasymmetryeffect,wemodifythe                         1{ri−j>q2} are the realized variance, which can capture
+GARCH-MIDASmodelbydecomposingtheMIDASregres-                          the variation caused by extreme returns, and RS∗i−k  =
+sionintothefollowingtwoparts,inspiredbyPattonand                      ∑N′
+                                                                         j=1r2i−j1{q1≤ri−j≤q2}denotestheregularrealizedvolatil-
+Sheppard(2015):                                                       ity. Obviously, the realized variance in Eq.(12)is de-
+
+               K∑                     K∑                              composedintothreecomponents–aregularcomponent,
+τi =m + θ−        ϕk(ω)RS−i−k + θ+       ϕk(ω)RS+i−k,  (10)           anextremenegativecomponentandanextremepositive
+
+              k=1                    k=1                              component–byutilizingthethresholdsthatareinexcess
+whereRS−                                                              ofsomecriticalvalueforthestockreturn.
+          i−k  = ∑N′j=1r2i−j1{ri−j<0} andRS+i−k  = ∑N′j=1r2i−j
+1{ri−j>0}aretherealizedsemivariancemeasuresthatcan                    2.4.GARCH-MIDASwithasymmetryandextremevolatility
+exhibitvariationforpositiveandnegativereturns,respec-                 effects
+tively.                                                                   We have considered the asymmetry and extreme
+
+2.3.GARCH-MIDASwiththeextremevolatilityeffect                         volatility effects separately in Sections2.2and2.3, re-
+                                                                      spectively.Thisstepenablesustoexaminetheimpacts
+   Recent developments in volatility modeling have                    ofboththeasymmetryandextremevolatilityeffectson
+been concerned with the influence of extreme events                   thevolatilityofstockpricereturnsthroughtheresidual
+on the volatility and extreme losses (see e.g.                        termofthereturnequationoftheGARCH-MIDASmodel.
+Kim, Rachev, Bianchi, Mitov, & Fabozzi,2011;Piccoli,                  Thissubsectionthereforedevelopsasetofmodelswith
+Chaudhury,Souza,&daSilva,2017;Zhang,Yu,Wang,&                         both the asymmetry effect and the extreme volatility
+Lai,2009).Thesestudiesshowthatithasbecomeessential                    effectintheprocessesofboththeshort-termandlong-
+tobuildavolatilitymodelthatincorporatestheabnormal                    termvolatilitycomponents.Atthesametime,wealso
+volatilityofextremereturnsundertheeffectofextreme                     investigatewhetherthosenewmodelsaremorepowerful
+events. We account for the impacts of extreme shocks                  forforecastingthevolatility.
+on volatility forecasting using the following threshold                   Mathematically,thismodifiedGARCH-MIDASmodelis
+GARCH-MIDASmodel:                                                     expressedbyEqs.(9)–(12)asfollows:(
+      (                                                               gi,t =   1 − α − β −0.5γ − −1{ri,t<q1}γ −∗
+gi,t =  1 − α − β −1{ri,t<q1}γ −∗ −1{ri,t>q2}γ +∗)
+        (                                          (ri,t − µ)2               −0.5γ + −1{ri,t>q2}γ +∗)(
+      +   α +1{ri,t<q1}γ −∗ +1{ri,t>q2}γ +∗)    ×      τt                    +   α +1{ri,t<0}γ − +1{ri,t<q1}γ −∗ +1{ri,t>0}γ +
+      + βgi−1,t,                  (11)                                                            (ri,t − µ)2
+where β >0, α +β +1{ri,t<q1}γ −∗ +1{ri,t>q2}γ +∗ <1,1{}                      +1{ri,t>q2}γ +∗)  ×      τt
+
+isanindicatorfunction,andq1andq2arethevolatility                             + βgi−1,t                  (13)
+
+PAGE 5
+688              L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694
+
+                 K∑                      K∑                            4.1.In-sampleestimation
+ τi =m + θ−         ϕk(ω)RS−i−k + θ−∗       ϕk(ω)RS−∗i−k
+
+                k=1                     k=1                                Weplottheestimatedsecularcomponentsofthetotal
+             K∑                       K∑                               conditionalvolatilityobtainedfromthevariousGARCH-
+      + θ+      ϕk(ω)RS+i−k + θ+∗        ϕk(ω)RS+∗i−k.   (14)          MIDASextensionsgiveninTable1.Asaconcise,readable
+
+            k=1                      k=1                               example,Fig.1showstheestimatedsecularvolatilityof
+   Eqs.(13)and(14)describetheshort-termandlong-                        Models0,7,and15.2
+term volatility components for measuring the impacts                       The estimates of the GARCH-MIDAS parameters are
+ofbothasymmetryandextremevolatilityeffectsonthe                        presented inTable2.     3 The parameters of the basic
+stockvolatility.Theasymmetry-thresholdmodelrefersto                    GARCH-MIDASmodelareallpositiveandsignificant,indi-
+theimpactsofbadandgoodnewsbasedontheasymme-                            catingthattheGARCH-MIDASmodelfitsthestockreturn
+tryeffect,aswellastheimpactsofsmallandlargenews                        andcanbeusedtoforecastthestockvolatility.Thesums
+basedontheextremevolatilityeffect.                                     of α and β arenoticeablyclosetoone,confirmingthe
+   In summary, we use these new variance equations                     existenceofastrongvolatilitypersistenceeffect.Mean-
+discussedinSections2.2–2.4toreplacetheexistingshort-                   while,mostoftheparametersoftheremainingextensions
+term and long-term volatility components in the stan-                  basedontheGARCH-MIDASmodelarealsosignificant,
+dardGARCH-MIDASmodeldiscussedabove.Specifically,                       implyingthattheseextensionsfitthestockreturnvery
+we consider four types of effects for inclusion in the                 well.
+GARCH-MIDAS model: asymmetry effects in the short-                         First,weanalyzetheparametersofmodels1,2,5,6,
+term volatility, asymmetry effects in the long-term                    7,8,9,11,12,14,and15thatconsideredtheasymmetry
+volatility, including extreme effects in the short-term                effect.Theasymmetryparameter γ ofthesemodelsfor
+volatility,andincludingextremeeffectsinthelong-term                    theshort-termvolatilitymaintainsasignificantnegative
+volatility.Includingorexcludingeacheffectenablesus                     impactonthestockvolatility,whichisstrongevidence
+tospecify24(=16)extensions.Thus,wehaveatotalof                         thatbadnewshasagreatershort-termimpactonthe
+16models,includingthebasicGARCH-MIDASmodelwith                         stockvolatilitythangoodnews.Thisresultisconsistent
+noneoftheeffects.Atypologyofthesemodelsisgivenin                       with the findings ofVeronesi(1999). Furthermore, the
+Table1.Threeofthesemodelstakeintoaccountonlythe                        significanceof θ+and θ−forthelong-termvolatilityis
+asymmetryeffectintheshort-orlong-term,threemerely                      mixedacrossvariousmodels.Specifically,ingeneral,the
+considertheextremevolatilityeffect,andtheremaining                     significant coefficient of  θ+ is negative, which implies
+nineaccountforbothasymmetryandextremevolatility                        thatthiscomponentleadstoalowerlong-termvolatility.
+effectsintheshortorlongterm.                                           However,theestimatedresultsinTable2indicatethatthe
+3.  Data                                                               negativerealizedsemi-variancescanresultinhighlong-
+                                                                       term volatilities, because the coefficient is significantly
+   FollowingBecker and Clements(2008), we consider                     positive.
+theS&P500index,oneofthebestsinglegaugesoflarge-                            Second,weanalyzetheparametersofmodels3,4,5,6,
+cap U.S. equities, which are employed widely in stock                  8,9,10,11,12,13,14,and15thatconsideredtheextreme
+volatility forecasting. Daily stock price data are avail-              effect.Itcanbefoundthatmostoftheparameters γ +∗,
+able from the Federal Reserve Economic Data (FRED),                    γ −∗, θ+∗and θ−∗aresignificant,implyingtheexistence
+maintainedbytheFederalReserveBankofSt.Louis.Our                        of a strong ‘‘extreme volatility effect’’. In addition, the
+samplespanstheperiodfromJanuary1991toDecember                          estimation results given inTable2for the short- and
+2016.1                                                                 long-termcomponentsdemonstratethathighernegative
+                                                                       extremeeffectscanleadtohighervolatilitiesforboththe
+4.  Estimation results                                                 shorttermandthelongterm,whereastheimpactofa
+                                                                       positiveextremeeffectisminor.Thisevidenceimplies
+   Thissectionbeginsbyprovidingtheparameteresti-                       that the extreme effect is a potential source of stock
+mationresultsofthe16modelsdescribedinTable1.In                         volatility persistence, which is consistent withAboura
+addition,wealsoevaluatetheout-of-sampleforecasting                     andWagner’s(2016)argumentthatlargestockmarket
+performancesofthosemodelsunderdifferentcriteriain                      declinescanbeseen,atleastinpart,asaconsequence
+ordertoexplorewhetherintroducingasymmetryandex-                        ofvolatilityfeedbackatextremelevels.
+tremevolatilityeffectscanimprovetheforecastingability.                     Third,weanalyzethespecialcaseofmodel15,which
+Moreover,extremevolatilityinstockreturnsisrelatedto                    includesbothasymmetryandextremevolatilityeffectsin
+eventsforwhichtheprobabilityissmall.FollowingHer-                      boththeshort-andlong-termcomponents.Itisclearthat
+reraandClements(2018),wechoosethequantilelevels                        alloftheparametersofthesenewly-consideredeffects
+δ1  = 0.1and δ2  = 0.9inEqs.(11)–(14),respectively.                    aresignificant.Wefindthattheasymmetrycoefficients
+Thus,thisstudydefinesan‘‘extremeevent’’asonethat                       of the new model are larger than the coefficients that
+belongs to the most negative 10% of returns in stock                   describetheextremevolatilityeffect(|γ +| > |γ +∗|, |γ −|
+marketsorthemostpositive10%oflog-changes.
+                                                                         2 ThesecularvolatilitiesforallGARCH-MIDASmodelsareprovided
+ 1 ThedescriptivestatisticsoftheS&P500,alongwithitsdailyre-            intheonlineappendix(FigureD1).
+turnsandvolatility,arereportedanddisplayedintheonlineappendix            3 We estimateand forecast allmodels using thePython software
+(TableA1andFigureA1).                                                  (version3.7).
+
+PAGE 6
+                                   L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694              689
+
+
+Table 1
+ThetypologyofGARCH-MIDASanditsextensions.
+ Model         Asymmetry       Asymmetry       Extreme          Extreme         Eq.number       Eq.number       Modeldescription
+ number        effectin        effectin        volatility       volatility      for             for
+               short-term      long-term       effectin         effectin        short-term      long-term
+                                               short-term       long-term       component       component
+ Model0                               (4)      (5)      ThebasicGARCH-MIDASmodel
+ Model1      ✓                            (9)      (5)      Includingasymmetryinshort-term
+                                                                                                                volatility
+ Model2                          ✓                     (4)      (10)     Includingasymmetryinlong-term
+                                                                                                                volatility
+ Model3                                              ✓              (11)     (5)      Includingthresholdinshort-term
+                                                                                                                volatility
+ Model4                                                                  ✓       (4)      (12)     Includingthresholdinlong-term
+                                                                                                                volatility
+ Model5      ✓                                      ✓              (13)     (5)      Includingasymmetryandthresholdin
+                                                                                                                short-termvolatility
+ Model6                          ✓                                      ✓       (4)      (14)     Includingasymmetryandthresholdin
+                                                                                                                long-termvolatility
+ Model7      ✓                  ✓                     (9)      (10)     Includingasymmetryinbothshort-and
+                                                                                                                long-termvolatility
+ Model8      ✓                                                          ✓       (9)      (12)     Includingasymmetryinshort-term
+                                                                                                                volatilityandthresholdinlong-term
+                                                                                                                volatility
+ Model9      ✓                  ✓                                      ✓       (9)      (14)     Includingasymmetryinbothshort-and
+                                                                                                                long-termvolatilityandextremein
+                                                                                                                long-termvolatility
+ Model10                                             ✓                  ✓       (11)     (12)     Includingextremeinbothshort-and
+                                                                                                                long-termvolatility
+ Model11                         ✓                  ✓              (11)     (10)     Includingasymmetryinlong-term
+                                                                                                                volatilityandextremeinshort-term
+                                                                                                                volatility
+ Model12                         ✓                  ✓                  ✓       (11)     (14)     Includingasymmetryinlong-term
+                                                                                                                volatilityandextremeinbothshort-
+                                                                                                                andlong-termvolatility
+ Model13     ✓                  ✓                  ✓              (13)     (10)     Includingasymmetryinbothshort-and
+                                                                                                                long-termvolatilityandextremein
+                                                                                                                short-termvolatility
+ Model14     ✓                                      ✓                  ✓       (13)     (12)     Includingasymmetryinshort-term
+                                                                                                                volatilityandextremeinbothshort-
+                                                                                                                andlong-termvolatility
+ Model15     ✓                  ✓                  ✓                  ✓       (13)     (14)     Includingasymmetryandextremein
+                                                                                                                bothshort-andlong-termvolatility
+Notes:Theextensionsareconstructedbyconsideringthefourkindsofeffectslistedincolumns2–5,wheretheeffectsthatareincludedarelabeled
+‘‘✓’’.Forclarity,eachmodelisdescribedinthelastcolumn.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Fig. 1. TheestimatedsecularvolatilitiesofModels0,7,and15.
+
+> |γ −∗|, |θ+| > |θ+∗|,and |θ−| > |θ−∗|),whichimplies                              volatilityatthe1%significancelevel,whereassomeofthe
+thattheasymmetryeffecthasagreaterimpactonthe                                       positiveparameters(γ +, θ+)havenoinfluenceonthe
+stockvolatility.Inaddition,allofthenegativeparameters                              stockvolatility.Furthermore,therankingsoftheabsolute
+(γ −∗, γ −, θ−, θ−∗)havesignificantimpactsonthestock                               coefficientvalues(|γ −∗| > |γ +∗|, |γ −| > |γ +|, |θ−∗| >
+
+PAGE 7
+690              L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           Fig. 2. VolatilityforecastsfromModels0,7,and15.
+
+                                                                                      n∑ ⏐⏐σ2      ⏐⏐             (16)
+|θ+∗|,and |θ−| > |θ+|)showthatthestockvolatilityis                       MAE =1
+relatedmorestronglytopastbadnewsandlargenews                                      n        t  − ˆσ2t
+than to good news or small news. The reason for this                                 t=1
+                                                                                      n∑
+maybethatextremebadeventsdriveinvestorstopay                           HMSE =1          (1 − σ2
+moreattentiontoinformationrelatedtothefutureuncer-                                n            t / ˆσ2t)2            (17)
+tainty.Meanwhile,thestockvolatilityisinfluencedmore                                  t=1
+                                                                                      n∑ ⏐⏐1 − σ2     ⏐⏐            (18)
+stronglybytheasymmetryeffectthanbythethreshold                         HMAE =1
+effect.Theresultsindicatethattheasymmetryeffectis                                 n             t / ˆσ2t
+                                                                                     t=1
+moreefficientatpredictingthestockmarketvolatility.                                    n∑
+4.2.Out-of-sampleforecasting                                            QLIKE =1n       (ln( ˆσ2t) − σ2t / ˆσ2t)2,         (19)
+                                                                                     t=1
+   Theout-of-sampleperformanceofthepredictiveabil-                     wherenisthetotalnumberofvolatilityforecasts,and
+ity is more important than its in-sample performance                   σ2t and  ˆσ2t are the actual value and forecast value of
+becausemarketparticipantsaremoreconcernedabout                         thevolatility,respectively.Specifically, σ2t isthesquared
+themodel’sabilitytopredictthefuturethanaboutits                        daily return, which is taken as a proxy for the actual
+abilitytoanalyzethepast(e.g.,Ma,Jietal.,2019;Ma,                       volatilityduringtheout-of-sampleperiod.5  ˆσ2t denotes
+Liaoetal.,2019;Wang,Wei,Wu,&Yin,2018).Thissub-                         the out-sample volatility forecasts obtained from each
+section explores whether incorporating the asymmetry                   oftheabovementionedmodels(Models0–15).MSEand
+andthresholdeffectscanimprovethepredictiveability                      MAEarethemeansquarederrorandmeanabsoluteer-
+ofthestockvolatilitybyusingout-of-samplepredictions                    ror,whileHMSEandHMAEaretheheteroscedasticity-
+tomakedirectcomparisonsoftheperformancesofthe                          adjustedversionsofMSEandMAE,respectively,which
+extendedGARCH-MIDASmodels.                                             arenon-linearlossmeasurements.Inparticular,thefind-
+   Inparticular,wedividethesampledataintotwosub-                       ingsofPatton(2011)showthattheQLIKElossfunctions
+groups:(1)in-sampledataforvolatilitymodeling,from                      provideconsistentrankingsbecauseofthelowerimpact
+January1991toJanuary2006;and(2)out-of-sampledata                       ofthemostextremeobservationsinthesample.
+formodelevaluation,fromFebruary2006toDecember                              FollowingMa,Jietal.(2019),Ma,Liaoetal.(2019)and
+2016. At each step, we discuss the forecasting perfor-                 Ma,Wei,Liu,andHuang(2018),thelossfunctionsprovide
+mancesofthevariousmodelsfortheremainderofthe                           noinformationonwhetherthedifferencesinforecast-
+sample and then shift the estimation window by one                     inglossesamongmodelsarestatisticallysignificant.We
+period.Fig.2plotsthevolatilityforecastsandthetrue                      thereforeemploytheMCSapproachdevelopedbyHansen
+volatilitiesgeneratedbyModels0,7,and15inTable1.     4                  etal.(2011).UnliketheSPAtest(Hansen,2005),theMCS
+Initially,theforecastingaccuracyofthevolatilitymodels                  testdoesnotrequireabenchmarkinordertobespecified,
+isgaugedusinglossfunctions.AccordingtoDieboldand                       which makes it very useful in applications without an
+Lopez(1996)andWangandWu(2012),itisdifficultto                          obviousbenchmark.TheMCStestsequentiallyeliminates
+decidewhichlossfunctionisthebestatevaluatingthe                        themodelswiththeworstperformancesfromthefullset
+accuracyofvolatilityforecasting,andthereforeweselect                   ofmodelsM untilthenullhypothesisofequalforecast
+fivelossfunctionsastheforecastingerrorbenchmark:                       accuracy(EPA)isnolongerrejectedatthe αsignificance
+              n∑                                                       level;then,thesetofmodelsthatsurvivesformstheMCS.
+
+  MSE =1n        (σ2t  − ˆσ2t)2             (15)
+             t=1                                                         5 The squared daily returns are taken as a proxy for the actual
+
+ 4 ThecorrespondinggraphsfortheremainingmodelsinTable1are              volatilities,followingmanystudies,suchasthoseofAsgharianetal.
+                                                                       (2013),Panetal.(2017),Wang,Wu,andYang(2016)andWei,Wang,
+givenintheonlineappendix(FigureD2).                                    andHuang(2010).
+
+PAGE 8
+L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694              691
+
+PAGE 9
+692              L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694
+
+
+Table 3                                                                   of the stock volatility by also employing the DM test
+TheMCStestresultsfortheS&P500indexusingtheGARCH-MIDAS                     (Harvey, Leybourne, & Whitehouse,2017;Miao, Ram-
+models.                                                                   chander,Wang,&Yang,2017)tocomparetheforecasting
+               MSE    MAE    HMSE   HMAE   QLIKE                          performancesofourextendedmodelsandthestandard
+ Model0             0.627 0.007   0.025   0.000    0.000                  GARCH-MIDASmodeldirectly.TheDMtestsupposesthat
+ Model1             0.655 0.008           0.207 0.001    0.001
+ Model2             0.633 0.007   0.083   0.000    0.000                  aforecasterhasanidenticallossfunctiong(A,B),sothat
+ Model3             0.885 0.007           0.207 0.342       0.001         twodifferentforecasts,AandB,leadtosimilarlossesdue
+ Model4             0.595 0.012           0.178 0.006    0.000
+ Model5             0.962 0.007           0.221 0.342       0.224         toerrors.Thetwoforecastshaveequalaccuraciesifand
+ Model6             0.627 0.007           0.178 0.034    0.000            onlyifthelossdifferentialhaszeroexpectationsforallt.
+ Model7             0.773 0.008   0.004   0.000    0.003
+ Model8             0.655 0.007   0.099   0.006    0.000                  TheDMstatisticscanbederivedas
+ Model9             0.775 0.007           0.207 0.006    0.012                      ∑t
+ Model10           0.773  0.008           0.207 0.342       0.005                 1
+ Model11           0.609  0.008           0.207 0.031    0.004            DM =    T    1{g(eA,t+h) −g(eB,t+h)}
+ Model12           0.773  1.000      0.000   0.000    0.004                              ˆσg(eA,t+h)−g(eB,t+h)        ,        (20)
+ Model13           0.837  0.008   0.141   0.000             0.737
+ Model14           0.775  0.008           0.588 1.000       0.737         whereg(eA,t+h)andg(eB,t+h)denotethelossesfromfore-
+ Model15           1.000  0.008           1.000 0.342       1.000
+Notes: The typology of the models is given inTable1. The numbers in       casterrorsthatevolvefrompredictionmodelsAandB,
+the table are the p-values. Numbers larger than 0.10 are indicated in     with ˆσdenotingaconsistentestimateofthestandardde-
+boldandunderlined,andsuggestthatthecorrespondingmodelperforms             viationofthedifferenceinlosses.Here,thelossfunction
+significantlybetteramongthemodelset.                                      issettothemeansquareerror.Thenullhypothesisis
+                                                                          thatg (eA,t+h) =g(eB,t+h)forallt,andDMisdistributed
+                                                              dij|        simplyasN (0,1)underthisnull(Diebold&Mariano,
+   WeemploytherangestatisticsTR  = maxi,j∈M   |√ˆvardij                   1995). The null hypothesis of the DM test is that the
+
+                                                           dij)2          twopredictivemodelshavethesamelevelofaccuracy.
+andthesemi-quadraticstatisticsTSQ  = ∑i,j∈M (ˆvardij to                   Thus,werejectthenullhypothesisifthep-valueisless
+test the null hypothesis of EPA, where dij is the loss                    than0.05;thatis,wecanconcludethatthepredictive
+differentialbetweentwoextendedGARCH-MIDASmodels                           accuraciesofthetwocompetingmodelsaresignificantly
+inMand ˆvardijisanestimateof var(dij)thatisobtained                       different.
+using the stationary block bootstrap. Furthermore, we                        Table4showstheresultsoftheDMtest.Thenum-
+chooseathresholdvalueof0.10forselectingsuperior                           bersinthetablearetheratiosofthelossfunctionsof
+forecasting models. In summary, if the MCS p-value is                     thenewGARCH-MIDASmodelsinTable1tothatofthe
+largerthan0.10,thecorrespondingmodelcanachievea                           standardmodel.Wefindthatthelossratiosarelower
+greaterforecastingaccuracy.Thep-valuesaredetermined                       thanoneinmostcases(64casesoutof75),indicatingthat
+from10,000blockbootstraps.                                                ourextendedmodelsexhibitlowerlossfunctionsthan
+   TheMCStestresultsarepresentedinTable3.First,                           thebenchmarkmodel,andthusgeneratemoreaccurate
+under the MSE loss function, we find that the MCS p-                      forecasts under the pre-specified loss criterion. Model
+valuesofallmodelsaregreaterthan0.10,whichshows                            15performsbestunderallofthelossfunctions,which
+that those models can generate better forecasts, while                    shows that incorporating both the asymmetry and ex-
+Model 15, which considers both the asymmetry effect                       tremevolatilityeffectsinboththeshortandlongtermof-
+andtheextremevolatilityeffectinboththeshortand                            fersthemostsubstantialimprovementinforecastingac-
+longterm,isthebestforecastingmodelrelativetoother                         curacyamongalltheextendedmodels.Moreover,thep-
+new models. Furthermore, Model 15 also significantly                      valuesoftheDMtestsshowthatacomparisonofournew
+outperforms other models under the HMSE and QLIKE                         models’out-of-sampleforecastsisstatisticallysignificant.
+lossfunction.Second,basedontheMAElossfunctions,                           Furthermore,wecompareallmodelsinpairsbyusingthe
+Model 12 is the only model that passes the MCS test,                      DMtest,whichcanexhibitdifferentpredictiveaccuracies
+which indicates that this model exhibits a statistically                  betweeneachmodelinTable1.OurDMtestssuggestthat
+higherforecastingaccuracythantheothermodels.Third,                        Model15canachievemoreaccuratevolatilityforecasts
+fromtheempiricalresultsoftheHMAElossfunction,we                           thantheotherextendedGARCH-MIDASmodels.6
+determinethatModel14iscapableofachievingagreater                          5.  Conclusions
+forecastingaccuracythantheothermodels.
+   Ingeneral,combiningtheresultsfromalloftheloss                             This study proposes 15 extensions of the GARCH-
+functions,wefindthatModels12,14,and15outperform                           MIDASmodelintroducedbyEngleetal.(2013),whichcan
+thanthebenchmarkmodel(GARCH-MIDAS)andtheother                             accommodateboththeasymmetryeffectandtheextreme
+modelsforforecasting.Themainreasonwhythethree                             volatilityeffectcausedbyextremeshocksintheshort-
+newly-proposedmodelsdeliverthebestforecastingper-                         termand/orlong-termvolatilitycomponents.Weforecast
+formancemaybebecausethemodelscontainaspotential
+predictorsnotonlyinformationregardingasymmetrybut
+alsoinformationreflectingthehugefluctuationscaused                          6 The detailed results comparing the 16 forecasting models are
+by extreme events. Overall, the evidence suggests that                    givenintheonlineappendix(TablesB1–B15).Moreimportantly,we
+the use of the extended GARCH-MIDAS model offers a                        performseveralrobustnesschecks,suchasusingFTSEdata,different
+substantialimprovementinforecastingaccuracy.                              volatility thresholds, out-of-sample analyses conditional on dynamic
+                                                                          thresholds,empiricalstudiesforS&P500futures,andempiricalstudies
+   We examine whether including asymmetry and ex-                         ofindividualstocks,theresultsofwhichsupportourmainfindings.We
+tremeeffectscanhelptoimprovetheforecastaccuracy                           showtheseempiricalresultsintheonlineappendix(TablesC1–C9).
+
+PAGE 10
+                                    L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694              693
+
+
+Table 4                                                                             superiorextensionsoftheGARCH-MIDASmodelinorder
+Results of the Diebold–Mariano test between Model 0 and Models                      tomodelandforecastthevolatility.
+1–15.
+             MSE    MAE    HMSE   HMAE   QLIKE
+ Model1  0.950*           0.976***    0.900***    0.960***    0.942***              Acknowledgments
+             (−1.38)      (−2.570)    (−2.813)    (−5.139)    (−7.774)
+ Model2  1.001            0.997***    1.001       1.002       1.000                     TheauthorsaregratefultotheNationalNaturalSci-
+             (0.426)      (−6.576)    (0.361)     (7.171)     (0.100)               ence Foundation of PR China [71671145, 71701170,
+ Model3  0.946*           0.982**     0.869***    0.953***    0.950***              71901158],theHumanitiesandSocialScienceFundofthe
+             (−1.46)      (−1.996)    (−2.989)    (−6.306)    (−6.842)
+ Model4  0.997            1.001       0.998       0.999       0.999                 MinistryofEducation,China[17YJC790105,17XJCZH002],
+             (−0.150)     (1.847)     (−0.998)    (−1.130)    (−0.645)              fundamentalresearchfundsforthecentraluniversities,
+ Model5  0.944*           0.976***    0.869***    0.951***    0.935***              China[682017WCX01,2682018WXTD05,2019B02],the
+             (−1.403)     (−2.448)    (−3.201)    (−5.933)    (−8.014)              Soft science research plans of Chengdu, China [2017-
+ Model6  0.999            0.994***    0.975       0.999       0.997*                RK00-00032-ZF],theDoubleFirst-ClassprojectofSouth-
+             (−0.313)     (−6.945)    (−0.992)    (−0.072)    (−1.492)
+ Model7  0.953*           0.971***    0.922**     0.970***    0.941***              west Jiaotong University, China [JDSYLYB2018033], the
+             (−1.455)     (−3.12)     (−2.252)    (−3.898)    (−7.909)              China Postdoctoral Science Foundation [2018M643512],
+ Model8  1.001            0.999       1.034       1.013       0.994                 the Full-time Postdoctoral Research and Development
+             (0.027)      (−0.035)    (1.105)     (1.894)     (−0.822)
+ Model9  0.951*           0.966***    0.881**     0.969***    0.939***              FundsofSichuanUniversity,China[skbsh2019-41],and
+             (−1.500)     (−3.931)    (−2.266)    (−3.912)    (−7.976)              theInnovationSparkProjectofSichuanUniversity,China
+ Model10 0.951*           0.981**     0.907***    0.962***    0.950***              [2018hhf-42].
+             (−1.343)     (−2.137)    (−2.648)    (−5.011)    (−6.798)
+ Model11 0.952*           0.980***    0.883**     0.963***    0.950***
+             (−1.406)     (−2.332)    (−2.201)    (−4.963)    (−6.846)              Appendix A.  Supplementary data
+ Model12 0.984            0.860***    2.265       1.357       1.076
+             (−0.392)     (−9.406)    (6.777)     (12.912)    (2.755)                   Supplementarymaterialrelatedtothisarticlecanbe
+ Model13 0.946*           0.964***    0.885***    0.962***    0.932***              found online athttps://doi.org/10.1016/j.ijforecast.2019.
+             (−1.612)     (−4.299)    (−2.746)    (−4.737)    (−8.534)
+ Model14 0.950            0.978**     0.853**     0.959***    0.933***              08.005.
+             (−1.249)     (−2.198)    (−2.160)    (−4.595)    (−7.733)
+ Model15 0.943**          0.961***    0.832**     0.959***    0.927***              References
+             (−1.605)     (−4.421)    (−2.120)    (−4.675)    (−8.426)
+Notes: The table presents the results of a Diebold–Mariano forecast                 Aboura,S.,&Wagner,N.(2016).Extremeasymmetricvolatility:stress
+evaluationbetweenthebenchmarkofthestandardGARCH-MIDASmodel                              andaggregateassetprices.JournalofInternationalFinancialMarkets,
+(Model0)andModels1–15giveninTable1.Aratiolowerthan1indicates                            InstitutionsandMoney,41,47–59.
+thatthemodelforecastsvolatilitybetterthanthebenchmarkmodel.The
+DMteststatisticsareshowninparentheses.                                              Alberg,D.,Shalit,H.,&Yosef,R.(2008).Estimatingstockmarketvolatil-
+*Denoterejectionsofthenullhypothesisatthe10%significancelevel.                          ityusingasymmetricGARCHmodels.AppliedFinancialEconomics,
+**Denoterejectionsofthenullhypothesisatthe5%significancelevel.                          18(15),1201–1208.
+***Denoterejectionsofthenullhypothesisatthe1%significancelevel.                     Andersen, T. G., Bollerslev, T., & Diebold, F. X. (2007). Roughing it
+                                                                                        up: Including jump components in the measurement, modeling,
+                                                                                        and forecasting of return volatility. The Review of Economics and
+                                                                                        Statistics,89(4),701–720.
+thevolatilityoftheS&P500indexinordertoinvesti-                                      Andersen, T. G., Bollerslev, T., Diebold, F. X., & Labys, P. (2003).
+gatewhetherourproposedmodelscanattainahigher                                            Modeling and forecasting realized volatility. Econometrica, 71(2),
+forecasting accuracy. First, the in-sample results show                                 579–625.
+thattheasymmetryandextremevolatilityeffectsinour                                    Angelidis, T., Benos, A., & Degiannakis, S. (2004). The use of GARCH
+GARCH-MIDAS model frameworks have significant im-                                       modelsinVaRestimation.StatisticalMethodology,1(1–2),105–128.
+                                                                                    Annaert,J.,DeCeuster,M.,&Verstegen,K.(2013).Areextremereturns
+pactsonthestockpricevolatility.Moreover,wefindthat                                      pricedinthestockmarket?Europeanevidence.JournalofBanking
+theasymmetryeffecthasamoresignificantlynegative                                         &Finance,37(9),3401–3411.
+impactthantheextremevolatilityeffect,indicatingthat                                 Arısoy,Y.E.,Altay-Salih,A.,&Akdeniz,L.(2015).Aggregatevolatility
+theasymmetryeffectcontributesmoretothepredictabil-                                      expectations and threshold CAPM. The North American Journal of
+ity of the stock volatility. In summary, the asymmetry                                  EconomicsandFinance,34,231–253.
+effectandtheextremevolatilityeffectaretwoimportant                                  Asgharian,H.,Christiansen,C.,&Hou,A.J.(2015).Macro-financede-
+                                                                                        terminantsofthelong-runstock–bondcorrelation:TheDCC-MIDAS
+factors in the high persistence of the stock volatility.                                specification.JournalofFinancialEconomic,14(3),617–642.
+Second, the out-of-sample findings based on five loss                               Asgharian, H., Christiansen, C., & Hou, A. J. (2018). Economic policy
+function criteria suggest that the asymmetry-threshold                                  uncertainty and long-run stock market volatility and correlation.
+GARCH-MIDASmodelcanoutperformthestandardex-                                             AvailableatSSRN3146924.
+isting model significantly. Moreover, the improvement                               Asgharian, H., Hou, A. J., & Javed, F. (2013). The importance of the
+inthepredictiveabilityofvolatilitymodelsisattributed                                    macroeconomic variables in forecasting stock return variance: A
+                                                                                        GARCH-MIDASapproach.JournalofForecasting,32(7),600–612.
+morestronglytotheintroductionofshort-termasymme-                                    Awartani,B.M.,&Corradi,V.(2005).PredictingthevolatilityoftheS
+tryandextremevolatilityeffectsthantothelong-term                                        &P-500stockindexviaGARCHmodels:theroleofasymmetries.
+effects.Third,accordingtoarobustnesscheck,thesecon-                                     InternationalJournalofForecasting,21(1),167–183.
+clusionsarerobusttodifferentstockmarkets,forecasting                                Becker, R., & Clements, A. E. (2008). Are combination forecasts of S
+evaluation criteria, and volatility thresholds. The con-                                & P 500 volatility statistically superior? International Journal of
+tribution of this paper is that it further expands and                                  Forecasting,24(1),122–133.
+                                                                                    Behrens,C.N.,Lopes,H.F.,&Gamerman,D.(2004).Bayesiananalysis
+enriches the traditional GARCH-MIDAS models and in-                                     ofextremeeventswiththresholdestimation.StatisticalModelling,
+troduces asymmetry and threshold terms for building                                     4(3),227–244.
+
+PAGE 11
+694              L.Wang,F.Ma,J.Liuetal./InternationalJournalofForecasting36(2020)684–694
+
+
+Bekaert,G.,&Hoerova,M.(2014).Thevix,thevariancepremiumand                               Huang,A.Y.(2015).Valueatriskestimationbythresholdstochastic
+    stockmarketvolatility.JournalofEconometrics,183(2),181–192.                             volatilitymodel.AppliedEconomics,47(45),4884–4900.
+Black,F.(1976).Studiesofstockpricevolatilitychanges.InProceedings                       Jacob, J. (2007). Forecasting performance of extreme-value volatility
+    ofthe1976meetingsoftheamericanstatisticalassociation,business                           estimators.JournalofFuturesMarkets,27(11),1085–1105.
+    andeconomicstatisticssection(pp.177–181).                                           Kim,Y.S.,Rachev,S.T.,Bianchi,M.L.,Mitov,I.,&Fabozzi,F.J.(2011).
+Bollerslev, T., & Mikkelsen, H. O. (1996). Modeling and pricing long                        Time series analysis for financial market meltdowns. Journal of
+    memoryinstockmarketvolatility.JournalofEconometrics,73(1),                              Banking&Finance,35(8),1879–1891.
+    151–184.                                                                            Lin,E.M.,Chen,C.W.,&Gerlach,R.(2012).Forecastingvolatilitywith
+Byun, S. J., & Cho, H. (2013). Forecasting carbon futures volatility                        asymmetricsmoothtransitiondynamicrangemodels.International
+    usingGARCHmodelswithenergyvolatilities.EnergyEconomics,40,                              JournalofForecasting,28(2),384–399.
+    207–221.                                                                            Ma, Y. R., Ji, Q., & Pan, J. (2019). Oil financialization and volatility
+Chan,Y.C.,&Wei,K.J.(1996).Politicalriskandstockpricevolatil-                                forecast: Evidence from multidimensional predictors. Journal of
+    ity: the case of Hong Kong. Pacific-Basin Finance Journal, 4(2–3),                      Forecasting,38(6),564–581.
+    259–275.                                                                            Ma,F.,Liao,Y.,Zhang,Y.,&Cao,Y.(2019).Harnessingjumpcomponent
+Charfeddine, L. (2016). Breaks or long range dependence in the en-                          for crude oil volatility forecasting in the presence of extreme
+    ergyfuturesvolatility:Out-of-sampleforecastingandVaRanalysis.                           shocks.JournalofEmpiricalFinance,52,40–55.
+    EconomicModelling,53,354–374.                                                       Ma,F.,Wei,Y.,Liu,L.,&Huang,D.(2018).Forecastingrealizedvolatility
+Choudhry,T.(2010).WorldWarIIeventsandtheDowJonesindustrial                                  ofoilfuturesmarket:Anewinsight.JournalofForecasting,37(4),
+    index.JournalofBanking&Finance,34(5),1022–1031.                                         419–436.
+Corsi,F.(2009).Asimpleapproximatelong-memorymodelofrealized                             McNeil, A. J., & Frey, R. (2000). Estimation of tail-related risk mea-
+    volatility.JournalofFinancialEconomic,7(2),174–196.                                     sures for heteroscedastic financial time series: an extreme value
+Degiannakis,S.(2004).Volatilityforecasting:evidencefromafractional                          approach.JournalofEmpiricalFinance,7(3–4),271–300.
+    integrated asymmetric power ARCH skewed- t model. Applied                           Mele, A. (2007). Asymmetric stock market volatility and the cyclical
+    FinancialEconomics,14(18),1333–1342.                                                    behaviorofexpectedreturns.JournalofFinancialEconomic,86(2),
+Degiannakis,S.,Livada,A.,&Panas,E.(2008).Rolling-sampledparam-                              446–478.
+    etersofARCHandLevy-Stablemodels.AppliedEconomics,40(23),                            Miao,H.,Ramchander,S.,Wang,T.,&Yang,D.(2017).Influentialfactors
+    3051–3067.                                                                              incrudeoilpriceforecasting.EnergyEconomics,68,77–88.
+                                                                                        Nikkinen,J.,Omran,M.M.,Sahlström,P.,&Äijö,J.(2008).Stockreturns
+Diebold,F.X.,&Lopez,J.A.(1996).Forecastevaluationandcombina-                                andvolatilityfollowingtheSeptember11attacks:Evidencefrom
+    tion.InG.S.Maddala,&C.R.Rao(Eds.),HandbookofStatistics:vol.                             53equitymarkets.InternationalReviewofFinancialAnalysis,17(1),
+    14,(pp.241–268).Amsterdam:North-Holland.                                                27–46.
+Diebold,F.X.,&Mariano,R.S.(1995).Comparingpredictiveaccuracy.                           Pan,Z.,&Liu,L.(2018).Forecastingstockreturnvolatility:Acompari-
+    JournalofBusiness&EconomicStatistics,13,253–263.                                        sonbetweentherolesofshort-termandlong-termleverageeffects.
+Dueker,M.J.(1997).MarkovswitchinginGARCHprocessesandmean-                                   PhysicaA:StatisticalMechanicsanditsApplications,492,168–180.
+    reverting stock-market volatility. Journal of Business & Economic                   Pan, Z., Wang, Y., Wu, C., & Yin, L. (2017). Oil price volatility and
+    Statistics,15(1),26–34.                                                                 macroeconomicfundamentals:AregimeswitchingGARCH-MIDAS
+Engle, R. F., Ghysels, E., & Sohn, B. (2013). Stock market volatility                       model.JournalofEmpiricalFinance,43,130–142.
+    and macroeconomic fundamentals. The Review of Economics and                         Patton, A. J. (2011). Volatility forecast comparison using imperfect
+    Statistics,95(3),776–797.                                                               volatilityproxies.JournalofEconometrics,160(1),246–256.
+Engle,R.F.,&Rangel,J.G.(2008).Thespline-GARCHmodelforlow-                               Patton, A. J., & Sheppard, K. (2015). Good volatility, bad volatility:
+    frequency volatility and its global macroeconomic causes. Review                        Signed jumps and the persistence of volatility. The Review of
+    ofFinancialStudies,21(3),1187–1222.                                                     EconomicsandStatistics,97(3),683–697.
+Fang,L.,Chen,B.,Yu,H.,&Qian,Y.(2018).Theimportanceofglobal                              Piccoli, P., Chaudhury, M., Souza, A., & da Silva, W. V. (2017). Stock
+    economic policy uncertainty in predicting gold futures market                           overreactiontoextrememarketevents.TheNorthAmericanJournal
+    volatility: A GARCH-MIDAS approach. Journal of Futures Markets,                         ofEconomicsandFinance,41,97–111.
+    38(3),413–422.                                                                      Poon,S.H.,&Granger,C.W.(2003).Forecastingvolatilityinfinancial
+Fuertes, A. M., Izzeldin, M., & Kalotychou, E. (2009). On forecasting                       markets:Areview.JournalofEconomicLiterature,41(2),478–539.
+    dailystockvolatility:Theroleofintradayinformationandmarket                          Schwert,G.W.(2011).Stockvolatilityduringtherecentfinancialcrisis.
+    conditions.InternationalJournalofForecasting,25(2),259–281.                             EuropeanFinancialManagement,17(5),789–805.
+Gençay, R., Selçuk, F., & Ulugülyaˇgci, A. (2003). High volatility,                     Veronesi, P. (1999). Stock market overreactions to bad news in
+    thick tails and extreme value theory in value-at-risk estimation.                       goodtimes:arationalexpectationsequilibriummodel.Reviewof
+    Insurance:MathematicsandEconomics,33(2),337–356.                                        FinancialStudies,12(5),975–1007.
+Ghysels, E., Santa-Clara, P., & Valkanov, R. (2006). Predicting volatil-                Wang, Y., Wei, Y., Wu, C., & Yin, L. (2018). Oil and the short-term
+    ity: getting the most out of return data sampled at different                           predictabilityofstockreturnvolatility.JournalofEmpiricalFinance,
+    frequencies.JournalofEconometrics,131(1–2),59–95.                                       47,90–104.
+Ghysels,E.,Sinko,A.,&Valkanov,R.(2007).MIDASregressions:Further                         Wang,Y.,&Wu,C.(2012).Forecastingenergymarketvolatilityusing
+    resultsandnewdirections.EconometricReviews,26(1),53–90.                                 GARCHmodels:Canmultivariatemodelsbeatunivariatemodels?.
+Girardin, E., & Joyeux, R. (2013). Macro fundamentals as a source                           EnergyEconomics,34(6),2167–2181.
+    of stock market volatility in China: A GARCH-MIDAS approach.                        Wang, Y., Wu, C., & Yang, L. (2016). Forecasting crude oil market
+    EconomicModelling,34,59–68.                                                             volatility: A Markov switching multifractal volatility approach.
+Hansen,P.R.(2005).Atestforsuperiorpredictiveability.Journalof                               InternationalJournalofForecasting,32(1),1–9.
+    Business&EconomicStatistics,23(4),365–380.                                          Wei, Y., Wang, Y., & Huang, D. (2010). Forecasting crude oil mar-
+                                                                                            ketvolatility:FurtherevidenceusingGARCH-classmodels.Energy
+Hansen,P.R.,&Lunde,A.(2005).Aforecastcomparisonofvolatility                                 Economics,32(6),1477–1484.
+    models: does anything beat a GARCH (1, 1)?. Journal of Applied                      Zhang,X.,Yu,L.,Wang,S.,&Lai,K.K.(2009).Estimatingtheimpactof
+    Econometrics,20(7),873–889.                                                             extremeeventsoncrudeoilprice:AnEMD-basedeventanalysis
+Hansen,P.R.,Lunde,A.,&Nason,J.M.(2011).Themodelconfidence                                   method.EnergyEconomics,31(5),768–778.
+    set.Econometrica,79(2),453–497.
+Harvey, D. I., Leybourne, S. J., & Whitehouse, E. J. (2017). Forecast
+    evaluationtestsandnegativelong-runvarianceestimatesinsmall                          Lu  Wang is an associate Professor at the School of Mathematics,
+    samples.InternationalJournalofForecasting,33(4),833–847.                            Southwest Jiaotong University. His research interests include time
+Herrera,R.,&Clements,A.E.(2018).Pointprocessmodelsforextreme                            seriesforecasting,financialeconometrics,quantitativefinance,applied
+    returns:Harnessingimpliedvolatility.JournalofBanking&Finance,                       econometrics, empirical finance, volatility modeling, forecasting, and
+    88,161–175.                                                                         nonlineareconometrics.

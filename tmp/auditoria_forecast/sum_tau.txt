@@ -1,0 +1,5 @@
+function (m, theta, phivar, covariate, K) 
+{
+    .Call("_mfGARCH_sum_tau", PACKAGE = "mfGARCH", m, theta, 
+        phivar, covariate, K)
+}

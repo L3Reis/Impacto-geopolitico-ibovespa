@@ -1,0 +1,22 @@
+function (df, x, low.freq, w1, w2, theta, m, K, x.two = NULL, 
+    K.two = NULL, theta.two = NULL, low.freq.two = NULL, w1.two = NULL, 
+    w2.two = NULL) 
+{
+    phi.var <- calculate_phi(w1, w2, K)
+    covariate <- c(rep(NA, times = K), x)
+    tau <- c(rep(NA, times = K), exp(sum_tau(m = m, theta = theta, 
+        phivar = phi.var, covariate = x, K = K)))
+    result <- merge(df, cbind(unique(df[low.freq]), tau), by = low.freq)
+    if (!is.null(x.two)) {
+        phi.var.two <- calculate_phi(w1.two, w2.two, K.two)
+        covariate.two <- c(rep(NA, times = K.two), x.two)
+        tau.two <- c(rep(NA, times = K.two), exp(sum_tau(m = 0, 
+            theta = theta.two, phivar = phi.var.two, covariate = x.two, 
+            K = K.two)))
+        result <- merge(result, cbind(unique(df[low.freq.two]), 
+            tau.two), by = low.freq.two)
+        result$tau.one <- result$tau
+        result$tau <- result$tau.one * result$tau.two
+    }
+    result
+}
