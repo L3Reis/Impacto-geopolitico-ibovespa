@@ -263,7 +263,7 @@ rolling_5anos <- prever_rolling_5anos("basicos")
 #        22 QLIKE 2543      37  0.000545665  0.0323922 0.974159
 
 # Execute a partir da raiz do projeto. Para um setor, troque "ibov" por seu nome acima.
-rolling_10anos <- prever_rolling_5anos("consumo")
+rolling_10anos <- prever_rolling_5anos("basicos")
 
 # Ibovespa - 10 anos
 
@@ -311,6 +311,7 @@ rolling_10anos <- prever_rolling_5anos("consumo")
 #         5   MSE 2560      24 -1.5240179 -0.875732 0.38117585
 #         5 QLIKE 2560      12 -0.0250729 -2.708749 0.00675375
 
+
 # consumo - 10 anos
 
 # modelo horizonte n_total n_validas      MSE    QLIKE
@@ -333,3 +334,49 @@ rolling_10anos <- prever_rolling_5anos("consumo")
 #         5 QLIKE 2560      16  0.001441409  0.4455900 0.655893
 #        22   MSE 2543      25 -0.385335261 -0.8551643 0.392460
 #        22 QLIKE 2543      34  0.006629161  1.2881572 0.197691
+
+# energia - 10 anos
+
+# modelo horizonte n_total n_validas       MSE    QLIKE
+#    gpr         1    2564      2564 181.75779 1.969154
+#    gpr         5    2560      2560  84.29485 2.028385
+#    gpr        22    2543      2543  53.65644 2.196397
+#     vr         1    2564      2564 234.28913 1.974902
+#     vr         5    2560      2560 123.87145 2.029203
+#     vr        22    2543      2543  68.96434 2.238338
+
+# horizonte MSE_relativo ganho_MSE_pct QLIKE_relativo QLIKE_diferenca
+#         1     0.775784       22.4216       0.997090    -0.005747765
+#         5     0.680503       31.9497       0.999597    -0.000817565
+#        22     0.778032       22.1968       0.981262    -0.041941158
+
+# horizonte perda    n lag_HAC    diferenca         DM  p_value
+#         1   MSE 2564      25 -5.25313e+01 -1.0423035 0.297271
+#         1 QLIKE 2564      14 -5.74777e-03 -0.5371291 0.591178
+#         5   MSE 2560      25 -3.95766e+01 -1.0557689 0.291074
+#         5 QLIKE 2560      21 -8.17565e-04 -0.0487993 0.961079
+#        22   MSE 2543      23 -1.53079e+01 -1.1038250 0.269669
+#        22 QLIKE 2543      38 -4.19412e-02 -0.9629452 0.335575
+
+# financeiro - 10 anos
+
+# modelo horizonte n_total n_validas      MSE    QLIKE
+#    gpr         1    2564      2564 78.96931 1.899897
+#    gpr         5    2560      2560 34.48507 1.923717
+#    gpr        22    2543      2543 21.06135 2.010831
+#     vr         1    2564      2564 80.42697 1.898540
+#     vr         5    2560      2560 35.82391 1.920249
+#     vr        22    2543      2543 21.63072 2.006729
+
+# horizonte MSE_relativo ganho_MSE_pct QLIKE_relativo QLIKE_diferenca
+#         1     0.981876       1.81241        1.00071      0.00135648
+#         5     0.962627       3.73727        1.00181      0.00346837
+#        22     0.973678       2.63222        1.00204      0.00410173
+
+# horizonte perda    n lag_HAC   diferenca        DM  p_value
+#        1   MSE 2564      27 -1.45766308 -0.690891 0.489634
+#         1 QLIKE 2564      10  0.00135648  0.218450 0.827078
+#         5   MSE 2560      31 -1.33883780 -0.727460 0.466944
+#         5 QLIKE 2560      24  0.00346837  0.445687 0.655823
+#        22   MSE 2543      31 -0.56936877 -0.696865 0.485888
+#        22 QLIKE 2543      32  0.00410173  0.405172 0.685351
