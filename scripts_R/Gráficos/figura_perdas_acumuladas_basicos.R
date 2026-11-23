@@ -33,25 +33,27 @@ acumuladas_basicos <- pares_basicos |>
 figura_perdas_basicos <- ggplot(acumuladas_basicos, aes(data, acumulada)) +
   facet_wrap(vars(perda), ncol = 1, scales = "free_y") +
   geom_hline(yintercept = 0, colour = "grey45", linewidth = 0.35) +
-  geom_line(aes(colour = horizonte, linetype = horizonte), linewidth = 1.15,
+  geom_line(aes(colour = horizonte, linetype = horizonte), linewidth = 1,
             lineend = "round") +
-  scale_colour_manual(values = c("1 pregão" = "#222222", "5 pregões" = "#C43B38",
-                                 "22 pregões" = "#3269B3")) +
+  scale_colour_manual(values = c("1 pregão" = "#6618CCD7", "5 pregões" = "#ff00dd",
+                                 "22 pregões" = "#0A0A00")) +
   scale_linetype_manual(values = c("solid", "dashed", "dotted")) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y",
                expand = expansion(mult = c(0.01, 0))) +
   scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
-  labs(subtitle = "Previsão da variância média com janela expansiva",
-       x = "Último pregão do horizonte previsto", y = "Diferença acumulada (VR − GPR)",
+  labs(x = "Último pregão do horizonte previsto",
+       y = expression(sum((L[s*","*h]^plain(VR) - L[s*","*h]^plain(GPR)), s <= t)),
        colour = "Horizonte", linetype = "Horizonte") +
   theme_minimal(base_size = 18) +
   theme(legend.position = "top", legend.justification = "left",
         legend.key.width = grid::unit(1.4, "cm"),
-        legend.text = element_text(size = 16), legend.title = element_text(size = 16),
-        axis.text = element_text(size = 15, colour = "grey20"),
+        legend.text = element_text(size = 15), legend.title = element_text(size = 15),
+        axis.text = element_text(size = 14, colour = "grey20"),
+        axis.title.y = element_text(size = 15, colour = "grey20", margin = margin(r = 6)),
+        panel.border = element_rect(colour = "grey30", fill = NA, linewidth = 0.5),
         panel.grid.minor = element_blank(),
         panel.grid.major = element_line(colour = "grey90", linewidth = 0.3),
-        strip.text = element_text(size = 18, face = "bold", hjust = 0),
+        strip.text = element_text(size = 16, face = "bold", hjust = 0.5),
         plot.background = element_rect(fill = "white", colour = NA))
 
 if (interactive()) print(figura_perdas_basicos)
