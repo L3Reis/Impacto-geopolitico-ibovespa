@@ -4,6 +4,20 @@
 library(dplyr)
 library(ggplot2)
 
+tema_componentes <- theme_minimal(base_size = 20) +
+  theme(
+    axis.text = element_text(size = 16, colour = "grey20"),
+    strip.text = element_text(size = 18, face = "bold", hjust = 0),
+    legend.position = "top", legend.justification = "left",
+    legend.text = element_text(size = 17), legend.key.width = grid::unit(1.4, "cm"),
+    panel.border = element_rect(colour = "grey30", fill = NA, linewidth = 0.5),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(colour = "grey90", linewidth = 0.3),
+    plot.background = element_rect(fill = "white", colour = NA)
+  )
+
+cores_indices <- c(IBOV = "#0072B2", Consumo = "#D55E00", "Bens básicos" = "#009E73")
+
 
 #* Modelo log GPR com 24 defasagens
 
@@ -34,7 +48,7 @@ dados_figura_ibov <- componentes_variancia_ibov  |>
 figura_componentes_ibov <- ggplot(
   dados_figura_ibov, aes(x = date, y = valor, color = componente)
 ) +
-  geom_line(linewidth = 0.5, na.rm = TRUE) +
+  geom_line(linewidth = 0.8, na.rm = TRUE) +
   # O eixo de datas é comum; cada componente tem sua própria escala vertical.
   facet_wrap(
     vars(componente), ncol = 1, scales = "free_y",
@@ -52,12 +66,8 @@ figura_componentes_ibov <- ggplot(
     x = "Data",
     y = NULL
   ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "none",
-    strip.text = element_text(face = "bold", hjust = 0),
-    panel.grid.minor = element_blank()
-  )
+  tema_componentes +
+  theme(legend.position = "none")
 
 print(figura_componentes_ibov)
 
@@ -88,7 +98,7 @@ dados_figura_consumo <- componentes_variancia_consumo |>
 figura_componentes_consumo <- ggplot(
   dados_figura_consumo, aes(x = date, y = valor, color = componente)
 ) +
-  geom_line(linewidth = 0.5, na.rm = TRUE) +
+  geom_line(linewidth = 0.8, na.rm = TRUE) +
   # O eixo de datas é comum; cada componente tem sua própria escala vertical.
   facet_wrap(
     vars(componente), ncol = 1, scales = "free_y",
@@ -106,12 +116,8 @@ figura_componentes_consumo <- ggplot(
     x = "Data",
     y = NULL
   ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "none",
-    strip.text = element_text(face = "bold", hjust = 0),
-    panel.grid.minor = element_blank()
-  )
+  tema_componentes +
+  theme(legend.position = "none")
 
 print(figura_componentes_consumo)
 
@@ -141,7 +147,7 @@ dados_figura_bens_basicos <- componentes_variancia_bens_basicos |>
 figura_componentes_bens_basicos <- ggplot(
   dados_figura_bens_basicos, aes(x = date, y = valor, color = componente)
 ) +
-  geom_line(linewidth = 0.5, na.rm = TRUE) +
+  geom_line(linewidth = 0.8, na.rm = TRUE) +
   # O eixo de datas é comum; cada componente tem sua própria escala vertical.
   facet_wrap(
     vars(componente), ncol = 1, scales = "free_y",
@@ -159,12 +165,8 @@ figura_componentes_bens_basicos <- ggplot(
     x = "Data",
     y = NULL
   ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "none",
-    strip.text = element_text(face = "bold", hjust = 0),
-    panel.grid.minor = element_blank()
-  )
+  tema_componentes +
+  theme(legend.position = "none")
 
 print(figura_componentes_bens_basicos)
 
@@ -187,7 +189,7 @@ figura_componentes_conjunta <- ggplot(
   dados_figura_conjunta,
   aes(x = date, y = valor, color = serie, group = serie)
 ) +
-  geom_line(linewidth = 0.5, na.rm = TRUE) +
+  geom_line(linewidth = 0.8, na.rm = TRUE) +
   facet_wrap(
     vars(componente), ncol = 1, scales = "free_y",
     labeller = as_labeller(c(
@@ -196,9 +198,7 @@ figura_componentes_conjunta <- ggplot(
       variancia_total = "Variância total (tau × g; p.p.²)"
     ))
   ) +
-  scale_color_manual(values = c(
-    IBOV = "#4908fc", Consumo = "#f00c0c", "Bens básicos" = "#3ef307"
-  )) +
+  scale_color_manual(values = cores_indices) +
   scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
   labs(
     title = "Componentes da variância condicional: IBOV, consumo e bens básicos",
@@ -207,12 +207,7 @@ figura_componentes_conjunta <- ggplot(
     y = NULL,
     color = NULL
   ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "bottom",
-    strip.text = element_text(face = "bold", hjust = 0),
-    panel.grid.minor = element_blank()
-  )
+  tema_componentes
 
 print(figura_componentes_conjunta)
 
@@ -241,7 +236,7 @@ figura_componentes_zoom <- ggplot(
   dados_figura_zoom,
   aes(x = date, y = valor, color = serie, group = serie)
 ) +
-  geom_line(linewidth = 0.5) +
+  geom_line(linewidth = 0.8) +
   # Cada linha contém um componente; cada coluna contém um período.
   # As escalas livres também ampliam as oscilações no eixo y do zoom.
   facet_wrap(
@@ -261,21 +256,14 @@ figura_componentes_zoom <- ggplot(
       ))
     }
   ) +
-  scale_color_manual(values = c(
-    IBOV = "#0072B2", Consumo = "#D55E00", "Bens básicos" = "#009E73"
-  )) +
+  scale_color_manual(values = cores_indices) +
   scale_x_date(breaks = scales::breaks_pretty(n = 5), date_labels = "%Y") +
   labs(
     x = "Data",
     y = NULL,
     color = NULL
   ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "bottom",
-    strip.text = element_text(face = "bold", hjust = 0,size = 14 ),
-    panel.grid.minor = element_blank()
-  )
+  tema_componentes
 
 print(figura_componentes_zoom)
 
